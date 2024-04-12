@@ -1,0 +1,66 @@
+<div class="px-4">
+    <edt-card>
+        <div class="w-full h-12 flex flex-row-reverse items-center justify-between px-7 border-b border-b-neutral-300">
+            <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddLang.toggle()"></i>
+            <div #dFlag class="flex gap-2 hover:cursor-pointer" (click)="dropFlags.show()">
+                <span class="text-xl" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
+                <i class="fa-solid fa-caret-down text-lg"></i>
+            </div>
+        </div>
+
+        @for (translation of project()?.translations; track $index) {
+            <div class="grid grid-cols-3 tempCol gap-2 items-center text-base font-medium p-4 text-center hover:bg-sky-200 border-b border-neutral-300">
+                <div>
+                    {{ translation.global }}
+                </div>
+                <div class="text-base font-medium">
+                    <edt-input [value]="getValueTranslation(translation)" (onBlur)="valChange($event, translation.id)"></edt-input>
+                </div>
+                <div class="flex gap-4 justify-end">
+                    <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation"></i>
+                    <i class="fa-solid fa-trash text-xl hover:cursor-pointer hover:text-neutral-800" title="Remove Translation" (click)="removeTranslation(translation.id)"></i>
+                </div>
+            </div>
+        } @empty {
+            <div class="p-12 text-center">
+                <span class="font-semibold text-xl text-neutral-600">Nessuna traduzione presente</span>
+            </div>
+        }
+        
+    </edt-card>
+</div>
+
+<edt-popup #edtAddLang>
+    <div class="p-8">
+        <div class="mb-8 font-semibold text-2xl">
+            Aggiungi Traduzione
+        </div>
+
+        <form [formGroup]="newLangForm" (submit)="addItemTraslate()">
+            <div class="flex flex-col gap-3 mb-6 w-96">
+                <edt-input label="Nome" formControlName="global"></edt-input>
+                <edt-input label="Valore" formControlName="value"></edt-input>
+            </div>
+            
+            <div class="flex gap-4 justify-end">
+                <edt-button label="Chiudi" level="secondary" (onClick)="edtAddLang.toggle()"></edt-button>
+                <edt-button label="Aggiungi" [disabled]="!newLangForm.valid"></edt-button>
+            </div>
+        </form>
+    </div>
+</edt-popup>
+
+<edt-dropdown #dropFlags [target]="dFlag">
+    @for (lang of project()?.languages; track $index) {
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-sky-200 hover:cursor-pointer" (click)="selectLanguage(lang)">
+            <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+            <span>{{ lang.description }}</span>
+        </div>
+    }
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-sky-200 hover:cursor-pointer" (click)="addLangComp.toggle(); dropFlags.show();">
+        <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation"></i>
+        <span>Aggiungi Lingua</span>
+    </div>
+</edt-dropdown>
+
+<add-language #addLangComp [prjId]="project()?.id"></add-language>

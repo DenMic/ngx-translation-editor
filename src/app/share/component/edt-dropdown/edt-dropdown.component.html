@@ -1,0 +1,22 @@
+<ng-template #templateRef>
+    <div class="min-w[144px] mt-1 bg-neutral-100 flex-col justify-start items-start inline-flex rounded-md shadow overflow-hidden">
+        
+        <!-- Titolo -->
+        @if(showTitle()) {
+            <div class="w-full h-10 px-4 py-2 bg-sc-neutral-88 justify-start items-center inline-flex rounded-t-md">
+                <span class="text-sc-neutral-28 text-base font-bold leading-normal">{{title()}}</span>
+            </div>
+        }
+        
+        <!-- <sc-dropdown-content class="w-full"
+            [items]="items"
+            [maxItemsVisible]="maxItemsVisible"
+            (openSubMenu)="openSubMenu($event)"
+            (closeMenu)="hide()"> -->
+
+            <ng-content></ng-content>
+
+        <!-- </sc-dropdown-content> -->
+        
+    </div>
+</ng-template>

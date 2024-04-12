@@ -1,0 +1,25 @@
+<edt-popup #edtAddLang>
+    <div class="p-8">
+        <div class="mb-8 font-semibold text-2xl">
+            Aggiungi Lingua
+        </div>
+
+        <div class="flex flex-col gap-3 mb-6 w-96">
+            <mat-form-field>
+                <mat-label>Lingua</mat-label>
+                <mat-select [(value)]="newLang">
+                    @for (flag of selectableLang(); track $index) {
+                        <mat-option [value]="flag">
+                            <span [class]="'fi fi-' + flag.flagName"></span> {{flag.description}}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+        <div class="flex gap-4 justify-end">
+            <edt-button label="Chiudi" level="secondary" (onClick)="edtAddLang.toggle()"></edt-button>
+            <edt-button label="Aggiungi" (onClick)="addLang()"></edt-button>
+        </div>
+    </div>
+</edt-popup>
