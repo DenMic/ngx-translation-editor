@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { AppSettingsService } from '../../module/service/app-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
@@ -40,6 +40,8 @@ import { AddLanguageComponent } from '../../share/add-language/add-language.comp
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
+  private edtAddTranslation = viewChild<EdtPopupComponent>('edtAddTranslation');
+
   private activatedRoute = inject(ActivatedRoute);
   private appSettingsService = inject(AppSettingsService);
   private projectService = inject(ProjectService);
@@ -53,6 +55,8 @@ export class PrjTranslationComponent {
     global: [undefined, [Validators.required, noWhitespaceValidator()]],
     value: [undefined],
   });
+
+  private idParentTranslation: number | undefined = undefined;
 
   ngOnInit(): void {
     const selectedPrj = this.selectProject();
@@ -105,6 +109,7 @@ export class PrjTranslationComponent {
 
       this.projectService.updateTranslation(this.project());
       this.resetFormLang();
+      this.closeAddTranslation();
     }
   }
 
@@ -145,6 +150,16 @@ export class PrjTranslationComponent {
         this.projectService.updateTranslation(this.project());
       }
     }
+  }
+
+  protected AddSubTranslation(idParTranslation: number): void {
+    this.idParentTranslation = idParTranslation;
+    this.edtAddTranslation()?.toggle();
+  }
+
+  protected closeAddTranslation(): void {
+    this.idParentTranslation = undefined;
+    this.edtAddTranslation()?.toggle()
   }
 
   protected getValueTranslation(translation: Translation): string {

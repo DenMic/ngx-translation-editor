@@ -10,7 +10,7 @@
                 <i class="fa-solid fa-caret-down text-lg"></i>
             </div>
             @if(selectedLang()){
-                <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddLang.toggle()"></i>
+                <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddTranslation.toggle()"></i>
             }
         </div>
 
@@ -23,7 +23,7 @@
                     <edt-input [value]="getValueTranslation(translation)" (onBlur)="valChange($event, translation.id)"></edt-input>
                 </div>
                 <div class="flex gap-4 justify-end">
-                    <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation"></i>
+                    <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation" (click)="AddSubTranslation(translation.id)"></i>
                     <i class="fa-solid fa-trash text-xl hover:cursor-pointer hover:text-neutral-800" title="Remove Translation" (click)="removeTranslation(translation.id)"></i>
                 </div>
             </div>
@@ -51,7 +51,7 @@
 </edt-dropdown>
 
 <!-- Pop Add Translation -->
-<edt-popup #edtAddLang>
+<edt-popup #edtAddTranslation>
     <div class="p-8">
         <div class="mb-8 font-semibold text-2xl">
             Aggiungi Traduzione
@@ -64,7 +64,7 @@
             </div>
             
             <div class="flex gap-4 justify-end">
-                <edt-button label="Chiudi" level="secondary" (onClick)="edtAddLang.toggle()"></edt-button>
+                <edt-button label="Chiudi" level="secondary" (onClick)="closeAddTranslation()"></edt-button>
                 <edt-button label="Aggiungi" [disabled]="!newLangForm.valid"></edt-button>
             </div>
         </form>
