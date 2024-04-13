@@ -55,12 +55,10 @@ export class PrjTranslationComponent {
   });
 
   ngOnInit(): void {
-    const selectedPrj = this.projectService.getProjectById(this.prjId);
+    const selectedPrj = this.selectProject();
 
     if (selectedPrj) {
       this.appSettingsService.setTitlePage(`Translation - ${selectedPrj.name}`);
-      this.project.set(selectedPrj);
-      this.selectedLang.set(selectedPrj.languages[0]);
     } else {
       // TODO: project not found
     }
@@ -160,7 +158,24 @@ export class PrjTranslationComponent {
     this.selectedLang.set(lang);
   }
 
+  protected addLangClose(isUpdated: boolean): void {
+    if(isUpdated){
+      this.selectProject();
+    }
+  }
+
   private resetFormLang() {
     this.newLangForm.setValue({ global: '', value: '' });
+  }
+
+  private selectProject(): Project | undefined {
+    const selectedPrj = this.projectService.getProjectById(this.prjId);
+
+    if (selectedPrj) {
+      this.project.set(selectedPrj);
+      this.selectedLang.set(selectedPrj.languages[0]);
+    }
+
+    return selectedPrj;
   }
 }

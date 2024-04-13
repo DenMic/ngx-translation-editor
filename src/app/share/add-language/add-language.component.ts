@@ -89,17 +89,14 @@ export class AddLanguageComponent {
       if (prj) {
         prj?.languages.push(this.newLang);
 
-        let newId = 1;
-        if (prj.translations.length > 0) {
-          newId = (Math.max(...prj.translations.map((x) => x.id)) ?? 0) + 1;
-        }
-
-        prj.translations.forEach((x) => {
-          x.items?.push({
-            lang: this.newLang?.flagName,
-            value: 'TODO',
+        if(prj.translations){
+          prj.translations.forEach((x) => {
+            x.items?.push({
+              lang: this.newLang?.flagName,
+              value: 'TODO',
+            });
           });
-        });
+        }
 
         this.projectService.updateTranslation(prj);
       }
