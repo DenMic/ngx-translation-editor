@@ -1,38 +1,34 @@
 <div class="px-4">
     <edt-card>
-        <div class="w-full h-12 flex items-center justify-between px-7 border-b border-b-neutral-300">
-            <div #dFlag class="flex gap-2 hover:cursor-pointer" (click)="dropFlags.show()">
+        <div class="w-full overflow-auto bg-neutral-500">
+            <div class="w-full h-12 flex items-center justify-between px-7 border-b border-b-neutral-300 bg-neutral-50">
+                <div #dFlag class="flex gap-2 hover:cursor-pointer" (click)="dropFlags.show()">
+                    @if(selectedLang()){
+                        <span class="text-xl" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
+                    } @else {
+                        <i class="fa-solid fa-circle-question text-xl"></i>
+                    }
+                    <i class="fa-solid fa-caret-down text-lg"></i>
+                </div>
                 @if(selectedLang()){
-                    <span class="text-xl" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
-                } @else {
-                    <i class="fa-solid fa-circle-question text-xl"></i>
+                    <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddTranslation.toggle()"></i>
                 }
-                <i class="fa-solid fa-caret-down text-lg"></i>
             </div>
-            @if(selectedLang()){
-                <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddLang.toggle()"></i>
+
+            @for (translation of project()?.translations; track $index) {
+                <translation-row 
+                    [translation]="translation" 
+                    [selectedLang]="selectedLang()"
+                    (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                    (onAdd)="addSubTranslation($event)"
+                    (onRemove)="removeTranslation($event)">
+                </translation-row>
+            } @empty {
+                <div class="p-12 text-center">
+                    <span class="font-semibold text-xl text-neutral-600">Nessuna traduzione presente</span>
+                </div>
             }
         </div>
-
-        @for (translation of project()?.translations; track $index) {
-            <div class="grid grid-cols-3 tempCol gap-2 items-center text-base font-medium p-4 text-center hover:bg-sky-200 border-b border-neutral-300">
-                <div>
-                    {{ translation.global }}
-                </div>
-                <div class="text-base font-medium">
-                    <edt-input [value]="getValueTranslation(translation)" (onBlur)="valChange($event, translation.id)"></edt-input>
-                </div>
-                <div class="flex gap-4 justify-end">
-                    <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation"></i>
-                    <i class="fa-solid fa-trash text-xl hover:cursor-pointer hover:text-neutral-800" title="Remove Translation" (click)="removeTranslation(translation.id)"></i>
-                </div>
-            </div>
-        } @empty {
-            <div class="p-12 text-center">
-                <span class="font-semibold text-xl text-neutral-600">Nessuna traduzione presente</span>
-            </div>
-        }
-        
     </edt-card>
 </div>
 
@@ -51,7 +47,7 @@
 </edt-dropdown>
 
 <!-- Pop Add Translation -->
-<edt-popup #edtAddLang>
+<edt-popup #edtAddTranslation>
     <div class="p-8">
         <div class="mb-8 font-semibold text-2xl">
             Aggiungi Traduzione
@@ -64,7 +60,7 @@
             </div>
             
             <div class="flex gap-4 justify-end">
-                <edt-button label="Chiudi" level="secondary" (onClick)="edtAddLang.toggle()"></edt-button>
+                <edt-button label="Chiudi" level="secondary" (onClick)="closeAddTranslation()"></edt-button>
                 <edt-button label="Aggiungi" [disabled]="!newLangForm.valid"></edt-button>
             </div>
         </form>

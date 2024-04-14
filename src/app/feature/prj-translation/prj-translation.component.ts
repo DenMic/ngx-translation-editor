@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { AppSettingsService } from '../../module/service/app-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
@@ -19,6 +19,7 @@ import { ItemTranslation, Translation } from '../../module/classes/translation';
 import { ProjectService } from '../../module/service/project.service';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
+import { TranslationRowComponent } from './translation-row/translation-row.component';
 
 @Component({
   selector: 'app-prj-translation',
@@ -27,6 +28,7 @@ import { AddLanguageComponent } from '../../share/add-language/add-language.comp
     FormsModule,
     ReactiveFormsModule,
 
+    TranslationRowComponent,
     AddLanguageComponent,
 
     EdtCardComponent,
@@ -40,6 +42,8 @@ import { AddLanguageComponent } from '../../share/add-language/add-language.comp
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
+  private edtAddTranslation = viewChild<EdtPopupComponent>('edtAddTranslation');
+
   private activatedRoute = inject(ActivatedRoute);
   private appSettingsService = inject(AppSettingsService);
   private projectService = inject(ProjectService);
@@ -53,6 +57,8 @@ export class PrjTranslationComponent {
     global: [undefined, [Validators.required, noWhitespaceValidator()]],
     value: [undefined],
   });
+
+  private idParentTranslation: number | undefined = undefined;
 
   ngOnInit(): void {
     const selectedPrj = this.selectProject();
@@ -87,7 +93,7 @@ export class PrjTranslationComponent {
 
       let newId = 1;
       if (prj.translations && prj.translations.length > 0) {
-        newId = (Math.max(...prj.translations.map((x) => x.id)) ?? 0) + 1;
+        newId = this.getMaxIdTranslations(prj.translations) + 1;
       }
 
       const newTranslation: Translation = {
@@ -97,15 +103,60 @@ export class PrjTranslationComponent {
       } as Translation;
 
       this.project.update((val) => {
-        const oldArray = val!.translations ?? [];
-        val!.translations = [...oldArray, newTranslation];
+        if(this.idParentTranslation){
+
+          let parentTranslation = this.findCorrectTranslation(val!.translations);
+          if(parentTranslation){
+            const oldArray = parentTranslation.translation ?? [];
+            parentTranslation.translation = [...oldArray, newTranslation];
+            parentTranslation.items = undefined;
+          }
+        } else {
+          const oldArray = val!.translations ?? [];
+          val!.translations = [...oldArray, newTranslation];
+        }
 
         return val;
       });
 
       this.projectService.updateTranslation(this.project());
       this.resetFormLang();
+      this.closeAddTranslation();
     }
+  }
+
+  getMaxIdTranslations(translations: Translation[]) : number {
+    let maxId = 0;
+
+    translations.forEach((x) => {
+      if(x.id > maxId)
+        maxId = x.id;
+
+      if(x.translation && x.translation.length > 0){
+        const subMaxId = this.getMaxIdTranslations(x.translation);
+        if(subMaxId > maxId)
+          maxId = subMaxId;
+      }
+    })
+
+    return maxId;
+  }
+
+  private findCorrectTranslation(translations: Translation[]): Translation | undefined {
+    for (let index = 0; index < translations.length; index++) {
+      const translation = translations[index];
+      if(translation.id == this.idParentTranslation){
+        return translation;
+      }
+  
+      if(translation.translation == undefined){
+        return undefined;
+      }
+
+      return this.findCorrectTranslation(translation.translation);
+    }
+
+    return undefined;
   }
 
   removeTranslation(translationId: number): void {
@@ -124,11 +175,11 @@ export class PrjTranslationComponent {
     }
   }
 
-  valChange(newVal: string | undefined, translationId: number): void {
+  translationValChange(newVal: string | undefined, translationId: number): void {
     let translations = this.project()?.translations;
 
     if (translations) {
-      const translation = translations.find((x) => x.id == translationId);
+      const translation = this.findTranslationById(translations, translationId);
       const itemLang = translation?.items?.find(
         (x) => x.lang == this.selectedLang()?.flagName
       );
@@ -147,11 +198,31 @@ export class PrjTranslationComponent {
     }
   }
 
-  protected getValueTranslation(translation: Translation): string {
-    return (
-      translation.items?.find((x) => x.lang == this.selectedLang()?.flagName)
-        ?.value ?? ''
-    );
+  findTranslationById(translations: Translation[], translationId: number): Translation | undefined {
+    for (let index = 0; index < translations.length; index++) {
+      const element = translations[index];
+
+      if(element.id == translationId)
+        return element;
+
+      if(element.translation){
+        const subTranslation = this.findTranslationById(element.translation, translationId);
+        if(subTranslation)
+          return subTranslation;
+      }
+    }
+
+    return undefined;
+  }
+
+  protected addSubTranslation(idParTranslation: number): void {
+    this.idParentTranslation = idParTranslation;
+    this.edtAddTranslation()?.toggle();
+  }
+
+  protected closeAddTranslation(): void {
+    this.idParentTranslation = undefined;
+    this.edtAddTranslation()?.toggle()
   }
 
   protected selectLanguage(lang: Language): void {
