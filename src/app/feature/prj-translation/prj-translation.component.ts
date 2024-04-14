@@ -93,7 +93,7 @@ export class PrjTranslationComponent {
 
       let newId = 1;
       if (prj.translations && prj.translations.length > 0) {
-        newId = (Math.max(...prj.translations.map((x) => x.id)) ?? 0) + 1;
+        newId = this.getMaxIdTranslations(prj.translations) + 1;
       }
 
       const newTranslation: Translation = {
@@ -103,17 +103,9 @@ export class PrjTranslationComponent {
       } as Translation;
 
       this.project.update((val) => {
-        
-
         if(this.idParentTranslation){
 
           let parentTranslation = this.findCorrectTranslation(val!.translations);
-          // for (let index = 0; index < val!.translations.length; index++) {
-          //   const element = val!.translations[index];
-          //   parentTranslation = ;
-          //   if(parentTranslation) break;
-          // }
-
           if(parentTranslation){
             const oldArray = parentTranslation.translation ?? [];
             parentTranslation.translation = [...oldArray, newTranslation];
@@ -131,6 +123,23 @@ export class PrjTranslationComponent {
       this.resetFormLang();
       this.closeAddTranslation();
     }
+  }
+
+  getMaxIdTranslations(translations: Translation[]) : number {
+    let maxId = 0;
+
+    translations.forEach((x) => {
+      if(x.id > maxId)
+        maxId = x.id;
+
+      if(x.translation && x.translation.length > 0){
+        const subMaxId = this.getMaxIdTranslations(x.translation);
+        if(subMaxId > maxId)
+          maxId = subMaxId;
+      }
+    })
+
+    return maxId;
   }
 
   private findCorrectTranslation(translations: Translation[]): Translation | undefined {
