@@ -179,7 +179,7 @@ export class PrjTranslationComponent {
     let translations = this.project()?.translations;
 
     if (translations) {
-      const translation = translations.find((x) => x.id == translationId);
+      const translation = this.findTranslationById(translations, translationId);
       const itemLang = translation?.items?.find(
         (x) => x.lang == this.selectedLang()?.flagName
       );
@@ -196,6 +196,23 @@ export class PrjTranslationComponent {
         this.projectService.updateTranslation(this.project());
       }
     }
+  }
+
+  findTranslationById(translations: Translation[], translationId: number): Translation | undefined {
+    for (let index = 0; index < translations.length; index++) {
+      const element = translations[index];
+
+      if(element.id == translationId)
+        return element;
+
+      if(element.translation){
+        const subTranslation = this.findTranslationById(element.translation, translationId);
+        if(subTranslation)
+          return subTranslation;
+      }
+    }
+
+    return undefined;
   }
 
   protected addSubTranslation(idParTranslation: number): void {
