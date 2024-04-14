@@ -19,6 +19,7 @@ import { ItemTranslation, Translation } from '../../module/classes/translation';
 import { ProjectService } from '../../module/service/project.service';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
+import { TranslationRowComponent } from './translation-row/translation-row.component';
 
 @Component({
   selector: 'app-prj-translation',
@@ -27,6 +28,7 @@ import { AddLanguageComponent } from '../../share/add-language/add-language.comp
     FormsModule,
     ReactiveFormsModule,
 
+    TranslationRowComponent,
     AddLanguageComponent,
 
     EdtCardComponent,
@@ -101,8 +103,26 @@ export class PrjTranslationComponent {
       } as Translation;
 
       this.project.update((val) => {
-        const oldArray = val!.translations ?? [];
-        val!.translations = [...oldArray, newTranslation];
+        
+
+        if(this.idParentTranslation){
+
+          let parentTranslation = this.findCorrectTranslation(val!.translations);
+          // for (let index = 0; index < val!.translations.length; index++) {
+          //   const element = val!.translations[index];
+          //   parentTranslation = ;
+          //   if(parentTranslation) break;
+          // }
+
+          if(parentTranslation){
+            const oldArray = parentTranslation.translation ?? [];
+            parentTranslation.translation = [...oldArray, newTranslation];
+            parentTranslation.items = undefined;
+          }
+        } else {
+          const oldArray = val!.translations ?? [];
+          val!.translations = [...oldArray, newTranslation];
+        }
 
         return val;
       });
@@ -111,6 +131,23 @@ export class PrjTranslationComponent {
       this.resetFormLang();
       this.closeAddTranslation();
     }
+  }
+
+  private findCorrectTranslation(translations: Translation[]): Translation | undefined {
+    for (let index = 0; index < translations.length; index++) {
+      const translation = translations[index];
+      if(translation.id == this.idParentTranslation){
+        return translation;
+      }
+  
+      if(translation.translation == undefined){
+        return undefined;
+      }
+
+      return this.findCorrectTranslation(translation.translation);
+    }
+
+    return undefined;
   }
 
   removeTranslation(translationId: number): void {
@@ -129,7 +166,7 @@ export class PrjTranslationComponent {
     }
   }
 
-  valChange(newVal: string | undefined, translationId: number): void {
+  translationValChange(newVal: string | undefined, translationId: number): void {
     let translations = this.project()?.translations;
 
     if (translations) {
@@ -152,7 +189,7 @@ export class PrjTranslationComponent {
     }
   }
 
-  protected AddSubTranslation(idParTranslation: number): void {
+  protected addSubTranslation(idParTranslation: number): void {
     this.idParentTranslation = idParTranslation;
     this.edtAddTranslation()?.toggle();
   }
@@ -160,13 +197,6 @@ export class PrjTranslationComponent {
   protected closeAddTranslation(): void {
     this.idParentTranslation = undefined;
     this.edtAddTranslation()?.toggle()
-  }
-
-  protected getValueTranslation(translation: Translation): string {
-    return (
-      translation.items?.find((x) => x.lang == this.selectedLang()?.flagName)
-        ?.value ?? ''
-    );
   }
 
   protected selectLanguage(lang: Language): void {

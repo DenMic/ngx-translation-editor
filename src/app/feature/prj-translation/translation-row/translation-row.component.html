@@ -1,0 +1,37 @@
+<div class="grid grid-cols-4 tempCol gap-2 items-center text-base font-medium p-4 text-center bg-neutral-50 hover:bg-sky-200 border-b border-neutral-300">
+    <div>
+        @if(translation().translation && translation().translation!.length > 0){
+            @if(openSubMenu()){
+                <i class="fa-solid fa-caret-up hover:cursor-pointer" (click)="openSubMenu.set(false)"></i>
+            }@else {
+                <i class="fa-solid fa-caret-down hover:cursor-pointer" (click)="openSubMenu.set(true)"></i>
+            }
+        } 
+    </div>
+    <div>
+        {{ translation().global }}
+    </div>
+    <div class="text-base font-medium">
+        @if(translation().items){
+            <edt-input [value]="getValueTranslation(translation())" (onBlur)="valChange($event, translation().id)"></edt-input>
+        }
+    </div>
+    <div class="flex gap-4 justify-end">
+        <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation" (click)="addSubTranslation(translation().id)"></i>
+        <i class="fa-solid fa-trash text-xl hover:cursor-pointer hover:text-neutral-800" title="Remove Translation" (click)="removeTranslation(translation().id)"></i>
+    </div>
+</div>
+
+@if(openSubMenu()){
+    @for (tr of translation().translation; track $index) {
+        <div class="ml-2 bg-neutral-500">
+            <translation-row 
+                [translation]="tr" 
+                [selectedLang]="selectedLang()"
+                (onValueChange)="valChange($event.newVal, $event.translationId)"
+                (onAdd)="addSubTranslation($event)"
+                (onRemove)="removeTranslation($event)">
+            </translation-row>
+        </div>
+    }
+}
