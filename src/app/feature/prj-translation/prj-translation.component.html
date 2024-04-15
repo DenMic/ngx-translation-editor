@@ -1,27 +1,29 @@
 <div class="px-4 mb-4">
     <edt-card>
-        <div class="w-full overflow-auto bg-neutral-50">
-            <div class="w-full h-12 flex items-center justify-between px-7 border-b border-b-neutral-300 bg-neutral-50">
-                <div class="flex gap-4 py-2 items-center">
-                    <div #dFlag class="flex gap-2 border py-1 px-3 rounded-md hover:cursor-pointer hover:bg-green-600 hover:bg-opacity-50" (click)="dropFlags.show()">
+        <div class="w-full overflow-auto">
+            <div class="w-full h-12 flex items-center justify-between px-5 border-b border-b-neutral-300 bg-neutral-200">
+                <div class="flex gap-4 py-1 items-center">
+                    <div #dFlag class="flex gap-2 border border-neutral-300 bg-neutral-50 py-1 px-3 rounded-md hover:cursor-pointer hover:bg-green-600 hover:bg-opacity-50" (click)="dropFlags.show()">
                         @if(selectedLang()){
-                            <span class="text-xl" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
+                            <span class="text-base" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
                         } @else {
                             <i class="fa-solid fa-circle-question text-xl"></i>
                         }
                         <i class="fa-solid fa-caret-down text-lg"></i>
                     </div>
-                    <div class="flex gap-2 border items-center py-2 px-3 rounded-md hover:cursor-pointer">
+                    <div class="flex gap-2 border border-neutral-300 bg-neutral-50 items-center py-2 px-3 rounded-md hover:cursor-pointer">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" [(ngModel)]="searchValue" class="appearance-none bg-transparent" (blur)="searchValueChange()" />
                     </div>
-                    <div class="border py-2 px-3 rounded-md hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="clickSortTranslation()">
+                    <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="clickSortTranslation()">
                         <i class="fa-solid fa-arrow-down-a-z "></i>
-                        Sort Global
+                        <span>Sort Global</span>
                     </div>
                 </div>
                 @if(selectedLang()){
-                    <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddTranslation.toggle()"></i>
+                    <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="clickSortTranslation()">
+                        <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800" (click)="edtAddTranslation.toggle()"></i>
+                    </div>
                 }
             </div>
 
