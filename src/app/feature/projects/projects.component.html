@@ -1,13 +1,16 @@
 <div class="px-4">
     <edt-card>
-        <div class="w-full h-12 flex flex-row-reverse items-center px-7 border-b border-b-neutral-300">
-            <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" (click)="edtAddPrj.toggle()"></i>
+        <div class="w-full h-12 flex flex-row-reverse items-center px-5 border-b border-b-neutral-300 bg-neutral-200">
+            <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="edtAddPrj.toggle()">
+                <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800"></i>
+                <span>Nuovo Progetto</span>
+            </div>
         </div>
 
         @for (prj of projectList(); track $index) {
-            <div class="grid grid-cols-5 tempCol gap-2 p-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300" (dblclick)="router.navigate(['translation', prj.id])">
+            <div class="grid grid-cols-5 items-center tempCol gap-2 py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300" (dblclick)="router.navigate(['translation', prj.id])">
                 <div>
-                    <i class="fa-solid fa-edit text-xl hover:cursor-pointer hover:text-neutral-800" title="Edit Language" (click)="router.navigate(['translation', prj.id])"></i>
+                    <i class="fa-solid fa-edit text-base hover:cursor-pointer hover:text-neutral-800" title="Edit Language" (click)="router.navigate(['translation', prj.id])"></i>
                 </div>
                 <div class="text-base font-medium">
                     {{prj.name}}
@@ -17,16 +20,16 @@
                 </div>
                 <div class="flex gap-2 justify-center">
                     @for(flg of prj.languages; track $index) {
-                        <span class="text-xl" [class]="'fi fi-' + flg.flagName"></span> 
+                        <span class="text-base" [class]="'fi fi-' + flg.flagName"></span> 
                     }
                 </div>
                 <div>
-                    <i class="fa-solid fa-trash text-xl hover:cursor-pointer hover:text-neutral-800" title="Remove Project" (click)="removePrj(prj)"></i>
+                    <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" title="Remove Project" (click)="removePrj(prj)"></i>
                 </div>
             </div>
         } @empty {
             <div class="p-12 text-center">
-                <span class="font-semibold text-xl text-neutral-600">Nessun progetto presente</span>
+                <span class="font-semibold text-base text-neutral-600">Nessun progetto presente</span>
             </div>
         }
 

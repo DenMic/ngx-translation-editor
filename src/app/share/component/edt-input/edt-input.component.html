@@ -1,4 +1,4 @@
-<label class="block text-gray-700 text-sm font-bold mb-2">
+<label class="block text-gray-700 text-sm font-bold">
     {{ label() }}
 </label>
 
@@ -7,13 +7,13 @@
     <input 
         [(ngModel)]="value"
         [disabled]="disabled()"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg 
+        focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2 dark:bg-gray-700 
         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
         dark:focus:ring-blue-500 dark:focus:border-blue-500" 
         [ngClass]="{ 'border-red-700': control?.invalid }"
         type="text" 
-        [placeholder]="label()"
+        [placeholder]="label() ?? ''"
         (input)="onChange(value)"
         (blur)="blur(value())" />
 
@@ -28,7 +28,7 @@
             dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
         [ngClass]="{ 'border-red-700': control?.invalid }"
-        [placeholder]="label()"
+        [placeholder]="label() ?? ''"
         (input)="onChange(value)"
         (blur)="blur(value())">
     </textarea>

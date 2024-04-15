@@ -20,6 +20,13 @@ import { ProjectService } from '../../module/service/project.service';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
 import { TranslationRowComponent } from './translation-row/translation-row.component';
+import {
+  filterTranslations,
+  findTranslationById,
+  getMaxIdTranslations,
+  sortTranslationsByGlobal,
+} from '../../module/function/project-Helper';
+import { copyObject } from '../../module/function/helper';
 
 @Component({
   selector: 'app-prj-translation',
@@ -50,6 +57,11 @@ export class PrjTranslationComponent {
   private fb = inject(FormBuilder);
 
   prjId = this.activatedRoute.snapshot.params['id'];
+
+  // It must contain the entire clean project
+  private prjFromStore: Project | undefined;
+
+  // Contains part of the project based on what has been filtered
   protected project = signal<Project | undefined>(undefined);
   protected selectedLang = signal<Language | undefined>(undefined);
 
@@ -62,28 +74,32 @@ export class PrjTranslationComponent {
   private idParentTranslation: number | undefined = undefined;
 
   ngOnInit(): void {
-    const selectedPrj = this.selectProject();
+    this.prjFromStore = copyObject(this.selectProject());
 
-    if (selectedPrj) {
-      this.appSettingsService.setTitlePage(`Translation - ${selectedPrj.name}`);
+    if (this.prjFromStore) {
+      this.appSettingsService.setTitlePage(
+        `Translation - ${this.prjFromStore.name}`
+      );
     } else {
       // TODO: project not found
     }
   }
 
   addItemTraslate(): void {
-    const prj = this.project();
-    if (prj && this.newLangForm.valid) {
+    if (this.prjFromStore && this.newLangForm.valid) {
       const newTranslationForm = this.newLangForm.value;
 
       // Add All languages but set only the selected
       const itemsTranslation: ItemTranslation[] = [];
-      for (let index = 0; index < prj.languages.length; index++) {
+      for (let index = 0; index < this.prjFromStore.languages.length; index++) {
         const item = {
-          lang: prj.languages[index].flagName,
+          lang: this.prjFromStore.languages[index].flagName,
         } as ItemTranslation;
 
-        if (prj.languages[index].flagName == this.selectedLang()?.flagName) {
+        if (
+          this.prjFromStore.languages[index].flagName ==
+          this.selectedLang()?.flagName
+        ) {
           item.value = newTranslationForm.value && newTranslationForm.value();
         } else {
           item.value = undefined;
@@ -93,8 +109,11 @@ export class PrjTranslationComponent {
       }
 
       let newId = 1;
-      if (prj.translations && prj.translations.length > 0) {
-        newId = this.getMaxIdTranslations(prj.translations) + 1;
+      if (
+        this.prjFromStore.translations &&
+        this.prjFromStore.translations.length > 0
+      ) {
+        newId = getMaxIdTranslations(this.prjFromStore.translations) + 1;
       }
 
       const newTranslation: Translation = {
@@ -103,26 +122,24 @@ export class PrjTranslationComponent {
         items: itemsTranslation,
       } as Translation;
 
-      this.project.update((val) => {
-        if (this.idParentTranslation) {
-          let parentTranslation = this.findTranslationById(
-            val!.translations,
-            this.idParentTranslation
-          );
-          if (parentTranslation) {
-            const oldArray = parentTranslation.translation ?? [];
-            parentTranslation.translation = [...oldArray, newTranslation];
-            parentTranslation.items = undefined;
-          }
-        } else {
-          const oldArray = val!.translations ?? [];
-          val!.translations = [...oldArray, newTranslation];
+      if (this.idParentTranslation) {
+        let parentTranslation = findTranslationById(
+          this.prjFromStore!.translations,
+          this.idParentTranslation
+        );
+        if (parentTranslation) {
+          const oldArray = parentTranslation.translation ?? [];
+          parentTranslation.translation = [...oldArray, newTranslation];
+          parentTranslation.items = undefined;
         }
+      } else {
+        const oldArray = this.prjFromStore!.translations ?? [];
+        this.prjFromStore!.translations = [...oldArray, newTranslation];
+      }
 
-        return val;
-      });
-
+      this.project.set(copyObject(this.prjFromStore));
       this.projectService.updateTranslation(this.project());
+
       this.resetFormLang();
       this.closeAddTranslation();
     }
@@ -148,40 +165,35 @@ export class PrjTranslationComponent {
     newVal: string | undefined,
     translationId: number
   ): void {
-    let translations = this.project()?.translations;
+    let translations = this.prjFromStore?.translations;
 
     if (translations) {
-      const translation = this.findTranslationById(translations, translationId);
+      const translation = findTranslationById(translations, translationId);
       const itemLang = translation?.items?.find(
         (x) => x.lang == this.selectedLang()?.flagName
       );
       if (itemLang) {
         itemLang.value = newVal;
 
-        this.project.update((prj) => {
-          if (prj) {
-            prj.translations = translations ?? [];
-          }
-          return prj;
-        });
+        if (this.prjFromStore) {
+          this.prjFromStore.translations = translations ?? [];
+        }
 
+        this.project.set(copyObject(this.prjFromStore));
         this.projectService.updateTranslation(this.project());
       }
     }
   }
 
   protected clickSortTranslation(): void {
-    const prj = this.project();
-    if (prj) {
-      const sortTranslation = this.sortTranslation(prj.translations);
+    if (this.prjFromStore) {
+      const sortTranslation = sortTranslationsByGlobal(
+        this.prjFromStore.translations
+      );
 
-      this.project.update((prj) => {
-        if (prj) {
-          prj.translations = sortTranslation ?? [];
-        }
-        return prj;
-      });
+      this.prjFromStore.translations = sortTranslation ?? [];
 
+      this.project.set(copyObject(this.prjFromStore));
       this.projectService.updateTranslation(this.project());
     }
   }
@@ -202,16 +214,25 @@ export class PrjTranslationComponent {
 
   protected addLangClose(isUpdated: boolean): void {
     if (isUpdated) {
-      this.selectProject();
+      this.prjFromStore = this.selectProject();
     }
   }
 
   protected searchValueChange(): void {
     if (this.searchValue) {
+      // In this case I modify the project signal but not the projectFromStore
       const prj = this.project();
-      if (prj) {
-        // TODO: Change translation loading and project saving logics
+
+      if (this.prjFromStore && prj) {
+        const copyTrans = copyObject<Translation[]>(
+          this.prjFromStore.translations
+        );
+        prj.translations = filterTranslations(this.searchValue, copyTrans);
+
+        this.project.set(prj);
       }
+    } else {
+      this.project.set(copyObject(this.prjFromStore));
     }
   }
 
@@ -228,60 +249,5 @@ export class PrjTranslationComponent {
     }
 
     return selectedPrj;
-  }
-
-  private findTranslationById(
-    translations: Translation[],
-    translationId: number
-  ): Translation | undefined {
-    for (let index = 0; index < translations.length; index++) {
-      const translation = translations[index];
-      if (translation.id == translationId) {
-        return translation;
-      }
-
-      if (translation.translation == undefined) {
-        continue;
-      }
-
-      return this.findTranslationById(translation.translation, translationId);
-    }
-
-    return undefined;
-  }
-
-  private getMaxIdTranslations(translations: Translation[]): number {
-    let maxId = 0;
-
-    translations.forEach((x) => {
-      if (x.id > maxId) maxId = x.id;
-
-      if (x.translation && x.translation.length > 0) {
-        const subMaxId = this.getMaxIdTranslations(x.translation);
-        if (subMaxId > maxId) maxId = subMaxId;
-      }
-    });
-
-    return maxId;
-  }
-
-  private sortTranslation(translation: Translation[]): Translation[] {
-    const sortTranslations = translation.sort(function (a, b) {
-      if (a.global < b.global) {
-        return -1;
-      }
-      if (a.global > b.global) {
-        return 1;
-      }
-      return 0;
-    });
-
-    for (let index = 0; index < sortTranslations.length; index++) {
-      const element = sortTranslations[index];
-      if (element.translation && element.translation.length > 0)
-        element.translation = this.sortTranslation(element.translation);
-    }
-
-    return sortTranslations;
   }
 }
