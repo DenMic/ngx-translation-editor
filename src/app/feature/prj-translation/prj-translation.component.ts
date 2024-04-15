@@ -103,10 +103,11 @@ export class PrjTranslationComponent {
       } as Translation;
 
       this.project.update((val) => {
-        if(this.idParentTranslation){
-
-          let parentTranslation = this.findCorrectTranslation(val!.translations);
-          if(parentTranslation){
+        if (this.idParentTranslation) {
+          let parentTranslation = this.findCorrectTranslation(
+            val!.translations
+          );
+          if (parentTranslation) {
             const oldArray = parentTranslation.translation ?? [];
             parentTranslation.translation = [...oldArray, newTranslation];
             parentTranslation.items = undefined;
@@ -125,32 +126,32 @@ export class PrjTranslationComponent {
     }
   }
 
-  getMaxIdTranslations(translations: Translation[]) : number {
+  getMaxIdTranslations(translations: Translation[]): number {
     let maxId = 0;
 
     translations.forEach((x) => {
-      if(x.id > maxId)
-        maxId = x.id;
+      if (x.id > maxId) maxId = x.id;
 
-      if(x.translation && x.translation.length > 0){
+      if (x.translation && x.translation.length > 0) {
         const subMaxId = this.getMaxIdTranslations(x.translation);
-        if(subMaxId > maxId)
-          maxId = subMaxId;
+        if (subMaxId > maxId) maxId = subMaxId;
       }
-    })
+    });
 
     return maxId;
   }
 
-  private findCorrectTranslation(translations: Translation[]): Translation | undefined {
+  private findCorrectTranslation(
+    translations: Translation[]
+  ): Translation | undefined {
     for (let index = 0; index < translations.length; index++) {
       const translation = translations[index];
-      if(translation.id == this.idParentTranslation){
+      if (translation.id == this.idParentTranslation) {
         return translation;
       }
-  
-      if(translation.translation == undefined){
-        return undefined;
+
+      if (translation.translation == undefined) {
+        continue;
       }
 
       return this.findCorrectTranslation(translation.translation);
@@ -175,7 +176,10 @@ export class PrjTranslationComponent {
     }
   }
 
-  translationValChange(newVal: string | undefined, translationId: number): void {
+  translationValChange(
+    newVal: string | undefined,
+    translationId: number
+  ): void {
     let translations = this.project()?.translations;
 
     if (translations) {
@@ -198,17 +202,21 @@ export class PrjTranslationComponent {
     }
   }
 
-  findTranslationById(translations: Translation[], translationId: number): Translation | undefined {
+  findTranslationById(
+    translations: Translation[],
+    translationId: number
+  ): Translation | undefined {
     for (let index = 0; index < translations.length; index++) {
       const element = translations[index];
 
-      if(element.id == translationId)
-        return element;
+      if (element.id == translationId) return element;
 
-      if(element.translation){
-        const subTranslation = this.findTranslationById(element.translation, translationId);
-        if(subTranslation)
-          return subTranslation;
+      if (element.translation) {
+        const subTranslation = this.findTranslationById(
+          element.translation,
+          translationId
+        );
+        if (subTranslation) return subTranslation;
       }
     }
 
@@ -222,7 +230,7 @@ export class PrjTranslationComponent {
 
   protected closeAddTranslation(): void {
     this.idParentTranslation = undefined;
-    this.edtAddTranslation()?.toggle()
+    this.edtAddTranslation()?.toggle();
   }
 
   protected selectLanguage(lang: Language): void {
@@ -230,7 +238,7 @@ export class PrjTranslationComponent {
   }
 
   protected addLangClose(isUpdated: boolean): void {
-    if(isUpdated){
+    if (isUpdated) {
       this.selectProject();
     }
   }
