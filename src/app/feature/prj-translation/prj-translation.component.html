@@ -45,12 +45,12 @@
 <!-- DropDown flag List -->
 <edt-dropdown #dropFlags [target]="dFlag">
     @for (lang of project()?.languages; track $index) {
-        <div class="flex gap-2 items-center w-full p-4 hover:bg-sky-200 hover:cursor-pointer" (click)="selectLanguage(lang)">
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang)">
             <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
             <span>{{ lang.description }}</span>
         </div>
     }
-    <div class="flex gap-2 items-center w-full p-4 hover:bg-sky-200 hover:cursor-pointer" (click)="addLangComp.toggle(); dropFlags.show();">
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); dropFlags.show();">
         <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Translation"></i>
         <span>Aggiungi Lingua</span>
     </div>
