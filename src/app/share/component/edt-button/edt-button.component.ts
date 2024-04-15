@@ -25,12 +25,12 @@ export class EdtButtonComponent {
     switch (this.level()) {
       case 'primary':
         css =
-          'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-neutral-400';
+          'bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded disabled:bg-neutral-400';
         break;
 
       case 'secondary':
         css =
-          'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded disabled:bg-neutral-400';
+          'bg-transparent hover:bg-green-700 text-green-800 font-semibold hover:text-white py-2 px-4 border border-green-700 hover:border-transparent rounded disabled:bg-neutral-400';
         break;
     }
 
