@@ -53,6 +53,7 @@ export class PrjTranslationComponent {
   protected project = signal<Project | undefined>(undefined);
   protected selectedLang = signal<Language | undefined>(undefined);
 
+  protected searchValue = '';
   protected newLangForm: FormGroup = this.fb.group({
     global: [undefined, [Validators.required, noWhitespaceValidator()]],
     value: [undefined],
@@ -202,6 +203,15 @@ export class PrjTranslationComponent {
   protected addLangClose(isUpdated: boolean): void {
     if (isUpdated) {
       this.selectProject();
+    }
+  }
+
+  protected searchValueChange(): void {
+    if (this.searchValue) {
+      const prj = this.project();
+      if (prj) {
+        // TODO: Change translation loading and project saving logics
+      }
     }
   }
 
