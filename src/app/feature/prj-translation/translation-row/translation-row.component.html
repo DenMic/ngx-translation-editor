@@ -1,4 +1,4 @@
-<div class="grid grid-cols-4 tempCol gap-2 items-center text-base font-medium p-4 text-center bg-neutral-50 hover:bg-sky-200 border-b border-neutral-300">
+<div class="grid grid-cols-4 tempCol gap-2 items-center text-base font-medium p-4 text-center bg-neutral-50 hover:bg-green-600 hover:bg-opacity-50 border-b border-neutral-300">
     <div>
         @if(translation().translation && translation().translation!.length > 0){
             @if(openSubMenu()){
@@ -24,7 +24,7 @@
 
 @if(openSubMenu()){
     @for (tr of translation().translation; track $index) {
-        <div class="ml-2 bg-neutral-500">
+        <div class="border-l-8 border-l-neutral-500">
             <translation-row 
                 [translation]="tr" 
                 [selectedLang]="selectedLang()"
