@@ -5,7 +5,7 @@
         </div>
 
         @for (prj of projectList(); track $index) {
-            <div class="grid grid-cols-5 tempCol gap-2 p-4 text-center hover:bg-sky-200 border-b border-neutral-300" (dblclick)="router.navigate(['translation', prj.id])">
+            <div class="grid grid-cols-5 tempCol gap-2 p-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300" (dblclick)="router.navigate(['translation', prj.id])">
                 <div>
                     <i class="fa-solid fa-edit text-xl hover:cursor-pointer hover:text-neutral-800" title="Edit Language" (click)="router.navigate(['translation', prj.id])"></i>
                 </div>
