@@ -85,7 +85,7 @@ export class PrjTranslationComponent {
         if (prj.languages[index].flagName == this.selectedLang()?.flagName) {
           item.value = newTranslationForm.value && newTranslationForm.value();
         } else {
-          item.value = 'TODO';
+          item.value = undefined;
         }
 
         itemsTranslation.push(item);
@@ -124,40 +124,6 @@ export class PrjTranslationComponent {
       this.resetFormLang();
       this.closeAddTranslation();
     }
-  }
-
-  getMaxIdTranslations(translations: Translation[]): number {
-    let maxId = 0;
-
-    translations.forEach((x) => {
-      if (x.id > maxId) maxId = x.id;
-
-      if (x.translation && x.translation.length > 0) {
-        const subMaxId = this.getMaxIdTranslations(x.translation);
-        if (subMaxId > maxId) maxId = subMaxId;
-      }
-    });
-
-    return maxId;
-  }
-
-  private findCorrectTranslation(
-    translations: Translation[]
-  ): Translation | undefined {
-    for (let index = 0; index < translations.length; index++) {
-      const translation = translations[index];
-      if (translation.id == this.idParentTranslation) {
-        return translation;
-      }
-
-      if (translation.translation == undefined) {
-        continue;
-      }
-
-      return this.findCorrectTranslation(translation.translation);
-    }
-
-    return undefined;
   }
 
   removeTranslation(translationId: number): void {
@@ -202,25 +168,40 @@ export class PrjTranslationComponent {
     }
   }
 
-  findTranslationById(
-    translations: Translation[],
-    translationId: number
-  ): Translation | undefined {
-    for (let index = 0; index < translations.length; index++) {
-      const element = translations[index];
+  protected clickSortTranslation(): void {
+    const prj = this.project();
+    if (prj) {
+      const sortTranslation = this.sortTranslation(prj.translations);
 
-      if (element.id == translationId) return element;
+      this.project.update((prj) => {
+        if (prj) {
+          prj.translations = sortTranslation ?? [];
+        }
+        return prj;
+      });
 
-      if (element.translation) {
-        const subTranslation = this.findTranslationById(
-          element.translation,
-          translationId
-        );
-        if (subTranslation) return subTranslation;
+      this.projectService.updateTranslation(this.project());
+    }
+  }
+
+  private sortTranslation(translation: Translation[]): Translation[] {
+    const sortTranslations = translation.sort(function (a, b) {
+      if (a.global < b.global) {
+        return -1;
       }
+      if (a.global > b.global) {
+        return 1;
+      }
+      return 0;
+    });
+
+    for (let index = 0; index < sortTranslations.length; index++) {
+      const element = sortTranslations[index];
+      if (element.translation && element.translation.length > 0)
+        element.translation = this.sortTranslation(element.translation);
     }
 
-    return undefined;
+    return sortTranslations;
   }
 
   protected addSubTranslation(idParTranslation: number): void {
@@ -256,5 +237,61 @@ export class PrjTranslationComponent {
     }
 
     return selectedPrj;
+  }
+
+  // Duplicated (findCorrectTranslation)
+  private findTranslationById(
+    translations: Translation[],
+    translationId: number
+  ): Translation | undefined {
+    for (let index = 0; index < translations.length; index++) {
+      const element = translations[index];
+
+      if (element.id == translationId) return element;
+
+      if (element.translation) {
+        const subTranslation = this.findTranslationById(
+          element.translation,
+          translationId
+        );
+        if (subTranslation) return subTranslation;
+      }
+    }
+
+    return undefined;
+  }
+
+  private findCorrectTranslation(
+    translations: Translation[]
+  ): Translation | undefined {
+    for (let index = 0; index < translations.length; index++) {
+      const translation = translations[index];
+      if (translation.id == this.idParentTranslation) {
+        return translation;
+      }
+
+      if (translation.translation == undefined) {
+        continue;
+      }
+
+      return this.findCorrectTranslation(translation.translation);
+    }
+
+    return undefined;
+  }
+
+  private getMaxIdTranslations(translations: Translation[]): number {
+    let maxId = 0;
+
+    translations.forEach((x) => {
+      if (x.id > maxId) maxId = x.id;
+
+      if (x.translation && x.translation.length > 0) {
+        const subMaxId = this.getMaxIdTranslations(x.translation);
+        if (subMaxId > maxId) maxId = subMaxId;
+      }
+    });
+
+    return maxId;
   }
 }
