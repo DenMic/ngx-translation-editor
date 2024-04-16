@@ -1,28 +1,31 @@
 <div class="px-4">
     <edt-card>
-        <div class="w-full h-12 flex flex-row-reverse items-center px-7 border-b border-b-neutral-300">
-            <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" title="Add Language" (click)="edtAddLang.toggle()"></i>
+        <div class="w-full h-12 flex flex-row-reverse items-center px-5 border-b border-b-neutral-300 bg-neutral-200">
+            <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:text-white hover:cursor-pointer" (click)="edtAddLang.toggle()">
+                <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800" title="Add Language"></i>
+                <span>Add Language</span>
+            </div>
         </div>
 
         <div class="flex flex-col">
             @for (lang of languageList(); track $index) {
-                <div class="grid grid-cols-4 tempCol gap-2 p-4 text-center hover:bg-sky-200 border-b border-neutral-300">
+                <div class="grid grid-cols-4 items-center tempCol gap-2 py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300">
                     <div>
-                        <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+                        <span class="text-base" [class]="'fi fi-' + lang.flagName"></span> 
                     </div>
-                    <div>
+                    <div class="text-base">
                         {{lang.description}}
                     </div>
-                    <div>
+                    <div class="text-base">
                         Extention name <b>{{lang.fileName}}</b>
                     </div>
                     <div>
-                        <i class="fa-solid fa-trash text-xl hover:cursor-pointer hover:text-neutral-800" title="Remove Language" (click)="removeLang(lang)"></i>
+                        <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" title="Remove Language" (click)="removeLang(lang)"></i>
                     </div>
                 </div>
             } @empty {
                 <div class="p-12 text-center">
-                    <span class="font-semibold text-xl text-neutral-600">Nessuna lingua presente</span>
+                    <span class="font-semibold text-base text-neutral-600">Nessuna lingua presente</span>
                 </div>
             }
         </div>
