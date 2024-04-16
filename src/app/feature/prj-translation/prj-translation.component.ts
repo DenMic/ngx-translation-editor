@@ -28,6 +28,7 @@ import {
 } from '../../module/function/project-Helper';
 import { copyObject } from '../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-prj-translation',
@@ -76,17 +77,16 @@ export class PrjTranslationComponent {
 
   private idParentTranslation: number | undefined = undefined;
 
-  ngOnInit(): void {
+  constructor() {
     this.prjFromStore = copyObject(this.selectProject());
 
     if (this.prjFromStore) {
-      this.appSettingsService.setTitleFromTranslation(
-        'TRANSLATION.TITLE_PAGE',
-        { prjName: this.prjFromStore.name }
-      );
-      // this.appSettingsService.setTitlePage(
-      //   `Translation - ${this.prjFromStore.name}`
-      // );
+      this.appSettingsService
+        .setTitleFromTranslation('TRANSLATION.TITLE_PAGE', {
+          prjName: this.prjFromStore.name,
+        })
+        .pipe(takeUntilDestroyed())
+        .subscribe();
     } else {
       // TODO: project not found
     }

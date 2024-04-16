@@ -4,8 +4,19 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  MissingTranslationHandler,
+  MissingTranslationHandlerParams,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export class MyMissingTranslationHandler implements MissingTranslationHandler {
+  handle(params: MissingTranslationHandlerParams) {
+    return 'Missing translation: ' + params.key;
+  }
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +25,13 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(
       TranslateModule.forRoot({
-        defaultLanguage: 'en',
+        // defaultLanguage: 'en',
+        missingTranslationHandler: {
+          provide: MissingTranslationHandler,
+          useClass: MyMissingTranslationHandler,
+        },
+        useDefaultLang: false,
+
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,

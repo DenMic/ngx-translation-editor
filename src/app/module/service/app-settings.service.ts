@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,15 +18,15 @@ export class AppSettingsService {
     this.sTitlePage.set(title);
   }
 
-  setTitleFromTranslation(translation: string, params: any = undefined): void {
-    this.translateService
-      .get(translation, params)
-      .pipe(take(1))
-      .subscribe({
-        next: (val) => {
-          this.setTitlePage(val);
-        },
-      });
+  setTitleFromTranslation(
+    translation: string,
+    params: any = undefined
+  ): Observable<void> {
+    return this.translateService.stream(translation, params).pipe(
+      map((val) => {
+        this.setTitlePage(val);
+      })
+    );
   }
 
   toggleDarkTheme(): void {

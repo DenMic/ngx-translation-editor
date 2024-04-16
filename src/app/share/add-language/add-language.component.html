@@ -10,7 +10,10 @@
                 <mat-select [(value)]="newLang">
                     @for (flag of selectableLang(); track $index) {
                         <mat-option [value]="flag">
-                            <span [class]="'fi fi-' + flag.flagName"></span> {{flag.description}}
+                            <div class="flex gap-4 items-center">
+                                <span [class]="'fi fi-' + flag.flagName"></span> 
+                                <span>{{ "FLAG." + flag.description | translate}}</span>
+                            </div>
                         </mat-option>
                     }
                 </mat-select>

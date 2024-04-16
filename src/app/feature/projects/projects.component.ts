@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
 import { StorageService } from '../../module/service/storage.service';
 import { Project } from '../../module/classes/project';
@@ -59,9 +59,12 @@ export class ProjectsComponent implements OnInit {
     languages: [[]],
   });
 
-  ngOnInit(): void {
-    this.appSettingsService.setTitleFromTranslation('PROJECT.TITLE_PAGE');
+  private readonly titleSubsciber = this.appSettingsService
+    .setTitleFromTranslation('PROJECT.TITLE_PAGE')
+    .pipe(takeUntilDestroyed())
+    .subscribe();
 
+  ngOnInit(): void {
     this.projectList.set(
       this.storageService.retrieveObj<Project[]>(PROJECT_LIST) ?? []
     );

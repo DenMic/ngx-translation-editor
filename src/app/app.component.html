@@ -6,10 +6,17 @@
 
 <div class="w-full h-full overflow-y-auto" [ngClass]="{'dark' : appSettingsService.darkTheme()}">
 
-  <nav class="h-12 p-4 flex justify-between">
-    <div></div>
-    <div class="flex gap-4 text-neutral-50" >
+  <nav class="h-12 py-4 px-9 flex justify-between">
+    <div #dFlag class="flex gap-2 items-center text-white hover:cursor-pointer" (click)="dropFlags.show()">
+      @if(applicationLanguage()){
+          <span class="text-base" [class]="'fi fi-' + applicationLanguage()?.flagName"></span> 
+      } @else {
+          <i class="fa-solid fa-circle-question text-xl"></i>
+      }
+      <i class="fa-solid fa-caret-down text-lg"></i>
+    </div>
 
+    <div class="flex gap-4 items-center text-neutral-50" >
       <i class="fa-solid fa-diagram-project text-lg hover:cursor-pointer" title="Project" (click)="router.navigate(['project'])"></i>
 
       <i class="fa-solid fa-flag text-lg hover:cursor-pointer" title="Languages" (click)="router.navigate(['languages'])"></i>
@@ -36,3 +43,12 @@
 
   </div>
 </div>
+
+<edt-dropdown #dropFlags [target]="dFlag">
+  @for (lang of flagsLang; track $index) {
+      <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang)">
+          <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+          <span>{{ 'FLAG.' + lang.description | translate }}</span>
+      </div>
+  }
+</edt-dropdown>
