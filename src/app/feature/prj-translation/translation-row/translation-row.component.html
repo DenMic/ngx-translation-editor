@@ -17,8 +17,8 @@
         }
     </div>
     <div class="flex gap-4 justify-end">
-        <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800" title="Add Translation" (click)="addSubTranslation(translation().id)"></i>
-        <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" title="Remove Translation" (click)="removeTranslation(translation().id)"></i>
+        <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800" [title]="'TRANSLATION.ADD' | translate" (click)="addSubTranslation(translation().id)"></i>
+        <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" [title]="'TRANSLATION.REMOVE' | translate" (click)="removeTranslation(translation().id)"></i>
     </div>
 </div>
 

@@ -1,9 +1,11 @@
 {
     "NAME": "Name",
     "DESCRIPTION": "Description",
+    "VALUE": "Value",
     "CLOSE": "Close",
     "ADD": "Add",
     "EXTENTION_NAME": "Extention name",
+    "SEARCH": "Search",
 
     "PROJECT": {
         "TITLE_PAGE": "Project",
@@ -20,8 +22,28 @@
         "REMOVE": "Remove Language"
     },
 
+    "TRANSLATION": {
+        "TITLE_PAGE": "TRANSLATION - {{prjName}}",
+        "ADD": "Add Translation",
+        "REMOVE": "Remove Translation"
+    },
+
+    "FLAG": {
+        "ITALY": "Italy",
+        "ENGLAND": "England",
+        "GERMANI": "Germani",
+        "SPAIN": "Spain",
+        "FRANCE": "France",
+        "SLOVENIA": "Slovenia"
+    },
+
+    "FUNCTION": {
+        "SORT_GLOBAL": "Sort Global"
+    },
+
     "INFO": {
         "NO_PROJECT": "No projects present",
-        "NO_LANGUAGE": "No languages present"
+        "NO_LANGUAGE": "No languages present",
+        "NO_TRANSLATION": "No translation present"
     }
 }

@@ -27,6 +27,7 @@ import {
   sortTranslationsByGlobal,
 } from '../../module/function/project-Helper';
 import { copyObject } from '../../module/function/helper';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-prj-translation',
@@ -43,6 +44,8 @@ import { copyObject } from '../../module/function/helper';
     EdtButtonComponent,
     EdtInputComponent,
     EdtDropdownComponent,
+
+    TranslateModule,
   ],
   providers: [ProjectService],
   templateUrl: './prj-translation.component.html',
@@ -77,9 +80,13 @@ export class PrjTranslationComponent {
     this.prjFromStore = copyObject(this.selectProject());
 
     if (this.prjFromStore) {
-      this.appSettingsService.setTitlePage(
-        `Translation - ${this.prjFromStore.name}`
+      this.appSettingsService.setTitleFromTranslation(
+        'TRANSLATION.TITLE_PAGE',
+        { prjName: this.prjFromStore.name }
       );
+      // this.appSettingsService.setTitlePage(
+      //   `Translation - ${this.prjFromStore.name}`
+      // );
     } else {
       // TODO: project not found
     }

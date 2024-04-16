@@ -2,32 +2,32 @@ import { Language } from '../classes/language';
 
 export const flagsLang: Language[] = [
   {
-    description: 'Italy',
+    description: 'ITALY',
     flagName: 'it',
     fileName: 'it',
   },
   {
-    description: 'England',
+    description: 'ENGLAND',
     flagName: 'gb-eng',
     fileName: 'en',
   },
   {
-    description: 'Germany',
+    description: 'GERMANI',
     flagName: 'de',
     fileName: 'de',
   },
   {
-    description: 'Spain',
+    description: 'SPAIN',
     flagName: 'es',
     fileName: 'es',
   },
   {
-    description: 'France',
+    description: 'FRANCE',
     flagName: 'fr',
     fileName: 'fr',
   },
   {
-    description: 'Slovenia',
+    description: 'SLOVENIA',
     flagName: 'si',
     fileName: 'si',
   },

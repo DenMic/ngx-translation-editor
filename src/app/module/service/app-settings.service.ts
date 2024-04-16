@@ -18,9 +18,9 @@ export class AppSettingsService {
     this.sTitlePage.set(title);
   }
 
-  setTitleFromTranslation(translation: string): void {
+  setTitleFromTranslation(translation: string, params: any = undefined): void {
     this.translateService
-      .get(translation)
+      .get(translation, params)
       .pipe(take(1))
       .subscribe({
         next: (val) => {

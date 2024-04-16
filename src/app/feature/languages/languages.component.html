@@ -14,7 +14,7 @@
                         <span class="text-base" [class]="'fi fi-' + lang.flagName"></span> 
                     </div>
                     <div class="text-base">
-                        {{lang.description}}
+                        {{ "FLAG." + lang.description | translate }}
                     </div>
                     <div class="text-base">
                         {{ 'EXTENTION_NAME' | translate }} <b>{{lang.fileName}}</b>
