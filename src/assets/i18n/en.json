@@ -1,0 +1,21 @@
+{
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "CLOSE": "Close",
+    "ADD": "Add",
+
+    "PROJECT": {
+        "PROJECT": "Project",
+        "NEW": "New Project",
+        "ADD": "Add Project",
+        "REMOVE": "Remove Project"
+    },
+
+    "LANGUAGE": {
+        "EDIT": "Edit Language"
+    },
+
+    "INFO": {
+        "NO_PROJECT": "No projects present"
+    }
+}

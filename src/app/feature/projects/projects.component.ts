@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
 import { StorageService } from '../../module/service/storage.service';
 import { Project } from '../../module/classes/project';
@@ -17,6 +18,12 @@ import { noWhitespaceValidator } from '../../module/function/validation';
 import { LANGUAGE_LIST, PROJECT_LIST } from '../../module/constant/storage';
 import { Language } from '../../module/classes/language';
 import { Router } from '@angular/router';
+import {
+  TranslateModule,
+  TranslatePipe,
+  TranslateService,
+} from '@ngx-translate/core';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-projects',
@@ -29,7 +36,10 @@ import { Router } from '@angular/router';
     EdtPopupComponent,
     EdtButtonComponent,
     EdtInputComponent,
+
+    TranslateModule,
   ],
+  providers: [TranslateService],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
 })
@@ -37,6 +47,7 @@ export class ProjectsComponent implements OnInit {
   edtAddPrj = viewChild<EdtPopupComponent>('edtAddPrj');
 
   private appSettingsService = inject(AppSettingsService);
+
   private storageService = inject(StorageService);
   private fb = inject(FormBuilder);
   protected router = inject(Router);
@@ -49,7 +60,8 @@ export class ProjectsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.appSettingsService.setTitlePage('Project');
+    this.appSettingsService.setTitleFromTranslation('PROJECT.PROJECT');
+
     this.projectList.set(
       this.storageService.retrieveObj<Project[]>(PROJECT_LIST) ?? []
     );

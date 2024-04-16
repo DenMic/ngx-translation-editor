@@ -3,20 +3,20 @@
         <div class="w-full h-12 flex flex-row-reverse items-center px-5 border-b border-b-neutral-300 bg-neutral-200">
             <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="edtAddPrj.toggle()">
                 <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800"></i>
-                <span>Nuovo Progetto</span>
+                <span>{{ 'PROJECT.NEW' | translate }}</span>
             </div>
         </div>
 
         @for (prj of projectList(); track $index) {
             <div class="grid grid-cols-5 items-center tempCol gap-2 py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300" (dblclick)="router.navigate(['translation', prj.id])">
                 <div>
-                    <i class="fa-solid fa-edit text-base hover:cursor-pointer hover:text-neutral-800" title="Edit Language" (click)="router.navigate(['translation', prj.id])"></i>
+                    <i class="fa-solid fa-edit text-base hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.EDIT' | translate" (click)="router.navigate(['translation', prj.id])"></i>
                 </div>
                 <div class="text-base font-medium">
-                    {{prj.name}}
+                    {{ prj.name }}
                 </div>
                 <div class="text-base">
-                    {{prj.description}}
+                    {{ prj.description }}
                 </div>
                 <div class="flex gap-2 justify-center">
                     @for(flg of prj.languages; track $index) {
@@ -24,12 +24,12 @@
                     }
                 </div>
                 <div>
-                    <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" title="Remove Project" (click)="removePrj(prj)"></i>
+                    <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" [title]="'PROJECT.REMOVE' | translate" (click)="removePrj(prj)"></i>
                 </div>
             </div>
         } @empty {
             <div class="p-12 text-center">
-                <span class="font-semibold text-base text-neutral-600">Nessun progetto presente</span>
+                <span class="font-semibold text-base text-neutral-600">{{ "INFO.NO_PROJECT" | translate }}</span>
             </div>
         }
 
@@ -39,18 +39,18 @@
 <edt-popup #edtAddPrj>
     <div class="p-8">
         <div class="mb-8 font-semibold text-2xl">
-            Aggiungi Progetto
+            {{ 'PROJECT.ADD' | translate }}
         </div>
 
         <form [formGroup]="newProjectForm" (submit)="addProject()">
             <div class="flex flex-col gap-3 mb-6 w-96">
-                <edt-input label="Nome" formControlName="name"></edt-input>
-                <edt-input label="Descrizione" inputType="area" formControlName="description"></edt-input>
+                <edt-input [label]="'NAME' | translate" formControlName="name"></edt-input>
+                <edt-input [label]="'DESCRIPTION' | translate" inputType="area" formControlName="description"></edt-input>
             </div>
             
             <div class="flex gap-4 justify-end">
-                <edt-button label="Chiudi" level="secondary" (onClick)="edtAddPrj.toggle()"></edt-button>
-                <edt-button label="Aggiungi" [disabled]="!newProjectForm.valid"></edt-button>
+                <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="edtAddPrj.toggle()"></edt-button>
+                <edt-button [label]="'ADD' | translate" [disabled]="!newProjectForm.valid"></edt-button>
             </div>
         </form>
     </div>
