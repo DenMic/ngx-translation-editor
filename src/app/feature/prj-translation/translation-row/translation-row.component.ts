@@ -3,13 +3,14 @@ import { Translation } from '../../../module/classes/translation';
 import { Language } from '../../../module/classes/language';
 import { EdtInputComponent } from '../../../share/component/edt-input/edt-input.component';
 import { TranslationEvent } from '../class/translation-event';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'translation-row',
   standalone: true,
-  imports: [EdtInputComponent],
+  imports: [EdtInputComponent, TranslateModule],
   templateUrl: './translation-row.component.html',
-  styleUrl: './translation-row.component.css'
+  styleUrl: './translation-row.component.css',
 })
 export class TranslationRowComponent {
   translation = input.required<Translation>();
@@ -29,7 +30,7 @@ export class TranslationRowComponent {
   }
 
   protected valChange(newVal: string | undefined, translationId: number): void {
-    this.onValueChange.emit({newVal: newVal, translationId: translationId});
+    this.onValueChange.emit({ newVal: newVal, translationId: translationId });
   }
 
   protected addSubTranslation(id: number): void {
