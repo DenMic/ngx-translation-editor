@@ -3,19 +3,25 @@
     "DESCRIPTION": "Description",
     "CLOSE": "Close",
     "ADD": "Add",
+    "EXTENTION_NAME": "Extention name",
 
     "PROJECT": {
-        "PROJECT": "Project",
+        "TITLE_PAGE": "Project",
         "NEW": "New Project",
         "ADD": "Add Project",
         "REMOVE": "Remove Project"
     },
 
     "LANGUAGE": {
-        "EDIT": "Edit Language"
+        "TITLE_PAGE": "Default Languages",
+        "LANGUAGE": "Language",
+        "ADD": "Add Language",
+        "EDIT": "Edit Language",
+        "REMOVE": "Remove Language"
     },
 
     "INFO": {
-        "NO_PROJECT": "No projects present"
+        "NO_PROJECT": "No projects present",
+        "NO_LANGUAGE": "No languages present"
     }
 }

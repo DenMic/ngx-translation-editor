@@ -60,7 +60,7 @@ export class ProjectsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.appSettingsService.setTitleFromTranslation('PROJECT.PROJECT');
+    this.appSettingsService.setTitleFromTranslation('PROJECT.TITLE_PAGE');
 
     this.projectList.set(
       this.storageService.retrieveObj<Project[]>(PROJECT_LIST) ?? []

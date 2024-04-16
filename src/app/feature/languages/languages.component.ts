@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AppSettingsService } from '../../module/service/app-settings.service';
 import { StorageService } from '../../module/service/storage.service';
 import { Language } from '../../module/classes/language';
@@ -7,11 +7,11 @@ import { EdtPopupComponent } from '../../share/component/edt-popup/edt-popup.com
 import { EdtInputComponent } from '../../share/component/edt-input/edt-input.component';
 import { EdtButtonComponent } from '../../share/component/edt-button/edt-button.component';
 import { MatSelectModule } from '@angular/material/select';
-import { flagsLang } from '../../module/constant/flags';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LANGUAGE_LIST } from '../../module/constant/storage';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-languages',
@@ -28,6 +28,8 @@ import { AddLanguageComponent } from '../../share/add-language/add-language.comp
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+
+    TranslateModule,
   ],
   templateUrl: './languages.component.html',
   styleUrl: './languages.component.css',
@@ -39,7 +41,7 @@ export class LanguagesComponent {
   storageService = inject(StorageService);
 
   ngOnInit(): void {
-    this.appSettingsService.setTitlePage('Default Languages');
+    this.appSettingsService.setTitleFromTranslation('LANGUAGE.TITLE_PAGE');
     this.languageList.set(
       this.storageService.retrieveObj<Language[]>(LANGUAGE_LIST) ?? []
     );

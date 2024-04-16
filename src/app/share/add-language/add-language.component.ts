@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   computed,
   inject,
   input,
@@ -18,6 +17,7 @@ import { StorageService } from '../../module/service/storage.service';
 import { Language } from '../../module/classes/language';
 import { LANGUAGE_LIST } from '../../module/constant/storage';
 import { ProjectService } from '../../module/service/project.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'add-language',
@@ -30,6 +30,8 @@ import { ProjectService } from '../../module/service/project.service';
     EdtButtonComponent,
     MatFormFieldModule,
     MatSelectModule,
+
+    TranslateModule,
   ],
   providers: [ProjectService],
   templateUrl: './add-language.component.html',
@@ -89,7 +91,7 @@ export class AddLanguageComponent {
       if (prj) {
         prj?.languages.push(this.newLang);
 
-        if(prj.translations){
+        if (prj.translations) {
           prj.translations.forEach((x) => {
             x.items?.push({
               lang: this.newLang?.flagName,
