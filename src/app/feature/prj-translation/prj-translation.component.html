@@ -1,7 +1,7 @@
 <div class="px-4 mb-4">
     <edt-card>
         <div class="w-full overflow-auto">
-            <div class="w-full h-12 flex items-center justify-between px-5 border-b border-b-neutral-300 bg-neutral-200">
+            <div class="w-full h-12 flex items-center justify-between px-5 border-b border-b-neutral-300 bg-neutral-300">
                 <div class="flex gap-4 py-1 items-center">
                     <div #dFlag class="flex gap-2 border border-neutral-300 bg-neutral-50 py-1 px-3 rounded-md hover:cursor-pointer hover:bg-green-600 hover:text-white" (click)="dropFlags.show()">
                         @if(selectedLang()){
@@ -34,13 +34,15 @@
             </div>
 
             @for (translation of project()?.translations; track $index) {
-                <translation-row 
-                    [translation]="translation" 
-                    [selectedLang]="selectedLang()"
-                    (onValueChange)="translationValChange($event.newVal, $event.translationId)"
-                    (onAdd)="addSubTranslation($event)"
-                    (onRemove)="removeTranslation($event)">
-                </translation-row>
+                <div class="w-full even:bg-neutral-100 odd:bg-neutral-200">
+                    <translation-row 
+                        [translation]="translation" 
+                        [selectedLang]="selectedLang()"
+                        (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                        (onAdd)="addSubTranslation($event)"
+                        (onRemove)="removeTranslation($event)">
+                    </translation-row>
+                </div>
             } @empty {
                 <div class="p-12 text-center">
                     <span class="font-semibold text-xl text-neutral-600">{{ 'INFO.NO_TRANSLATION' | translate }}</span>
