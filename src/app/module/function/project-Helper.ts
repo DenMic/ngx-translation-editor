@@ -14,7 +14,12 @@ export function findTranslationById(
       continue;
     }
 
-    return findTranslationById(translation.translation, translationId);
+    const subTranslation = findTranslationById(
+      translation.translation,
+      translationId
+    );
+
+    if (subTranslation) return subTranslation;
   }
 
   return undefined;

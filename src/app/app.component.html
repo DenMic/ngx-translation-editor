@@ -6,14 +6,17 @@
 
 <div class="w-full h-full overflow-y-auto" [ngClass]="{'dark' : appSettingsService.darkTheme()}">
 
-  <nav class="h-12 py-4 px-9 flex justify-between">
-    <div #dFlag class="flex gap-2 items-center text-white hover:cursor-pointer" (click)="dropFlags.show()">
-      @if(applicationLanguage()){
-          <span class="text-base" [class]="'fi fi-' + applicationLanguage()?.flagName"></span> 
-      } @else {
-          <i class="fa-solid fa-circle-question text-xl"></i>
-      }
-      <i class="fa-solid fa-caret-down text-lg"></i>
+  <nav class="py-4 px-9 flex justify-between backdrop-blur-sm bg-white/10 sticky top-0 left-0">
+    <div class="flex gap-4">
+      <img src="assets/images/logo.svg" width="32">
+      <div #dFlag class="flex gap-2 items-center text-white hover:cursor-pointer" (click)="dropFlags.show()">
+        @if(applicationLanguage()){
+            <span class="text-base" [class]="'fi fi-' + applicationLanguage()?.flagName"></span> 
+        } @else {
+            <i class="fa-solid fa-circle-question text-xl"></i>
+        }
+        <i class="fa-solid fa-caret-down text-lg"></i>
+      </div>
     </div>
 
     <div class="flex gap-4 items-center text-neutral-50" >
