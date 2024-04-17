@@ -6,6 +6,8 @@
     "ADD": "Dodaj",
     "EXTENTION_NAME": "Ime razširitve",
     "SEARCH": "Išči",
+    "IMPORT": "Uvozno",
+    "EXPORT": "Izvoznih",
 
     "PROJECT": {
         "TITLE_PAGE": "Projekti",
