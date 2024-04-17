@@ -26,6 +26,31 @@ export function findTranslationById(
   return undefined;
 }
 
+export function findTranslationByGlobal(
+  translations: Translation[],
+  global: string
+): Translation | undefined {
+  for (let index = 0; index < translations.length; index++) {
+    const translation = translations[index];
+    if (translation.global.toUpperCase() == global.toUpperCase()) {
+      return translation;
+    }
+
+    if (translation.translation == undefined) {
+      continue;
+    }
+
+    const subTranslation = findTranslationByGlobal(
+      translation.translation,
+      global
+    );
+
+    if (subTranslation) return subTranslation;
+  }
+
+  return undefined;
+}
+
 export function getMaxIdTranslations(translations: Translation[]): number {
   let maxId = 0;
 
@@ -95,6 +120,33 @@ export function filterTranslations(
   }
 
   return filtered;
+}
+
+export function updateTranslationsFromObj(
+  oldTranslations: Translation[], 
+  obj: any,
+  selectedLang: Language,
+  languages: Language[]
+): Translation[] {
+    const translations: Translation[] = [];
+    const maxId = getMaxIdTranslations(oldTranslations) + 1;
+
+    for (let prop in obj) {
+      const propValue = obj[prop];
+
+      // TODO
+      const translation = findTranslationByGlobal(oldTranslations, prop);
+      if(translation){
+        const items = translation.items?.find((x) => x.lang == selectedLang.flagName);
+        if(items){
+          items.value = propValue;
+        }
+      } else {
+
+      }
+    }
+
+    return translations;
 }
 
 export function createTranslationsFromObj(
