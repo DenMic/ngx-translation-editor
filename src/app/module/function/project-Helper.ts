@@ -1,3 +1,4 @@
+import { Language } from '../classes/language';
 import { Translation } from '../classes/translation';
 
 export function findTranslationById(
@@ -94,4 +95,56 @@ export function filterTranslations(
   }
 
   return filtered;
+}
+
+export function createTranslationsFromObj(
+  obj: any,
+  selectedLang: Language,
+  languages: Language[],
+  id: number = 1
+): Translation[] {
+  const translations: Translation[] = [];
+
+  for (let prop in obj) {
+    let translation = {} as Translation;
+    let subTranslations: Translation[] | undefined = undefined;
+    const propValue = obj[prop];
+
+    translation.id = id;
+    translation.global = prop;
+
+    if (typeof propValue == 'object') {
+      id += 1;
+
+      subTranslations = createTranslationsFromObj(
+        propValue,
+        selectedLang,
+        languages,
+        id
+      );
+
+      id = Math.max(...subTranslations.map((x) => x.id));
+    }
+
+    if (subTranslations) {
+      translation.translation = subTranslations;
+    } else {
+      translation.items = [];
+
+      //generate items
+      for (let index = 0; index < languages.length; index++) {
+        const element = languages[index];
+        translation.items.push({
+          lang: element.flagName,
+          value:
+            selectedLang.flagName == element.flagName ? propValue : undefined,
+        });
+      }
+    }
+
+    translations.push(translation);
+    id += 1;
+  }
+
+  return translations;
 }
