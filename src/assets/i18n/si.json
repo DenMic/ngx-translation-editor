@@ -1,3 +1,49 @@
 {
-    
+    "NAME": "Ime",
+    "DESCRIPTION": "Opis",
+    "VALUE": "Vrednost",
+    "CLOSE": "Zapri",
+    "ADD": "Dodaj",
+    "EXTENTION_NAME": "Ime razširitve",
+    "SEARCH": "Išči",
+
+    "PROJECT": {
+        "TITLE_PAGE": "Projekti",
+        "NEW": "Nov projekt",
+        "ADD": "Dodaj projekt",
+        "REMOVE": "Izbriši projekt"
+    },
+
+    "LANGUAGE": {
+        "TITLE_PAGE": "Privzeti jeziki",
+        "LANGUAGE": "Jezik",
+        "ADD": "Dodaj jezik",
+        "EDIT": "Uredi jezik",
+        "REMOVE": "Odstrani jezik"
+    },
+
+    "TRANSLATION": {
+        "TITLE_PAGE": "PREVODI - {{prjName}}",
+        "ADD": "Dodaj prevod",
+        "REMOVE": "Odstrani prevod"
+    },
+
+    "FLAG": {
+        "ITALY": "Italija",
+        "ENGLAND": "Anglija",
+        "GERMANI": "Nemčija",
+        "SPAIN": "Španija",
+        "FRANCE": "Francija",
+        "SLOVENIA": "Slovenija"
+    },
+
+    "FUNCTION": {
+        "SORT_GLOBAL": "Razvrsti globalno"
+    },
+
+    "INFO": {
+        "NO_PROJECT": "Noben projekt ni prisoten",
+        "NO_LANGUAGE": "Ni jezika",
+        "NO_TRANSLATION": "Ni prevoda"
+    }
 }

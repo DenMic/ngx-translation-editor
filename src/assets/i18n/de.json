@@ -1,3 +1,49 @@
 {
-    
+    "NAME": "Name",
+    "DESCRIPTION": "Beschreibung",
+    "VALUE": "Wert",
+    "CLOSE": "Schließen",
+    "ADD": "Hinzufügen",
+    "EXTENTION_NAME": "Erweiterungsname",
+    "SEARCH": "Suche",
+
+    "PROJECT": {
+        "TITLE_PAGE": "Projekte",
+        "NEW": "Neues Projekt",
+        "ADD": "Projekt hinzufügen",
+        "REMOVE": "Projekt löschen"
+    },
+
+    "LANGUAGE": {
+        "TITLE_PAGE": "Standardsprachen",
+        "LANGUAGE": "Sprache",
+        "ADD": "Sprache hinzufügen",
+        "EDIT": "Sprache bearbeiten",
+        "REMOVE": "Sprache entfernen"
+    },
+
+    "TRANSLATION": {
+        "TITLE_PAGE": "ÜBERSETZUNGEN - {{prjName}}",
+        "ADD": "Übersetzung hinzufügen",
+        "REMOVE": "Übersetzung entfernen"
+    },
+
+    "FLAG": {
+        "ITALY": "Italien",
+        "ENGLAND": "England",
+        "GERMANI": "Deutschland",
+        "SPAIN": "Spanien",
+        "FRANCE": "Frankreich",
+        "SLOVENIA": "Slowenien"
+    },
+
+    "FUNCTION": {
+        "SORT_GLOBAL": "Global sortieren"
+    },
+
+    "INFO": {
+        "NO_PROJECT": "Kein Projekt vorhanden",
+        "NO_LANGUAGE": "Keine Sprache vorhanden",
+        "NO_TRANSLATION": "Keine Übersetzung vorhanden"
+    }
 }

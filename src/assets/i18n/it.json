@@ -1,3 +1,49 @@
 {
-    "NEW_PROJECT": "Nuovo progetto"
+    "NAME": "Nome",
+    "DESCRIPTION": "Descrizione",
+    "VALUE": "Valore",
+    "CLOSE": "Chiudi",
+    "ADD": "Aggiungi",
+    "EXTENTION_NAME": "Nome estensione",
+    "SEARCH": "Cerca",
+
+    "PROJECT": {
+        "TITLE_PAGE": "Progetti",
+        "NEW": "Nuovo progetto",
+        "ADD": "Aggiungi progetto",
+        "REMOVE": "Elimina progetto"
+    },
+
+    "LANGUAGE": {
+        "TITLE_PAGE": "Lingue di Default",
+        "LANGUAGE": "Lingua",
+        "ADD": "Aggiungi lingua",
+        "EDIT": "Modifica lingua",
+        "REMOVE": "Elimina lingua"
+    },
+
+    "TRANSLATION": {
+        "TITLE_PAGE": "TRADUZIONI - {{prjName}}",
+        "ADD": "Aggiungi traduzione",
+        "REMOVE": "Rimuovi traduzione"
+    },
+
+    "FLAG": {
+        "ITALY": "Italia",
+        "ENGLAND": "Inghilterra",
+        "GERMANI": "Germania",
+        "SPAIN": "Spagna",
+        "FRANCE": "Francia",
+        "SLOVENIA": "Slovenia"
+    },
+
+    "FUNCTION": {
+        "SORT_GLOBAL": "Ordina Global"
+    },
+
+    "INFO": {
+        "NO_PROJECT": "Nessun progetto presente",
+        "NO_LANGUAGE": "Nessuna lingua presente",
+        "NO_TRANSLATION": "Nessuna traduzione presente"
+    }
 }
