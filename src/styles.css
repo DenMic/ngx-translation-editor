@@ -7,7 +7,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.HeaderCardPage {
+.headerCardPage {
     @apply w-full h-12 flex items-center px-5 border-b border-b-neutral-300 bg-neutral-200;
 }
 
