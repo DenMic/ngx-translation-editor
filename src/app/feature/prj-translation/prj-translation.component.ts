@@ -65,7 +65,8 @@ import { NgTemplateOutlet } from '@angular/common';
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
-  private edtAddTranslation = viewChild<EdtPopupComponent>('edtAddTranslation');
+  private popGeneral = viewChild<EdtPopupComponent>('popGeneral');
+  private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
 
   // dropDown General
   private ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
@@ -80,8 +81,11 @@ export class PrjTranslationComponent {
   // It must contain the entire clean project
   private prjFromStore: Project | undefined;
 
-  // dropDown settings
+  // DropDown settings
   ddTemplate = signal<TemplateRef<any> | null>(null);
+
+  // Popup settings
+  popTemplate = signal<TemplateRef<any> | null>(null);
 
   // Contains part of the project based on what has been filtered
   protected project = signal<Project | undefined>(undefined);
@@ -123,6 +127,12 @@ export class PrjTranslationComponent {
   closeDropGeneral(): void {
     this.ddTemplate.set(null);
     this.ddGeneral()?.close();
+  }
+
+  showImportPop(): void {
+    this.popTemplate.set(this.tmpImport() ?? null);
+    this.popGeneral()?.toggle();
+    this.closeDropGeneral();
   }
 
   addItemTraslate(): void {
@@ -240,12 +250,12 @@ export class PrjTranslationComponent {
 
   protected addSubTranslation(idParTranslation: number): void {
     this.idParentTranslation = idParTranslation;
-    this.edtAddTranslation()?.toggle();
+    this.popGeneral()?.toggle();
   }
 
   protected closeAddTranslation(): void {
     this.idParentTranslation = undefined;
-    this.edtAddTranslation()?.toggle();
+    this.popGeneral()?.toggle();
   }
 
   protected selectLanguage(lang: Language): void {
