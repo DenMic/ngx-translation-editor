@@ -1,8 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('./assets/font/NotoSans.ttf');
+}
+
+* {
+    font-family: 'Nunito';
+}
+
+*::-webkit-scrollbar {
+    background-color: rgb(229 229 229);
+    width: 10px;
+    height: 10px;
+    @apply rounded-br-md rounded-tr-md
+}
+
+*::-webkit-scrollbar-thumb {
+    background-clip: content-box;
+
+    border: 2px solid transparent;
+    @apply bg-neutral-500 rounded-full;
+}
+
+*::-webkit-scrollbar-thumb:active {
+    @apply bg-neutral-600;
+}
+
+.headerCardPage {
+    @apply w-full h-12 flex items-center px-5 border-b border-b-neutral-300 bg-neutral-200;
+}
+
+.buttonPrimary {
+    @apply flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:text-white hover:cursor-pointer active:bg-green-700 active:text-white;
+}
+
+.iconButton {
+    @apply text-base hover:cursor-pointer hover:text-neutral-800;
+}
+
+.cardRow {
+    @apply py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300;
+}
+
+.gridRowAlternate {
+    @apply even:bg-neutral-100 odd:bg-neutral-200;
+}

@@ -1,10 +1,10 @@
-<div class="grid grid-cols-4 tempCol gap-2 items-center text-sm font-medium py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-50 border-b border-neutral-300">
+<div class="grid grid-cols-4 gap-2 tempCol items-center text-sm font-medium cardRow">
     <div>
         @if(translation().translation && translation().translation!.length > 0){
             @if(openSubMenu()){
-                <i class="fa-solid fa-caret-up hover:cursor-pointer" (click)="openSubMenu.set(false)"></i>
+                <i class="fa-solid fa-caret-up iconButton" (click)="openSubMenu.set(false)"></i>
             }@else {
-                <i class="fa-solid fa-caret-down hover:cursor-pointer" (click)="openSubMenu.set(true)"></i>
+                <i class="fa-solid fa-caret-down iconButton" (click)="openSubMenu.set(true)"></i>
             }
         } 
     </div>
@@ -17,21 +17,23 @@
         }
     </div>
     <div class="flex gap-4 justify-end">
-        <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800" [title]="'TRANSLATION.ADD' | translate" (click)="addSubTranslation(translation().id)"></i>
-        <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" [title]="'TRANSLATION.REMOVE' | translate" (click)="removeTranslation(translation().id)"></i>
+        <i class="fa-solid fa-plus iconButton" [title]="'TRANSLATION.ADD' | translate" (click)="addSubTranslation(translation().id)"></i>
+        <i class="fa-solid fa-trash iconButton" [title]="'TRANSLATION.REMOVE' | translate" (click)="removeTranslation(translation().id)"></i>
     </div>
 </div>
 
 @if(openSubMenu()){
-    @for (tr of translation().translation; track $index) {
-        <div class="border-l-8 border-l-neutral-500 even:bg-neutral-100 odd:bg-neutral-200">
-            <translation-row 
-                [translation]="tr" 
-                [selectedLang]="selectedLang()"
-                (onValueChange)="valChange($event.newVal, $event.translationId)"
-                (onAdd)="addSubTranslation($event)"
-                (onRemove)="removeTranslation($event)">
-            </translation-row>
-        </div>
+    @defer {
+        @for (tr of translation().translation; track $index) {
+            <div class="border-l-8 border-l-neutral-500 gridRowAlternate">
+                <translation-row 
+                    [translation]="tr" 
+                    [selectedLang]="selectedLang()"
+                    (onValueChange)="valChange($event.newVal, $event.translationId)"
+                    (onAdd)="addSubTranslation($event)"
+                    (onRemove)="removeTranslation($event)">
+                </translation-row>
+            </div>
+        }
     }
 }

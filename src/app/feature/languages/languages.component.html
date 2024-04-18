@@ -1,15 +1,15 @@
-<div class="px-4">
+<div class="h-full px-4 mb-4">
     <edt-card>
-        <div class="w-full h-12 flex flex-row-reverse items-center px-5 border-b border-b-neutral-300 bg-neutral-200">
-            <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:text-white hover:cursor-pointer" (click)="edtAddLang.toggle()">
-                <i class="fa-solid fa-plus text-base hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
+        <div class="headerCardPage flex-row-reverse sticky top-0 z-20">
+            <div class="buttonPrimary" (click)="edtAddLang.toggle()">
+                <i class="fa-solid fa-plus text-base" [title]="'LANGUAGE.ADD' | translate"></i>
                 <span>{{ 'LANGUAGE.ADD' | translate }}</span>
             </div>
         </div>
 
         <div class="flex flex-col">
             @for (lang of languageList(); track $index) {
-                <div class="grid grid-cols-4 items-center tempCol gap-2 py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300">
+                <div class="grid grid-cols-4 items-center tempCol gap-2 cardRow">
                     <div>
                         <span class="text-base" [class]="'fi fi-' + lang.flagName"></span> 
                     </div>
@@ -20,7 +20,7 @@
                         {{ 'EXTENTION_NAME' | translate }} <b>{{lang.fileName}}</b>
                     </div>
                     <div>
-                        <i class="fa-solid fa-trash text-base hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.REMOVE' | translate" (click)="removeLang(lang)"></i>
+                        <i class="fa-solid fa-trash iconButton" [title]="'LANGUAGE.REMOVE' | translate" (click)="removeLang(lang)"></i>
                     </div>
                 </div>
             } @empty {

@@ -8,6 +8,7 @@ import {
   ViewContainerRef,
   inject,
   input,
+  output,
   viewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -25,24 +26,27 @@ export class EdtDropdownComponent implements OnDestroy {
 
   templateRef = viewChild.required<TemplateRef<any>>('templateRef');
 
-  target = input.required<ElementRef | HTMLElement | any>();
   title = input<string>();
   showTitle = input<boolean>(false);
+
+  onClose = output();
 
   private overlayRef?: OverlayRef;
   private subscriptions: Subscription[] = [];
 
-  public show() {
+  public show(target: HTMLElement) {
     if (this.overlayRef?.hasAttached()) {
       this.close();
       return;
     }
 
-    if (!this.target) return;
-
+    if (!target) {
+      debugger;
+      return;
+    }
     const positionStrategy = this.overlay
       .position()
-      .flexibleConnectedTo(this.target())
+      .flexibleConnectedTo(target)
       .withPositions([
         {
           originX: 'start',
@@ -96,6 +100,7 @@ export class EdtDropdownComponent implements OnDestroy {
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = undefined;
+      this.onClose.emit();
     }
   }
 

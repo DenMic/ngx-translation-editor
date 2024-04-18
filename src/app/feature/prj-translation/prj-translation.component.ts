@@ -1,4 +1,10 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  TemplateRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { AppSettingsService } from '../../module/service/app-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
@@ -32,6 +38,7 @@ import { copyObject } from '../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DragDropDirective } from './directive/drag-drop.directive';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-prj-translation',
@@ -39,6 +46,7 @@ import { DragDropDirective } from './directive/drag-drop.directive';
   imports: [
     FormsModule,
     ReactiveFormsModule,
+    NgTemplateOutlet,
 
     TranslationRowComponent,
     AddLanguageComponent,
@@ -57,7 +65,11 @@ import { DragDropDirective } from './directive/drag-drop.directive';
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
-  private edtAddTranslation = viewChild<EdtPopupComponent>('edtAddTranslation');
+  private popGeneral = viewChild<EdtPopupComponent>('popGeneral');
+  private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
+
+  // dropDown General
+  private ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
 
   private activatedRoute = inject(ActivatedRoute);
   private appSettingsService = inject(AppSettingsService);
@@ -68,6 +80,12 @@ export class PrjTranslationComponent {
 
   // It must contain the entire clean project
   private prjFromStore: Project | undefined;
+
+  // DropDown settings
+  ddTemplate = signal<TemplateRef<any> | null>(null);
+
+  // Popup settings
+  popTemplate = signal<TemplateRef<any> | null>(null);
 
   // Contains part of the project based on what has been filtered
   protected project = signal<Project | undefined>(undefined);
@@ -96,6 +114,25 @@ export class PrjTranslationComponent {
     } else {
       // TODO: project not found
     }
+  }
+
+  showDropGeneral(
+    targetElement: HTMLElement,
+    template: TemplateRef<any>
+  ): void {
+    this.ddTemplate.set(template);
+    this.ddGeneral()?.show(targetElement);
+  }
+
+  closeDropGeneral(): void {
+    this.ddTemplate.set(null);
+    this.ddGeneral()?.close();
+  }
+
+  showImportPop(): void {
+    this.popTemplate.set(this.tmpImport() ?? null);
+    this.popGeneral()?.toggle();
+    this.closeDropGeneral();
   }
 
   addItemTraslate(): void {
@@ -213,12 +250,12 @@ export class PrjTranslationComponent {
 
   protected addSubTranslation(idParTranslation: number): void {
     this.idParentTranslation = idParTranslation;
-    this.edtAddTranslation()?.toggle();
+    this.popGeneral()?.toggle();
   }
 
   protected closeAddTranslation(): void {
     this.idParentTranslation = undefined;
-    this.edtAddTranslation()?.toggle();
+    this.popGeneral()?.toggle();
   }
 
   protected selectLanguage(lang: Language): void {
