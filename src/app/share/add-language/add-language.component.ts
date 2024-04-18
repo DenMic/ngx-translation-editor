@@ -95,7 +95,7 @@ export class AddLanguageComponent {
           prj.translations.forEach((x) => {
             x.items?.push({
               lang: this.newLang?.flagName,
-              value: 'TODO',
+              value: undefined,
             });
           });
         }

@@ -26,6 +26,7 @@ import {
   findTranslationById,
   getMaxIdTranslations,
   sortTranslationsByGlobal,
+  updateTranslationsFromObj,
 } from '../../module/function/project-Helper';
 import { copyObject } from '../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
@@ -279,8 +280,15 @@ export class PrjTranslationComponent {
       const textFile = await fileList[0].text();
       const objFile = JSON.parse(textFile);
       let newTranslation: Translation[] = [];
+
       if (this.prjFromStore!.translations) {
-        // TODO: Update the language selected and add missing translation
+        newTranslation = this.prjFromStore!.translations;
+        updateTranslationsFromObj(
+          newTranslation,
+          objFile,
+          this.selectedLang()!,
+          this.prjFromStore!.languages
+        );
       } else {
         newTranslation = createTranslationsFromObj(
           objFile,

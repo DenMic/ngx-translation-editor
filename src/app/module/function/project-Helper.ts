@@ -123,30 +123,67 @@ export function filterTranslations(
 }
 
 export function updateTranslationsFromObj(
-  oldTranslations: Translation[], 
+  oldTranslations: Translation[],
   obj: any,
   selectedLang: Language,
-  languages: Language[]
+  languages: Language[],
+  parentTranslations?: Translation[]
 ): Translation[] {
-    const translations: Translation[] = [];
-    const maxId = getMaxIdTranslations(oldTranslations) + 1;
+  const translations: Translation[] = [];
+  let maxId = getMaxIdTranslations(oldTranslations) + 1;
 
-    for (let prop in obj) {
-      const propValue = obj[prop];
+  for (let prop in obj) {
+    const propValue = obj[prop];
+    const searchTranslation = parentTranslations ?? oldTranslations;
+    let translation = findTranslationByGlobal(searchTranslation, prop);
 
-      // TODO
-      const translation = findTranslationByGlobal(oldTranslations, prop);
-      if(translation){
-        const items = translation.items?.find((x) => x.lang == selectedLang.flagName);
-        if(items){
-          items.value = propValue;
-        }
-      } else {
+    if (typeof propValue == 'object') {
+      updateTranslationsFromObj(
+        searchTranslation,
+        propValue,
+        selectedLang,
+        languages,
+        translation?.translation
+      );
 
+      const newMaxId = getMaxIdTranslations(searchTranslation);
+      if (maxId != newMaxId) {
+        maxId = newMaxId + 1;
       }
     }
 
-    return translations;
+    if (translation) {
+      if (translation.translation && translation.translation.length > 0) {
+        continue;
+      }
+
+      const items = translation.items?.find(
+        (x) => x.lang == selectedLang.flagName
+      );
+      if (items) {
+        items.value = propValue;
+      } else {
+        translation.items?.push({
+          lang: selectedLang.flagName,
+          value: propValue,
+        });
+      }
+    } else {
+      translation = { id: maxId, global: prop };
+
+      CreateItemsForTranslation(
+        translation,
+        languages,
+        selectedLang,
+        propValue
+      );
+
+      searchTranslation.push(translation);
+      maxId += 1;
+    }
+  }
+
+  return translations;
 }
 
 export function createTranslationsFromObj(
@@ -181,17 +218,12 @@ export function createTranslationsFromObj(
     if (subTranslations) {
       translation.translation = subTranslations;
     } else {
-      translation.items = [];
-
-      //generate items
-      for (let index = 0; index < languages.length; index++) {
-        const element = languages[index];
-        translation.items.push({
-          lang: element.flagName,
-          value:
-            selectedLang.flagName == element.flagName ? propValue : undefined,
-        });
-      }
+      CreateItemsForTranslation(
+        translation,
+        languages,
+        selectedLang,
+        propValue
+      );
     }
 
     translations.push(translation);
@@ -199,4 +231,22 @@ export function createTranslationsFromObj(
   }
 
   return translations;
+}
+
+function CreateItemsForTranslation(
+  translation: Translation,
+  languages: Language[],
+  selectedLang: Language,
+  propValue: any
+) {
+  translation.items = [];
+
+  //generate items
+  for (let index = 0; index < languages.length; index++) {
+    const element = languages[index];
+    translation.items.push({
+      lang: element.flagName,
+      value: selectedLang.flagName == element.flagName ? propValue : undefined,
+    });
+  }
 }
