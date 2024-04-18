@@ -1,3 +1,4 @@
+import { Language } from '../classes/language';
 import { Translation } from '../classes/translation';
 
 export function findTranslationById(
@@ -17,6 +18,31 @@ export function findTranslationById(
     const subTranslation = findTranslationById(
       translation.translation,
       translationId
+    );
+
+    if (subTranslation) return subTranslation;
+  }
+
+  return undefined;
+}
+
+export function findTranslationByGlobal(
+  translations: Translation[],
+  global: string
+): Translation | undefined {
+  for (let index = 0; index < translations.length; index++) {
+    const translation = translations[index];
+    if (translation.global.toUpperCase() == global.toUpperCase()) {
+      return translation;
+    }
+
+    if (translation.translation == undefined) {
+      continue;
+    }
+
+    const subTranslation = findTranslationByGlobal(
+      translation.translation,
+      global
     );
 
     if (subTranslation) return subTranslation;
@@ -94,4 +120,133 @@ export function filterTranslations(
   }
 
   return filtered;
+}
+
+export function updateTranslationsFromObj(
+  oldTranslations: Translation[],
+  obj: any,
+  selectedLang: Language,
+  languages: Language[],
+  parentTranslations?: Translation[]
+): Translation[] {
+  const translations: Translation[] = [];
+  let maxId = getMaxIdTranslations(oldTranslations) + 1;
+
+  for (let prop in obj) {
+    const propValue = obj[prop];
+    const searchTranslation = parentTranslations ?? oldTranslations;
+    let translation = findTranslationByGlobal(searchTranslation, prop);
+
+    if (typeof propValue == 'object') {
+      updateTranslationsFromObj(
+        searchTranslation,
+        propValue,
+        selectedLang,
+        languages,
+        translation?.translation
+      );
+
+      const newMaxId = getMaxIdTranslations(searchTranslation);
+      if (maxId != newMaxId) {
+        maxId = newMaxId + 1;
+      }
+    }
+
+    if (translation) {
+      if (translation.translation && translation.translation.length > 0) {
+        continue;
+      }
+
+      const items = translation.items?.find(
+        (x) => x.lang == selectedLang.flagName
+      );
+      if (items) {
+        items.value = propValue;
+      } else {
+        translation.items?.push({
+          lang: selectedLang.flagName,
+          value: propValue,
+        });
+      }
+    } else {
+      translation = { id: maxId, global: prop };
+
+      CreateItemsForTranslation(
+        translation,
+        languages,
+        selectedLang,
+        propValue
+      );
+
+      searchTranslation.push(translation);
+      maxId += 1;
+    }
+  }
+
+  return translations;
+}
+
+export function createTranslationsFromObj(
+  obj: any,
+  selectedLang: Language,
+  languages: Language[],
+  id: number = 1
+): Translation[] {
+  const translations: Translation[] = [];
+
+  for (let prop in obj) {
+    let translation = {} as Translation;
+    let subTranslations: Translation[] | undefined = undefined;
+    const propValue = obj[prop];
+
+    translation.id = id;
+    translation.global = prop;
+
+    if (typeof propValue == 'object') {
+      id += 1;
+
+      subTranslations = createTranslationsFromObj(
+        propValue,
+        selectedLang,
+        languages,
+        id
+      );
+
+      id = Math.max(...subTranslations.map((x) => x.id));
+    }
+
+    if (subTranslations) {
+      translation.translation = subTranslations;
+    } else {
+      CreateItemsForTranslation(
+        translation,
+        languages,
+        selectedLang,
+        propValue
+      );
+    }
+
+    translations.push(translation);
+    id += 1;
+  }
+
+  return translations;
+}
+
+function CreateItemsForTranslation(
+  translation: Translation,
+  languages: Language[],
+  selectedLang: Language,
+  propValue: any
+) {
+  translation.items = [];
+
+  //generate items
+  for (let index = 0; index < languages.length; index++) {
+    const element = languages[index];
+    translation.items.push({
+      lang: element.flagName,
+      value: selectedLang.flagName == element.flagName ? propValue : undefined,
+    });
+  }
 }

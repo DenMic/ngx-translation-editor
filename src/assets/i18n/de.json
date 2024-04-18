@@ -6,6 +6,8 @@
     "ADD": "Hinzufügen",
     "EXTENTION_NAME": "Erweiterungsname",
     "SEARCH": "Suche",
+    "IMPORT": "Import",
+    "EXPORT": "Export",
 
     "PROJECT": {
         "TITLE_PAGE": "Projekte",

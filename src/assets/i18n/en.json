@@ -6,6 +6,8 @@
     "ADD": "Add",
     "EXTENTION_NAME": "Extention name",
     "SEARCH": "Search",
+    "IMPORT": "Import",
+    "EXPORT": "Export",
 
     "PROJECT": {
         "TITLE_PAGE": "Project",

@@ -21,14 +21,17 @@ import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dro
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
 import { TranslationRowComponent } from './translation-row/translation-row.component';
 import {
+  createTranslationsFromObj,
   filterTranslations,
   findTranslationById,
   getMaxIdTranslations,
   sortTranslationsByGlobal,
+  updateTranslationsFromObj,
 } from '../../module/function/project-Helper';
 import { copyObject } from '../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DragDropDirective } from './directive/drag-drop.directive';
 
 @Component({
   selector: 'app-prj-translation',
@@ -47,6 +50,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     EdtDropdownComponent,
 
     TranslateModule,
+    DragDropDirective,
   ],
   providers: [ProjectService],
   templateUrl: './prj-translation.component.html',
@@ -68,6 +72,8 @@ export class PrjTranslationComponent {
   // Contains part of the project based on what has been filtered
   protected project = signal<Project | undefined>(undefined);
   protected selectedLang = signal<Language | undefined>(undefined);
+
+  protected files = signal<any[]>([]);
 
   protected searchValue = '';
   protected newLangForm: FormGroup = this.fb.group({
@@ -240,6 +246,60 @@ export class PrjTranslationComponent {
       }
     } else {
       this.project.set(copyObject(this.prjFromStore));
+    }
+  }
+
+  protected onFileDropped(files: any): void {
+    for (let index = 0; index < files.length; index++) {
+      const element = files[index];
+      if (!element.name.toLowerCase().endsWith('.json')) {
+        return;
+      }
+    }
+
+    this.files.update((e) => [...e, ...files]);
+  }
+
+  protected fileUploaded(event: any): void {
+    const files: File[] = event.target.files;
+
+    for (let index = 0; index < files.length; index++) {
+      const element = files[index];
+      if (!element.name.toLowerCase().endsWith('.json')) {
+        return;
+      }
+    }
+
+    this.files.update((e) => [...e, ...files]);
+  }
+
+  protected async processFile(): Promise<void> {
+    const fileList = this.files();
+
+    if (fileList && fileList.length > 0) {
+      const textFile = await fileList[0].text();
+      const objFile = JSON.parse(textFile);
+      let newTranslation: Translation[] = [];
+
+      if (this.prjFromStore!.translations) {
+        newTranslation = this.prjFromStore!.translations;
+        updateTranslationsFromObj(
+          newTranslation,
+          objFile,
+          this.selectedLang()!,
+          this.prjFromStore!.languages
+        );
+      } else {
+        newTranslation = createTranslationsFromObj(
+          objFile,
+          this.selectedLang()!,
+          this.prjFromStore!.languages
+        );
+      }
+
+      this.prjFromStore!.translations = newTranslation;
+      this.project.set(copyObject(this.prjFromStore));
+      this.projectService.updateTranslation(this.project());
     }
   }
 
