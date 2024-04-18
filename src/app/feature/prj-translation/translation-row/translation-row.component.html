@@ -23,15 +23,17 @@
 </div>
 
 @if(openSubMenu()){
-    @for (tr of translation().translation; track $index) {
-        <div class="border-l-8 border-l-neutral-500 gridRowAlternate">
-            <translation-row 
-                [translation]="tr" 
-                [selectedLang]="selectedLang()"
-                (onValueChange)="valChange($event.newVal, $event.translationId)"
-                (onAdd)="addSubTranslation($event)"
-                (onRemove)="removeTranslation($event)">
-            </translation-row>
-        </div>
+    @defer {
+        @for (tr of translation().translation; track $index) {
+            <div class="border-l-8 border-l-neutral-500 gridRowAlternate">
+                <translation-row 
+                    [translation]="tr" 
+                    [selectedLang]="selectedLang()"
+                    (onValueChange)="valChange($event.newVal, $event.translationId)"
+                    (onAdd)="addSubTranslation($event)"
+                    (onRemove)="removeTranslation($event)">
+                </translation-row>
+            </div>
+        }
     }
 }

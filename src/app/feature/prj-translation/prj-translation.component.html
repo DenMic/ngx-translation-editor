@@ -34,15 +34,21 @@
             </div>
 
             @for (translation of project()?.translations; track $index) {
-                <div class="w-full even:bg-neutral-100 odd:bg-neutral-200">
-                    <translation-row 
-                        [translation]="translation" 
-                        [selectedLang]="selectedLang()"
-                        (onValueChange)="translationValChange($event.newVal, $event.translationId)"
-                        (onAdd)="addSubTranslation($event)"
-                        (onRemove)="removeTranslation($event)">
-                    </translation-row>
-                </div>
+                @defer(on viewport) {
+                    <div class="w-full even:bg-neutral-100 odd:bg-neutral-200">
+                        <translation-row 
+                            [translation]="translation" 
+                            [selectedLang]="selectedLang()"
+                            (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                            (onAdd)="addSubTranslation($event)"
+                            (onRemove)="removeTranslation($event)">
+                        </translation-row>
+                    </div>
+                } @placeholder {
+                    <div class="flex items-center px-3 w-full h-[34px] animate-pulse">
+                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-4"></div>
+                    </div>
+                }
             } @empty {
                 <div class="p-12 text-center">
                     <span class="font-semibold text-xl text-neutral-600">{{ 'INFO.NO_TRANSLATION' | translate }}</span>
@@ -54,89 +60,98 @@
 
 <!-- DropDown flag List -->
 <edt-dropdown #dropFlags [target]="dFlag">
-    @for (lang of project()?.languages; track $index) {
-        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang); dropFlags.show();">
-            <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
-            <span>{{ 'FLAG.' + lang.description | translate }}</span>
+    @defer {
+        @for (lang of project()?.languages; track $index) {
+            <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang); dropFlags.show();">
+                <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+                <span>{{ 'FLAG.' + lang.description | translate }}</span>
+            </div>
+        }
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); dropFlags.show();">
+            <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
+            <span>{{ 'LANGUAGE.ADD' | translate }}</span>
         </div>
     }
-    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); dropFlags.show();">
-        <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
-        <span>{{ 'LANGUAGE.ADD' | translate }}</span>
-    </div>
 </edt-dropdown>
 
 <!-- item menu -->
 <edt-dropdown #dropMenu [target]="dMenu">
-    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="edtImport.toggle(); dropMenu.show();">
-        <i class="fa-solid fa-file-import text-xl hover:cursor-pointer hover:text-neutral-800"></i>
-        <span>{{ 'IMPORT' | translate }}</span>
-    </div>
-    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="dropMenu.show();">
-        <i class="fa-solid fa-download text-xl hover:cursor-pointer hover:text-neutral-800"></i>
-        <span>{{ 'EXPORT' | translate }}</span>
-    </div>
+    @defer {
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="edtImport.toggle(); dropMenu.show();">
+            <i class="fa-solid fa-file-import text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+            <span>{{ 'IMPORT' | translate }}</span>
+        </div>
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="dropMenu.show();">
+            <i class="fa-solid fa-download text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+            <span>{{ 'EXPORT' | translate }}</span>
+        </div>
+    }
 </edt-dropdown>
 
 <!-- Pop Add Translation -->
 <edt-popup #edtAddTranslation>
-    <div class="p-8">
-        <div class="mb-8 font-semibold text-2xl">
-            {{ 'TRANSLATION.ADD' | translate }}
-        </div>
+    @defer {
+        <div class="p-8">
+            <div class="mb-8 font-semibold text-2xl">
+                {{ 'TRANSLATION.ADD' | translate }}
+            </div>
 
-        <form [formGroup]="newLangForm" (submit)="addItemTraslate()">
-            <div class="flex flex-col gap-3 mb-6 w-96">
-                <edt-input [label]="'NAME' | translate" formControlName="global"></edt-input>
-                <edt-input [label]="'VALUE' | translate" formControlName="value"></edt-input>
-            </div>
-            
-            <div class="flex gap-4 justify-end">
-                <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="closeAddTranslation()"></edt-button>
-                <edt-button [label]="'ADD' | translate" [disabled]="!newLangForm.valid"></edt-button>
-            </div>
-        </form>
-    </div>
+            <form [formGroup]="newLangForm" (submit)="addItemTraslate()">
+                <div class="flex flex-col gap-3 mb-6 w-96">
+                    <edt-input [label]="'NAME' | translate" formControlName="global"></edt-input>
+                    <edt-input [label]="'VALUE' | translate" formControlName="value"></edt-input>
+                </div>
+                
+                <div class="flex gap-4 justify-end">
+                    <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="closeAddTranslation()"></edt-button>
+                    <edt-button [label]="'ADD' | translate" [disabled]="!newLangForm.valid"></edt-button>
+                </div>
+            </form>
+        </div>
+    }
 </edt-popup>
 
 <!-- Pop Add Translation -->
+
 <edt-popup #edtImport>
-    <div class="p-8 w-[500px]">
-        <div class="mb-8 font-semibold text-2xl">
-            {{ 'IMPORT' | translate }}
-        </div>
-
-        @if(files().length == 0) {
-            <div class="flex items-center justify-center w-full bg-gray-50 rounded-lg hover:bg-gray-100" edtDragDrop (fileDropped)="onFileDropped($event)">
-                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700  dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                        </svg>
-                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Only file: JSON</p>
-                    </div>
-                    <input id="dropzone-file" type="file" class="hidden" (change)="fileUploaded($event)" />
-                </label>
+    @defer {
+        <div class="p-8 w-[500px]">
+            <div class="mb-8 font-semibold text-2xl">
+                {{ 'IMPORT' | translate }}
             </div>
-        } @else {
-            @for (item of files(); track $index) {
-                <div class="flex w-full justify-between gap-4 items-center border py-2 px-4 rounded-md bg-neutral-200">
-                    <div class="flex gap-4 items-center">
-                        <i class="fa-solid fa-file text-xl"></i>
-                        <span class="text-base">{{ item.name }}</span>
-                    </div>
-                    <i class="fa-solid fa-xmark text-xl hover:cursor-pointer" (click)="files.set([]);"></i>
-                </div>
-            }
-            
-        }
 
-        <div class="flex gap-4 pt-4 justify-end">
-            <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="edtImport.toggle()"></edt-button>
-            <edt-button [label]="'IMPORT' | translate" [disabled]="files().length == 0" (onClick)="processFile(); edtImport.toggle();"></edt-button>
+            @if(files().length == 0) {
+                <div class="flex items-center justify-center w-full bg-gray-50 rounded-lg hover:bg-gray-100" edtDragDrop (fileDropped)="onFileDropped($event)">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700  dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Only file: JSON</p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" (change)="fileUploaded($event)" />
+                    </label>
+                </div>
+            } @else {
+                @for (item of files(); track $index) {
+                    <div class="flex w-full justify-between gap-4 items-center border py-2 px-4 rounded-md bg-neutral-200">
+                        <div class="flex gap-4 items-center">
+                            <i class="fa-solid fa-file text-xl"></i>
+                            <span class="text-base">{{ item.name }}</span>
+                        </div>
+                        <i class="fa-solid fa-xmark text-xl hover:cursor-pointer" (click)="files.set([]);"></i>
+                    </div>
+                }
+                
+            }
+
+            <div class="flex gap-4 pt-4 justify-end">
+                <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="edtImport.toggle()"></edt-button>
+                <edt-button [label]="'IMPORT' | translate" [disabled]="files().length == 0" (onClick)="processFile(); edtImport.toggle();"></edt-button>
+            </div>
         </div>
-    </div>
+    }
 </edt-popup>
 
 <!-- Pop add Language -->
