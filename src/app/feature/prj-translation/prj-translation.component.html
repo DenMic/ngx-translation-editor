@@ -3,7 +3,7 @@
         <div class="w-full overflow-auto">
             <div class="headerCardPage justify-between">
                 <div class="flex gap-4 py-1 items-center">
-                    <div #dFlag class="buttonPrimary !py-1" (click)="dropFlags.show()">
+                    <div #dFlag class="buttonPrimary !py-1" (click)="showDropGeneral(dFlag, tmpFlag)">
                         @if(selectedLang()){
                             <span class="text-base" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
                         } @else {
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <div #dMenu class="buttonPrimary" (click)="dropMenu.show()">
+                    <div #dMenu class="buttonPrimary" (click)="showDropGeneral(dMenu, tmpExtraButton);">
                         <i class="fa-solid fa-ellipsis-vertical text-base hover:cursor-pointer"></i>
                     </div>
                     @if(selectedLang()){
@@ -58,35 +58,36 @@
     </edt-card>
 </div>
 
-<!-- DropDown flag List -->
-<edt-dropdown #dropFlags [target]="dFlag">
-    @defer {
-        @for (lang of project()?.languages; track $index) {
-            <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang); dropFlags.show();">
-                <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
-                <span>{{ 'FLAG.' + lang.description | translate }}</span>
-            </div>
-        }
-        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); dropFlags.show();">
-            <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
-            <span>{{ 'LANGUAGE.ADD' | translate }}</span>
-        </div>
-    }
+<!-- Single dropDown -->
+<edt-dropdown #ddGeneral (onClose)="closeDropGeneral()">
+    <ng-container *ngTemplateOutlet="ddTemplate()"></ng-container>
 </edt-dropdown>
 
-<!-- item menu -->
-<edt-dropdown #dropMenu [target]="dMenu">
-    @defer {
-        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="edtImport.toggle(); dropMenu.show();">
-            <i class="fa-solid fa-file-import text-xl hover:cursor-pointer hover:text-neutral-800"></i>
-            <span>{{ 'IMPORT' | translate }}</span>
-        </div>
-        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="dropMenu.show();">
-            <i class="fa-solid fa-download text-xl hover:cursor-pointer hover:text-neutral-800"></i>
-            <span>{{ 'EXPORT' | translate }}</span>
+<!-- Template Flag list project -->
+<ng-template #tmpFlag>
+    @for (lang of project()?.languages; track $index) {
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang); closeDropGeneral();">
+            <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+            <span>{{ 'FLAG.' + lang.description | translate }}</span>
         </div>
     }
-</edt-dropdown>
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); closeDropGeneral();">
+        <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
+        <span>{{ 'LANGUAGE.ADD' | translate }}</span>
+    </div>
+</ng-template>
+
+<!-- Template Extrabutton -->
+<ng-template #tmpExtraButton>
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="edtImport.toggle(); closeDropGeneral();">
+        <i class="fa-solid fa-file-import text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+        <span>{{ 'IMPORT' | translate }}</span>
+    </div>
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="closeDropGeneral();">
+        <i class="fa-solid fa-download text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+        <span>{{ 'EXPORT' | translate }}</span>
+    </div>
+</ng-template>
 
 <!-- Pop Add Translation -->
 <edt-popup #edtAddTranslation>

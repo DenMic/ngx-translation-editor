@@ -1,4 +1,10 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  TemplateRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { AppSettingsService } from '../../module/service/app-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
@@ -32,6 +38,7 @@ import { copyObject } from '../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DragDropDirective } from './directive/drag-drop.directive';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-prj-translation',
@@ -39,6 +46,7 @@ import { DragDropDirective } from './directive/drag-drop.directive';
   imports: [
     FormsModule,
     ReactiveFormsModule,
+    NgTemplateOutlet,
 
     TranslationRowComponent,
     AddLanguageComponent,
@@ -59,6 +67,9 @@ import { DragDropDirective } from './directive/drag-drop.directive';
 export class PrjTranslationComponent {
   private edtAddTranslation = viewChild<EdtPopupComponent>('edtAddTranslation');
 
+  // dropDown General
+  private ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
+
   private activatedRoute = inject(ActivatedRoute);
   private appSettingsService = inject(AppSettingsService);
   private projectService = inject(ProjectService);
@@ -68,6 +79,9 @@ export class PrjTranslationComponent {
 
   // It must contain the entire clean project
   private prjFromStore: Project | undefined;
+
+  // dropDown settings
+  ddTemplate = signal<TemplateRef<any> | null>(null);
 
   // Contains part of the project based on what has been filtered
   protected project = signal<Project | undefined>(undefined);
@@ -96,6 +110,19 @@ export class PrjTranslationComponent {
     } else {
       // TODO: project not found
     }
+  }
+
+  showDropGeneral(
+    targetElement: HTMLElement,
+    template: TemplateRef<any>
+  ): void {
+    this.ddTemplate.set(template);
+    this.ddGeneral()?.show(targetElement);
+  }
+
+  closeDropGeneral(): void {
+    this.ddTemplate.set(null);
+    this.ddGeneral()?.close();
   }
 
   addItemTraslate(): void {
