@@ -13,6 +13,24 @@
     font-family: 'Nunito';
 }
 
+*::-webkit-scrollbar {
+    background-color: rgb(229 229 229);
+    width: 10px;
+    height: 10px;
+    @apply rounded-br-md rounded-tr-md
+}
+
+*::-webkit-scrollbar-thumb {
+    background-clip: content-box;
+
+    border: 2px solid transparent;
+    @apply bg-neutral-500 rounded-full;
+}
+
+*::-webkit-scrollbar-thumb:active {
+    @apply bg-neutral-600;
+}
+
 .headerCardPage {
     @apply w-full h-12 flex items-center px-5 border-b border-b-neutral-300 bg-neutral-200;
 }
