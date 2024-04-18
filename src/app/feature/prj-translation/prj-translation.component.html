@@ -1,9 +1,9 @@
 <div class="px-4 mb-4">
     <edt-card>
         <div class="w-full overflow-auto">
-            <div class="w-full h-12 flex items-center justify-between px-5 border-b border-b-neutral-300 bg-neutral-300">
+            <div class="HeaderCardPage justify-between">
                 <div class="flex gap-4 py-1 items-center">
-                    <div #dFlag class="flex gap-2 border border-neutral-300 bg-neutral-50 py-1 px-3 rounded-md hover:cursor-pointer hover:bg-green-600 hover:text-white" (click)="dropFlags.show()">
+                    <div #dFlag class="buttonPrimary !py-1" (click)="dropFlags.show()">
                         @if(selectedLang()){
                             <span class="text-base" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
                         } @else {
@@ -11,21 +11,21 @@
                         }
                         <i class="fa-solid fa-caret-down text-lg"></i>
                     </div>
-                    <div class="flex gap-2 border border-neutral-300 bg-neutral-50 items-center py-2 px-3 rounded-md hover:cursor-pointer">
+                    <div class="flex gap-2 border border-neutral-300 bg-neutral-50 items-center py-2 px-3 rounded-md">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" [(ngModel)]="searchValue" class="appearance-none bg-transparent" [attr.aria-label]="'SEARCH' | translate" (blur)="searchValueChange()" />
+                        <input type="text" [(ngModel)]="searchValue" class="appearance-none bg-transparent outline-none" [attr.aria-label]="'SEARCH' | translate" (blur)="searchValueChange()" />
                     </div>
-                    <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:text-white hover:cursor-pointer" (click)="clickSortTranslation()">
+                    <div class="buttonPrimary" (click)="clickSortTranslation()">
                         <i class="fa-solid fa-arrow-down-a-z "></i>
                         <span>{{ 'FUNCTION.SORT_GLOBAL' | translate }}</span>
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <div #dMenu class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:text-white hover:cursor-pointer" (click)="dropMenu.show()">
+                    <div #dMenu class="buttonPrimary" (click)="dropMenu.show()">
                         <i class="fa-solid fa-ellipsis-vertical text-base hover:cursor-pointer"></i>
                     </div>
                     @if(selectedLang()){
-                        <div class="flex gap-2 items-center border border-neutral-300 bg-neutral-50 py-2 px-3 rounded-md hover:bg-green-600 hover:text-white hover:cursor-pointer" (click)="edtAddTranslation.toggle()">
+                        <div class="buttonPrimary" (click)="edtAddTranslation.toggle()">
                             <i class="fa-solid fa-plus text-base hover:cursor-pointer"></i>
                             <span>{{ 'TRANSLATION.ADD' | translate }}</span>
                         </div>
