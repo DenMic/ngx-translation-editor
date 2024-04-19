@@ -1,5 +1,4 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { Subject } from 'rxjs';
 import { Comunication } from '../class/comunication';
 import { Project } from '../../../module/classes/project';
 import { AppSettingsService } from '../../../module/service/app-settings.service';
