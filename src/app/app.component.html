@@ -9,14 +9,6 @@
   <nav class="py-4 px-9 flex justify-between backdrop-blur-md bg-white/10 sticky top-0 left-0 z-50">
     <div class="flex gap-4">
       <img src="assets/images/logo.svg" width="32">
-      <div #dFlag class="flex gap-2 items-center text-white hover:cursor-pointer" (click)="dropFlags.show(dFlag)">
-        @if(applicationLanguage()){
-            <span class="text-base" [class]="'fi fi-' + applicationLanguage()?.flagName"></span> 
-        } @else {
-            <i class="fa-solid fa-circle-question text-xl"></i>
-        }
-        <i class="fa-solid fa-caret-down text-lg"></i>
-      </div>
     </div>
 
     <div class="flex gap-4 items-center text-neutral-100 mix-blend-difference" >
@@ -24,11 +16,7 @@
 
       <i class="fa-regular fa-flag text-lg hover:cursor-pointer" title="Languages" (click)="router.navigate(['languages'])"></i>
 
-      @if(appSettingsService.darkTheme()){
-        <i class="fa-regular fa-moon text-lg hover:cursor-pointer" title="dark" (click)="appSettingsService.toggleDarkTheme()"></i>
-      } @else {
-        <i class="fa-regular fa-sun text-lg hover:cursor-pointer" title="light" (click)="appSettingsService.toggleDarkTheme()"></i>
-      }
+      <i class="fa-solid fa-gear text-lg hover:cursor-pointer" (click)="router.navigate(['settings'])"></i>
     </div>
   </nav>
 
@@ -46,12 +34,3 @@
 
   </div>
 </div>
-
-<edt-dropdown #dropFlags>
-  @for (lang of flagsLang; track $index) {
-      <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang)">
-          <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
-          <span>{{ 'FLAG.' + lang.description | translate }}</span>
-      </div>
-  }
-</edt-dropdown>

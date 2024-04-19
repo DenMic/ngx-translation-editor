@@ -16,6 +16,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'settings',
+    loadComponent: () =>
+      import('./feature/settings/settings.component').then(
+        (m) => m.SettingsComponent
+      ),
+  },
+  {
     path: 'translation/:id',
     loadComponent: () =>
       import('./feature/prj-translation/prj-translation.component').then(

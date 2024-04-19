@@ -17,17 +17,12 @@ import { EdtDropdownComponent } from './share/component/edt-dropdown/edt-dropdow
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  dropFlags = viewChild(EdtDropdownComponent);
   title = 'ngx-translation-editor';
-
-  applicationLanguage = signal<Language | undefined>(undefined);
 
   private readonly storageService = inject(StorageService);
   private readonly translateService = inject(TranslateService);
   protected readonly appSettingsService = inject(AppSettingsService);
   protected readonly router = inject(Router);
-
-  protected readonly flagsLang = flagsLang;
 
   ngOnInit(): void {
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
@@ -37,15 +32,6 @@ export class AppComponent implements OnInit {
       this.storageService.store(PROJECT_LANG, lang);
     }
 
-    this.applicationLanguage.set(lang);
     this.translateService.use(lang.fileName);
-  }
-
-  selectLanguage(lang: Language): void {
-    this.storageService.store(PROJECT_LANG, lang);
-    this.applicationLanguage.set(lang);
-    this.translateService.use(lang.fileName);
-
-    this.dropFlags()?.close();
   }
 }

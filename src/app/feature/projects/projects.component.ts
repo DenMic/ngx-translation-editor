@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
 import { StorageService } from '../../module/service/storage.service';
 import { Project } from '../../module/classes/project';
@@ -20,10 +20,8 @@ import { Language } from '../../module/classes/language';
 import { Router } from '@angular/router';
 import {
   TranslateModule,
-  TranslatePipe,
   TranslateService,
 } from '@ngx-translate/core';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-projects',

@@ -8,6 +8,9 @@
     "SEARCH": "Cerca",
     "IMPORT": "Importa",
     "EXPORT": "Esporta",
+    "TREE_LIST": "Lista ad albero",
+    "LIST": "Lista",
+    "COLUMN": "Colonna",
 
     "PROJECT": {
         "TITLE_PAGE": "Progetti",
@@ -28,6 +31,14 @@
         "TITLE_PAGE": "TRADUZIONI - {{prjName}}",
         "ADD": "Aggiungi traduzione",
         "REMOVE": "Rimuovi traduzione"
+    },
+
+    "SETTINGS": {
+        "TITLE_PAGE": "Impostazioni",
+        "BASE_SETTINGS": "Impostazioni base",
+        "LAYOUT_TRANSLATION": "Layout pagina traduzioni",
+        "SELECTED_LANGUAGE": "Lingua selezionata",
+        "DARK_MODE": "Dark mode"
     },
 
     "FLAG": {
