@@ -4,7 +4,7 @@ import { Comunication } from '../class/comunication';
 import { Project } from '../../../module/classes/project';
 import { AppSettingsService } from '../../../module/service/app-settings.service';
 import { copyObject } from '../../../module/function/helper';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ProjectService } from '../../../module/service/project.service';
 import { Language } from '../../../module/classes/language';
 
@@ -18,8 +18,8 @@ export class ComunicationService {
   project = signal<Project | undefined>(undefined);
   selectedLang = signal<Language | undefined>(undefined);
 
-  private dropDownParam = new Subject<Comunication | undefined>();
-  $dropDownParam = this.dropDownParam.asObservable();
+  private dropDownParam = signal<Comunication | undefined>(undefined);
+  $dropDownParam = toObservable(this.dropDownParam);
 
   loadProjectFromStore(id: number): void {
     this.prjFromStore = copyObject(this.selectProject(id));
@@ -37,7 +37,7 @@ export class ComunicationService {
   }
 
   setDropDownParam(comunication: Comunication | undefined): void {
-    this.dropDownParam.next(comunication);
+    this.dropDownParam.set(comunication);
   }
 
   selectProject(id: number): Project | undefined {

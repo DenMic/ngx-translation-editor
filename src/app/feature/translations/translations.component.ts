@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProjectService } from '../../module/service/project.service';
 import { NgTemplateOutlet } from '@angular/common';
+import { EdtPopupComponent } from '../../share/component/edt-popup/edt-popup.component';
 
 @Component({
   selector: 'app-translations',
@@ -23,6 +24,7 @@ import { NgTemplateOutlet } from '@angular/common';
 
     EdtCardComponent,
     EdtDropdownComponent,
+    EdtPopupComponent,
 
     TranslateModule,
   ],
@@ -38,8 +40,9 @@ export class TranslationsComponent {
 
   protected readonly comunicationService = inject(ComunicationService);
 
-  // DropDown settings
+  // Template DropDown and Popup
   ddTemplate = signal<TemplateRef<any> | null>(null);
+  popTemplate = signal<TemplateRef<any> | null>(null);
 
   // Gestione del dropDown
   private $dropDownControl = this.comunicationService.$dropDownParam
