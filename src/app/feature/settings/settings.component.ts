@@ -1,18 +1,21 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import { AppSettingsService } from '../../module/service/app-settings.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Language } from '../../module/classes/language';
 import { StorageService } from '../../module/service/storage.service';
-import { PROJECT_LANG } from '../../module/constant/storage';
+import { LAYOUT_PAGE, PROJECT_LANG } from '../../module/constant/storage';
 import { flagsLang } from '../../module/constant/flags';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
+import { NgClass } from '@angular/common';
+import { layoutType } from '../../module/types/custom-types';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
   imports: [
+    NgClass,
     EdtCardComponent,
     EdtDropdownComponent,
 
@@ -37,8 +40,18 @@ export class SettingsComponent {
     .pipe(takeUntilDestroyed())
     .subscribe();
 
+  private readonly layoutEffect = effect(() => {
+    this.storageService.store(LAYOUT_PAGE, this.appSettingsService.layoutPage());
+  });
+
   ngOnInit(): void {
+    let layout: layoutType = this.storageService.retrieve(LAYOUT_PAGE);
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
+
+    if(!layout){
+      layout = 'list';
+      this.storageService.store(LAYOUT_PAGE, layout);
+    }
 
     if (!lang) {
       lang = flagsLang[0];
@@ -47,6 +60,7 @@ export class SettingsComponent {
 
     this.applicationLanguage.set(lang);
     this.translateService.use(lang.fileName);
+    this.appSettingsService.setLayoutPage(layout); 
   }
 
   selectLanguage(lang: Language): void {

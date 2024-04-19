@@ -14,10 +14,14 @@
                 <!-- Layout application -->
                 <div class="flex gap-4 items-center">
                     <span>{{ 'SETTINGS.LAYOUT_TRANSLATION' | translate }}:</span>
-                    <div class="buttonPrimary">
+                    <div class="buttonPrimary" 
+                        [ngClass]="{ '!bg-green-600 text-neutral-50': appSettingsService.layoutPage() == 'list'}"
+                        (click)="appSettingsService.setLayoutPage('list')">
                         <i class="fa-solid fa-table-list text-base hover:cursor-pointer"></i>
                     </div>
-                    <div class="buttonPrimary">
+                    <div class="buttonPrimary" 
+                        [ngClass]="{ '!bg-green-600 text-neutral-50': appSettingsService.layoutPage() == 'column'}"
+                        (click)="appSettingsService.setLayoutPage('column')">
                         <i class="fa-solid fa-table-columns text-base hover:cursor-pointer"></i>
                     </div>
                 </div>
