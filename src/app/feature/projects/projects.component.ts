@@ -18,10 +18,7 @@ import { noWhitespaceValidator } from '../../module/function/validation';
 import { LANGUAGE_LIST, PROJECT_LIST } from '../../module/constant/storage';
 import { Language } from '../../module/classes/language';
 import { Router } from '@angular/router';
-import {
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects',
@@ -66,6 +63,13 @@ export class ProjectsComponent implements OnInit {
     this.projectList.set(
       this.storageService.retrieveObj<Project[]>(PROJECT_LIST) ?? []
     );
+  }
+
+  goToTranslation(id: number): void {
+    this.router.navigate([
+      `translations/${this.appSettingsService.layoutPage()}`,
+      id,
+    ]);
   }
 
   addProject(): void {

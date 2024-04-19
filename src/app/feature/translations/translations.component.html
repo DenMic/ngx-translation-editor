@@ -1,0 +1,41 @@
+<div class="h-full px-4 mb-4 overflow-hidden">
+  <edt-card>
+
+    <router-outlet />
+
+  </edt-card>
+</div>
+
+<!-- General DropDown -->
+<edt-dropdown #ddGeneral (onClose)="closeDropGeneral()">
+    <ng-container *ngTemplateOutlet="ddTemplate()"></ng-container>
+</edt-dropdown>
+
+<!-- Template Flag list project DropDown -->
+<ng-template #tmpFlag>
+    @for (lang of comunicationService.project()?.languages; track $index) {
+        <!-- selectLanguage(lang); -->
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)=" closeDropGeneral();">
+            <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+            <span>{{ 'FLAG.' + lang.description | translate }}</span>
+        </div>
+    }
+    <!-- addLangComp.toggle(); -->
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)=" closeDropGeneral();">
+        <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
+        <span>{{ 'LANGUAGE.ADD' | translate }}</span>
+    </div>
+</ng-template>
+
+<!-- Template Extrabutton DropDown -->
+<ng-template #tmpExtraButton>
+    <!-- (click)="showImportPop()" -->
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer">
+        <i class="fa-solid fa-file-import text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+        <span>{{ 'IMPORT' | translate }}</span>
+    </div>
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="closeDropGeneral();">
+        <i class="fa-solid fa-download text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+        <span>{{ 'EXPORT' | translate }}</span>
+    </div>
+</ng-template>
