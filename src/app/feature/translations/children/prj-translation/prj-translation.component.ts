@@ -5,10 +5,8 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { AppSettingsService } from '../../../../module/service/app-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { EdtCardComponent } from '../../../../share/component/edt-card/edt-card.component';
-import { Project } from '../../../../module/classes/project';
 import { Language } from '../../../../module/classes/language';
 import { EdtPopupComponent } from '../../../../share/component/edt-popup/edt-popup.component';
 import { EdtButtonComponent } from '../../../../share/component/edt-button/edt-button.component';
@@ -39,7 +37,6 @@ import {
 } from '../../../../module/function/project-Helper';
 import { copyObject } from '../../../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DragDropDirective } from './directive/drag-drop.directive';
 import { NgTemplateOutlet } from '@angular/common';
 import { ComunicationService } from '../../service/comunication.service';

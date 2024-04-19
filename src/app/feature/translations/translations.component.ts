@@ -11,7 +11,6 @@ import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dro
 import { ComunicationService } from './service/comunication.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-import { Comunication } from './class/comunication';
 import { ProjectService } from '../../module/service/project.service';
 import { NgTemplateOutlet } from '@angular/common';
 
