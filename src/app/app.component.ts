@@ -5,7 +5,7 @@ import { NgClass } from '@angular/common';
 import { StorageService } from './module/service/storage.service';
 import { Language } from './module/classes/language';
 import { flagsLang } from './module/constant/flags';
-import { PROJECT_LANG } from './module/constant/storage';
+import { PROJECT_LANG, THEME } from './module/constant/storage';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EdtDropdownComponent } from './share/component/edt-dropdown/edt-dropdown.component';
 
@@ -17,35 +17,28 @@ import { EdtDropdownComponent } from './share/component/edt-dropdown/edt-dropdow
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  dropFlags = viewChild(EdtDropdownComponent);
   title = 'ngx-translation-editor';
-
-  applicationLanguage = signal<Language | undefined>(undefined);
 
   private readonly storageService = inject(StorageService);
   private readonly translateService = inject(TranslateService);
   protected readonly appSettingsService = inject(AppSettingsService);
   protected readonly router = inject(Router);
 
-  protected readonly flagsLang = flagsLang;
-
   ngOnInit(): void {
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
+    let theme = this.storageService.retrieve(THEME);
 
     if (!lang) {
       lang = flagsLang[0];
       this.storageService.store(PROJECT_LANG, lang);
     }
 
-    this.applicationLanguage.set(lang);
-    this.translateService.use(lang.fileName);
-  }
+    if (!theme) {
+      theme = 'light';
+      this.storageService.store(THEME, theme);
+    }
 
-  selectLanguage(lang: Language): void {
-    this.storageService.store(PROJECT_LANG, lang);
-    this.applicationLanguage.set(lang);
     this.translateService.use(lang.fileName);
-
-    this.dropFlags()?.close();
+    this.appSettingsService.setTheme(theme);
   }
 }

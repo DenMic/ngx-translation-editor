@@ -1,0 +1,80 @@
+<div class="grid grid-cols-2 gridSettings justify-center defaultText">
+    <!-- <edt-card> -->
+
+        <!-- <div class="headerCardPage flex-row-reverse sticky top-0 h-12 z-20 dark:bg-base-900"> -->
+            
+        <!-- </div> -->
+        <!-- <div class="flex flex-1"> -->
+            <div class="mt-5 border-r border-r-black/10 dark:border-r-white/10">
+                <div class="font-semibold p-1 ps-2 mr-2 rounded-md hover:cursor-pointer 
+                    bg-black/10 hover:bg-black/15
+                    dark:bg-white/10 dark:hover:bg-white/15">
+                    <span>{{ 'SETTINGS.BASE_SETTINGS' | translate }}</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-8 p-4">
+                <!-- Layout application -->
+                <div class="flex flex-col gap-4">
+                    <div class="uppercase font-semibold text-lg pb-2 border-b border-b-black/10 dark:border-b-white/10">
+                        <span>{{ 'SETTINGS.APPARANCE' | translate }}</span>
+                    </div>
+
+                    <div class="flex gap-4 items-center">
+                        <span>{{ 'SETTINGS.LAYOUT_TRANSLATION' | translate }}:</span>
+                        <div class="buttonSecondary" 
+                            [ngClass]="{ 'selected': appSettingsService.layoutPage() == 'list'}"
+                            (click)="appSettingsService.setLayoutPage('list')">
+                            <i class="fa-solid fa-table-list text-base text-neutral-50'"></i>
+                        </div>
+                        <div class="buttonSecondary" 
+                            [ngClass]="{ 'selected': appSettingsService.layoutPage() == 'column'}"
+                            (click)="appSettingsService.setLayoutPage('column')">
+                            <i class="fa-solid fa-table-columns text-base "></i>
+                        </div>
+                    </div>
+
+                    <!-- Dark Mode -->
+                    <div class="flex gap-4 items-center">
+                        <span>{{ 'SETTINGS.DARK_MODE' | translate }}:</span>
+                        <label class="inline-flex items-center cursor-pointer" >
+                            <input type="checkbox" [checked]="appSettingsService.darkTheme()" class="sr-only peer" (click)="switchDarkTheme()">
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="uppercase font-semibold text-lg pb-2 border-b border-b-black/10 dark:border-b-white/10">
+                        <span>{{ 'LANGUAGE.LANGUAGE' | translate }}</span>
+                    </div>
+
+                <!-- Selected Language -->
+                <div class="flex gap-4 items-center">
+                    <span>{{ 'SETTINGS.SELECTED_LANGUAGE' | translate }}:</span>
+                    <div #dFlag class="flex gap-2 items-center hover:cursor-pointer" (click)="dropFlags.show(dFlag)">
+                        @if(applicationLanguage()){
+                            <span class="text-base" [class]="'fi fi-' + applicationLanguage()?.flagName"></span> 
+                        } @else {
+                            <i class="fa-solid fa-circle-question text-xl"></i>
+                        }
+                        {{ 'FLAG.' + applicationLanguage()?.description | translate }}
+                        <i class="fa-solid fa-caret-down text-lg"></i>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        <!-- </div> -->
+
+    <!-- </edt-card> -->
+<!-- </div> -->
+
+<edt-dropdown #dropFlags>
+    @for (lang of flagsLang; track $index) {
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang)">
+            <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
+            <span>{{ 'FLAG.' + lang.description | translate }}</span>
+        </div>
+    }
+</edt-dropdown>

@@ -1,0 +1,62 @@
+<div class="flex flex-col justify-center items-center defaultText">
+
+    <div class="flex justify-between w-2/3 pb-3 mb-3 borderBottom z-20">
+        <div class="flex gap-4 items-center">
+            <!-- language -->
+            <div #dFlag class="buttonSecondary" (click)="showDropGeneral(dFlag, 'language')">
+                @if(comunicationService.selectedLang()){
+                    <span class="text-base" [class]="'fi fi-' + comunicationService.selectedLang()?.flagName"></span> 
+                } @else {
+                    <i class="fa-solid fa-circle-question text-xl"></i>
+                }
+                <i class="fa-solid fa-caret-down text-lg"></i>
+            </div>
+            <!-- Search text -->
+            <div class="flex gap-2 items-center py-2 px-3 
+                border border-neutral-400 rounded-md
+                bg-neutral-50 dark:bg-base-800/50">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" [(ngModel)]="searchValue" class="appearance-none bg-transparent outline-none" [attr.aria-label]="'SEARCH' | translate" (blur)="searchValueChange()" />
+            </div>
+            <!-- Sort -->
+            <div class="buttonSecondary !py-2" (click)="clickSortTranslation()">
+                <i class="fa-solid fa-arrow-down-a-z "></i>
+                <span>{{ 'FUNCTION.SORT_GLOBAL' | translate }}</span>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div #dMenu class="buttonSecondary !px-4" (click)="showDropGeneral(dMenu, 'extra');">
+                <i class="fa-solid fa-ellipsis-vertical text-base hover:cursor-pointer"></i>
+            </div>
+            @if(comunicationService.selectedLang()){
+                <div class="buttonSecondary" (click)="addTranslation();">
+                    <i class="fa-solid fa-plus text-base hover:cursor-pointer"></i>
+                    <span>{{ 'TRANSLATION.ADD' | translate }}</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    @for (translation of comunicationService.project()?.translations; track $index) {
+        @defer(on viewport) {
+            <div class="w-2/3">
+                <translation-row 
+                    [translation]="translation" 
+                    [selectedLang]="comunicationService.selectedLang()"
+                    (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                    (onAdd)="addSubTranslation($event)"
+                    (onRemove)="removeTranslation($event)">
+                </translation-row>
+            </div>
+        } @placeholder {
+            <div class="flex items-center px-3 w-2/3 h-[34px] animate-pulse">
+                <div class="h-2.5 rounded-full w-full mb-4"></div>
+            </div>
+        }
+    } @empty {
+        <div class="p-12 text-center text-lg">
+            <span class="font-semibold text-neutral-600 dark: dark:text-neutral-500">{{ 'INFO.NO_TRANSLATION' | translate }}</span>
+        </div>
+    }
+
+</div>

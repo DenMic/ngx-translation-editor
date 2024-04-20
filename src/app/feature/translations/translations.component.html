@@ -1,61 +1,9 @@
 <div class="h-full px-4 mb-4 overflow-hidden">
-    <edt-card>
+  <!-- <edt-card> -->
 
-        <div class="headerCardPage justify-between sticky top-0">
-            <div class="flex gap-4 py-1 items-center">
-                <div #dFlag class="buttonPrimary !py-1" (click)="showDropGeneral(dFlag, tmpFlag)">
-                    @if(selectedLang()){
-                        <span class="text-base" [class]="'fi fi-' + selectedLang()?.flagName"></span> 
-                    } @else {
-                        <i class="fa-solid fa-circle-question text-xl"></i>
-                    }
-                    <i class="fa-solid fa-caret-down text-lg"></i>
-                </div>
-                <div class="flex gap-2 border border-neutral-300 bg-neutral-50 items-center py-2 px-3 rounded-md">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" [(ngModel)]="searchValue" class="appearance-none bg-transparent outline-none" [attr.aria-label]="'SEARCH' | translate" (blur)="searchValueChange()" />
-                </div>
-                <div class="buttonPrimary" (click)="clickSortTranslation()">
-                    <i class="fa-solid fa-arrow-down-a-z "></i>
-                    <span>{{ 'FUNCTION.SORT_GLOBAL' | translate }}</span>
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <div #dMenu class="buttonPrimary" (click)="showDropGeneral(dMenu, tmpExtraButton);">
-                    <i class="fa-solid fa-ellipsis-vertical text-base hover:cursor-pointer"></i>
-                </div>
-                @if(selectedLang()){
-                    <div class="buttonPrimary" (click)="popTemplate.set(tmpAddTranslation); popGeneral.toggle()">
-                        <i class="fa-solid fa-plus text-base hover:cursor-pointer"></i>
-                        <span>{{ 'TRANSLATION.ADD' | translate }}</span>
-                    </div>
-                }
-            </div>
-        </div>
+    <router-outlet />
 
-        @for (translation of project()?.translations; track $index) {
-            @defer(on viewport) {
-                <div class="w-full even:bg-neutral-100 odd:bg-neutral-200">
-                    <translation-row 
-                        [translation]="translation" 
-                        [selectedLang]="selectedLang()"
-                        (onValueChange)="translationValChange($event.newVal, $event.translationId)"
-                        (onAdd)="addSubTranslation($event)"
-                        (onRemove)="removeTranslation($event)">
-                    </translation-row>
-                </div>
-            } @placeholder {
-                <div class="flex items-center px-3 w-full h-[34px] animate-pulse">
-                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-4"></div>
-                </div>
-            }
-        } @empty {
-            <div class="p-12 text-center">
-                <span class="font-semibold text-xl text-neutral-600">{{ 'INFO.NO_TRANSLATION' | translate }}</span>
-            </div>
-        }
-
-    </edt-card>
+  <!-- </edt-card> -->
 </div>
 
 <!-- General DropDown -->
@@ -63,19 +11,15 @@
     <ng-container *ngTemplateOutlet="ddTemplate()"></ng-container>
 </edt-dropdown>
 
-<!-- General Popup -->
-<edt-popup #popGeneral>
-    <ng-container *ngTemplateOutlet="popTemplate()"></ng-container>
-</edt-popup>
-
 <!-- Template Flag list project DropDown -->
 <ng-template #tmpFlag>
-    @for (lang of project()?.languages; track $index) {
-        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang); closeDropGeneral();">
+    @for (lang of comunicationService.project()?.languages; track $index) {
+        <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="selectLanguage(lang);">
             <span class="text-xl" [class]="'fi fi-' + lang.flagName"></span> 
             <span>{{ 'FLAG.' + lang.description | translate }}</span>
         </div>
     }
+
     <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); closeDropGeneral();">
         <i class="fa-solid fa-plus text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
         <span>{{ 'LANGUAGE.ADD' | translate }}</span>
@@ -85,18 +29,23 @@
 <!-- Template Extrabutton DropDown -->
 <ng-template #tmpExtraButton>
     <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="showImportPop()">
-        <i class="fa-solid fa-file-import text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+        <i class="fa-solid fa-file-import text-xl"></i>
         <span>{{ 'IMPORT' | translate }}</span>
     </div>
     <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="closeDropGeneral();">
-        <i class="fa-solid fa-download text-xl hover:cursor-pointer hover:text-neutral-800"></i>
+        <i class="fa-solid fa-download text-xl"></i>
         <span>{{ 'EXPORT' | translate }}</span>
     </div>
 </ng-template>
 
+<!-- General Popup -->
+<edt-popup #popGeneral>
+    <ng-container *ngTemplateOutlet="popTemplate()"></ng-container>
+</edt-popup>
+
 <!-- Template Add Translation Popup -->
 <ng-template #tmpAddTranslation>
-    <div class="p-8">
+    <div class="p-8 defaultText">
         <div class="mb-8 font-semibold text-2xl">
             {{ 'TRANSLATION.ADD' | translate }}
         </div>
@@ -117,14 +66,14 @@
 
 <!-- Template Import File -->
 <ng-template #tmpImport>
-    <div class="p-8 w-[500px]">
+    <div class="p-8 w-[500px] defaultText">
         <div class="mb-8 font-semibold text-2xl">
             {{ 'IMPORT' | translate }}
         </div>
 
         @if(files().length == 0) {
             <div class="flex items-center justify-center w-full bg-gray-50 rounded-lg hover:bg-gray-100" edtDragDrop (fileDropped)="onFileDropped($event)">
-                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-gray-700  dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-transparent dark:hover:bg-bray-800 dark:bg-base-800  dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-base-900">
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
                         <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
@@ -137,7 +86,7 @@
             </div>
         } @else {
             @for (item of files(); track $index) {
-                <div class="flex w-full justify-between gap-4 items-center border py-2 px-4 rounded-md bg-neutral-200">
+                <div class="flex w-full justify-between gap-4 items-center py-2 px-4 rounded-md bg-neutral-300 dark:bg-base-800">
                     <div class="flex gap-4 items-center">
                         <i class="fa-solid fa-file text-xl"></i>
                         <span class="text-base">{{ item.name }}</span>
@@ -156,4 +105,4 @@
 </ng-template>
 
 <!-- Pop add Language Popup -->
-<add-language #addLangComp [prjId]="project()?.id" (onClose)="addLangClose($event)"></add-language>
+<add-language #addLangComp [prjId]="comunicationService.project()?.id" (onClose)="addLangClose($event)"></add-language>

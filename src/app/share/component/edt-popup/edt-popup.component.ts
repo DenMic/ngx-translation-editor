@@ -4,12 +4,11 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { EdtCardComponent } from '../edt-card/edt-card.component';
 
 @Component({
   selector: 'edt-popup',
   standalone: true,
-  imports: [EdtCardComponent],
+  imports: [],
   templateUrl: './edt-popup.component.html',
   styleUrl: './edt-popup.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,5 +23,13 @@ export class EdtPopupComponent {
 
   toggle(): void {
     this.show.update((val) => !val);
+  }
+
+  showPop(): void {
+    this.show.set(true);
+  }
+
+  closePop(): void {
+    this.show.set(false);
   }
 }

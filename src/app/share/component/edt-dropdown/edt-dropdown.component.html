@@ -1,5 +1,5 @@
 <ng-template #templateRef>
-    <div class="min-w[144px] mt-1 bg-neutral-100 flex-col justify-start items-start inline-flex rounded-md shadow overflow-hidden">
+    <div [class]="cssClass()">
         
         <!-- Titolo -->
         @if(showTitle()) {

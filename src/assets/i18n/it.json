@@ -1,51 +1,63 @@
 {
-    "NAME": "Nome",
-    "DESCRIPTION": "Descrizione",
-    "VALUE": "Valore",
-    "CLOSE": "Chiudi",
-    "ADD": "Aggiungi",
-    "EXTENTION_NAME": "Nome estensione",
-    "SEARCH": "Cerca",
-    "IMPORT": "Importa",
-    "EXPORT": "Esporta",
+  "NAME": "Nome",
+  "DESCRIPTION": "Descrizione",
+  "VALUE": "Valore",
+  "CLOSE": "Chiudi",
+  "ADD": "Aggiungi",
+  "EXTENTION_NAME": "Nome estensione",
+  "SEARCH": "Cerca",
+  "IMPORT": "Importa",
+  "EXPORT": "Esporta",
+  "TREE_LIST": "Lista ad albero",
+  "LIST": "Lista",
+  "COLUMN": "Colonna",
 
-    "PROJECT": {
-        "TITLE_PAGE": "Progetti",
-        "NEW": "Nuovo progetto",
-        "ADD": "Aggiungi progetto",
-        "REMOVE": "Elimina progetto"
-    },
+  "PROJECT": {
+    "TITLE_PAGE": "Progetti",
+    "NEW": "Nuovo progetto",
+    "ADD": "Aggiungi progetto",
+    "REMOVE": "Elimina progetto"
+  },
 
-    "LANGUAGE": {
-        "TITLE_PAGE": "Lingue di Default",
-        "LANGUAGE": "Lingua",
-        "ADD": "Aggiungi lingua",
-        "EDIT": "Modifica lingua",
-        "REMOVE": "Elimina lingua"
-    },
+  "LANGUAGE": {
+    "TITLE_PAGE": "Lingue di Default",
+    "LANGUAGE": "Lingua",
+    "ADD": "Aggiungi lingua",
+    "EDIT": "Modifica lingua",
+    "REMOVE": "Elimina lingua"
+  },
 
-    "TRANSLATION": {
-        "TITLE_PAGE": "TRADUZIONI - {{prjName}}",
-        "ADD": "Aggiungi traduzione",
-        "REMOVE": "Rimuovi traduzione"
-    },
+  "TRANSLATION": {
+    "TITLE_PAGE": "TRADUZIONI - {{prjName}}",
+    "ADD": "Aggiungi traduzione",
+    "REMOVE": "Rimuovi traduzione"
+  },
 
-    "FLAG": {
-        "ITALY": "Italia",
-        "ENGLAND": "Inghilterra",
-        "GERMANI": "Germania",
-        "SPAIN": "Spagna",
-        "FRANCE": "Francia",
-        "SLOVENIA": "Slovenia"
-    },
+  "SETTINGS": {
+    "TITLE_PAGE": "Impostazioni",
+    "APPARANCE": "Aspetto",
+    "BASE_SETTINGS": "Impostazioni base",
+    "LAYOUT_TRANSLATION": "Layout pagina traduzioni",
+    "SELECTED_LANGUAGE": "Lingua selezionata",
+    "DARK_MODE": "Dark mode"
+  },
 
-    "FUNCTION": {
-        "SORT_GLOBAL": "Ordina Global"
-    },
+  "FLAG": {
+    "ITALY": "Italia",
+    "ENGLAND": "Inghilterra",
+    "GERMANI": "Germania",
+    "SPAIN": "Spagna",
+    "FRANCE": "Francia",
+    "SLOVENIA": "Slovenia"
+  },
 
-    "INFO": {
-        "NO_PROJECT": "Nessun progetto presente",
-        "NO_LANGUAGE": "Nessuna lingua presente",
-        "NO_TRANSLATION": "Nessuna traduzione presente"
-    }
+  "FUNCTION": {
+    "SORT_GLOBAL": "Ordina Global"
+  },
+
+  "INFO": {
+    "NO_PROJECT": "Nessun progetto presente",
+    "NO_LANGUAGE": "Nessuna lingua presente",
+    "NO_TRANSLATION": "Nessuna traduzione presente"
+  }
 }

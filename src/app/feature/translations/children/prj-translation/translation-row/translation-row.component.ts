@@ -1,7 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
-import { Translation } from '../../../module/classes/translation';
-import { Language } from '../../../module/classes/language';
-import { EdtInputComponent } from '../../../share/component/edt-input/edt-input.component';
+import { Translation } from '../../../../../module/classes/translation';
+import { Language } from '../../../../../module/classes/language';
+import { EdtInputComponent } from '../../../../../share/component/edt-input/edt-input.component';
 import { TranslationEvent } from '../class/translation-event';
 import { TranslateModule } from '@ngx-translate/core';
 

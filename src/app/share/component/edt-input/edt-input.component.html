@@ -1,4 +1,4 @@
-<label class="block text-gray-700 text-sm font-bold">
+<label class="block defaultText pb-1 pl-1 text-sm font-bold">
     {{ label() }}
 </label>
 
@@ -7,12 +7,13 @@
     <input 
         [(ngModel)]="value"
         [disabled]="disabled()"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg 
-        block w-full px-2.5 py-2 dark:bg-gray-700 
+        class="bg-neutral-50 border border-gray-300 text-gray-900 text-xs rounded-lg 
+        block w-full px-2.5 py-2 dark:bg-base-800/50
         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
         outline-none" 
-        [ngClass]="{ 'border-red-700': control?.invalid }"
+        [ngClass]="{ 'border-red-700 dark:border-red-700/50': control?.invalid }"
         type="text" 
+        [attr.aria-label]="'translation input'"
         [placeholder]="label() ?? ''"
         (input)="onChange(value)"
         (blur)="blur(value())" />
@@ -25,10 +26,11 @@
         [disabled]="disabled()"
         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg 
             border border-gray-300
-            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+            dark:bg-base-800/50 dark:border-gray-600 dark:placeholder-gray-400 
             dark:text-white outline-none" 
-        [ngClass]="{ 'border-red-700': control?.invalid }"
+        [ngClass]="{ 'border-red-700 dark:border-red-700/50': control?.invalid }"
         [placeholder]="label() ?? ''"
+        [attr.aria-label]="'translation input'"
         (input)="onChange(value)"
         (blur)="blur(value())">
     </textarea>

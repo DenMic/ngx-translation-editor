@@ -1,51 +1,63 @@
 {
-    "NAME": "Name",
-    "DESCRIPTION": "Description",
-    "VALUE": "Value",
-    "CLOSE": "Close",
-    "ADD": "Add",
-    "EXTENTION_NAME": "Extention name",
-    "SEARCH": "Search",
-    "IMPORT": "Import",
-    "EXPORT": "Export",
+  "NAME": "Name",
+  "DESCRIPTION": "Description",
+  "VALUE": "Value",
+  "CLOSE": "Close",
+  "ADD": "Add",
+  "EXTENTION_NAME": "Extention name",
+  "SEARCH": "Search",
+  "IMPORT": "Import",
+  "EXPORT": "Export",
+  "TREE_LIST": "Tree list",
+  "LIST": "List",
+  "COLUMN": "Column",
 
-    "PROJECT": {
-        "TITLE_PAGE": "Project",
-        "NEW": "New Project",
-        "ADD": "Add Project",
-        "REMOVE": "Remove Project"
-    },
+  "PROJECT": {
+    "TITLE_PAGE": "Project",
+    "NEW": "New Project",
+    "ADD": "Add Project",
+    "REMOVE": "Remove Project"
+  },
 
-    "LANGUAGE": {
-        "TITLE_PAGE": "Default Languages",
-        "LANGUAGE": "Language",
-        "ADD": "Add Language",
-        "EDIT": "Edit Language",
-        "REMOVE": "Remove Language"
-    },
+  "LANGUAGE": {
+    "TITLE_PAGE": "Default Languages",
+    "LANGUAGE": "Language",
+    "ADD": "Add Language",
+    "EDIT": "Edit Language",
+    "REMOVE": "Remove Language"
+  },
 
-    "TRANSLATION": {
-        "TITLE_PAGE": "TRANSLATION - {{prjName}}",
-        "ADD": "Add Translation",
-        "REMOVE": "Remove Translation"
-    },
+  "TRANSLATION": {
+    "TITLE_PAGE": "TRANSLATION - {{prjName}}",
+    "ADD": "Add Translation",
+    "REMOVE": "Remove Translation"
+  },
 
-    "FLAG": {
-        "ITALY": "Italy",
-        "ENGLAND": "England",
-        "GERMANI": "Germani",
-        "SPAIN": "Spain",
-        "FRANCE": "France",
-        "SLOVENIA": "Slovenia"
-    },
+  "SETTINGS": {
+    "TITLE_PAGE": "Settings",
+    "APPARANCE": "Apparance",
+    "BASE_SETTINGS": "Base settings",
+    "LAYOUT_TRANSLATION": "Layout translation page",
+    "SELECTED_LANGUAGE": "Selected language",
+    "DARK_MODE": "Dark mode"
+  },
 
-    "FUNCTION": {
-        "SORT_GLOBAL": "Sort Global"
-    },
+  "FLAG": {
+    "ITALY": "Italy",
+    "ENGLAND": "England",
+    "GERMANI": "Germani",
+    "SPAIN": "Spain",
+    "FRANCE": "France",
+    "SLOVENIA": "Slovenia"
+  },
 
-    "INFO": {
-        "NO_PROJECT": "No projects present",
-        "NO_LANGUAGE": "No languages present",
-        "NO_TRANSLATION": "No translation present"
-    }
+  "FUNCTION": {
+    "SORT_GLOBAL": "Sort Global"
+  },
+
+  "INFO": {
+    "NO_PROJECT": "No projects present",
+    "NO_LANGUAGE": "No languages present",
+    "NO_TRANSLATION": "No translation present"
+  }
 }

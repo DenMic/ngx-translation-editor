@@ -1,58 +1,85 @@
-<div class="h-full px-4 mb-4">
-    <edt-card>
+<div class="flex flex-col justify-center items-center defaultText">
+  <!-- <edt-card> -->
+    <div class="flex flex-row-reverse w-2/3 pb-3 mb-3 borderBottom z-20">
+      <div class="buttonPrimary" (click)="edtAddPrj.toggle()">
+        <i class="fa-solid fa-plus text-base"></i>
+        <span>{{ "PROJECT.NEW" | translate }}</span>
+      </div>
+    </div> 
 
-        <div class="headerCardPage flex-row-reverse sticky top-0 z-20">
-            <div class="buttonPrimary" (click)="edtAddPrj.toggle()">
-                <i class="fa-solid fa-plus text-base hover:cursor-pointer"></i>
-                <span>{{ 'PROJECT.NEW' | translate }}</span>
-            </div>
+    @for (prj of projectList(); track $index) {
+    <div
+      class="flex justify-between items-center w-2/3 p-4 my-2 borderBottom 
+        hover:rounded-md hover:border-transparent hover:cursor-pointer 
+        hover:bg-black/10 dark:hover:bg-white/10"
+      (dblclick)="goToTranslation(prj.id)">
+      <!-- <div>
+        <i
+          class="fa-solid fa-edit iconButton"
+          [title]="'LANGUAGE.EDIT' | translate"
+          (click)="goToTranslation(prj.id)"
+        ></i>
+      </div> -->
+      <div>
+        <div class="text-2xl font-medium text-left pb-2 hover:text-green-700 hover:underline" (click)="goToTranslation(prj.id)">
+          {{ prj.name }}
         </div>
+        <div class="text-base text-left">
+          {{ prj.description }}
+        </div>
+      </div>
 
-        @for (prj of projectList(); track $index) {
-            <div class="grid grid-cols-5 items-center tempCol gap-2 cardRow" (dblclick)="router.navigate(['translation', prj.id])">
-                <div>
-                    <i class="fa-solid fa-edit iconButton" [title]="'LANGUAGE.EDIT' | translate" (click)="router.navigate(['translation', prj.id])"></i>
-                </div>
-                <div class="text-base font-medium text-left">
-                    {{ prj.name }}
-                </div>
-                <div class="text-base text-center">
-                    {{ prj.description }}
-                </div>
-                <div class="flex gap-2 justify-center">
-                    @for(flg of prj.languages; track $index) {
-                        <span class="text-base" [class]="'fi fi-' + flg.flagName"></span> 
-                    }
-                </div>
-                <div>
-                    <i class="fa-solid fa-trash iconButton" [title]="'PROJECT.REMOVE' | translate" (click)="removePrj(prj)"></i>
-                </div>
-            </div>
-        } @empty {
-            <div class="p-12 text-center">
-                <span class="font-semibold text-base text-neutral-600">{{ "INFO.NO_PROJECT" | translate }}</span>
-            </div>
+      <div class="flex gap-2 justify-center">
+        @for(flg of prj.languages; track $index) {
+        <span class="text-base" [class]="'fi fi-' + flg.flagName"></span>
         }
+      </div>
 
-    </edt-card>
+      <div class="buttonSecondary" (click)="removePrj(prj)">
+        <i class="fa-solid fa-trash iconButton"></i>
+        <span>{{'PROJECT.REMOVE' | translate}}</span>
+      </div>
+    </div>
+    } @empty {
+    <div class="p-12 text-center text-lg">
+      <span class="font-semibold text-neutral-600 dark: dark:text-neutral-500">{{
+        "INFO.NO_PROJECT" | translate
+      }}</span>
+    </div>
+    }
+  <!-- </edt-card> -->
 </div>
 
 <edt-popup #edtAddPrj>
-    <div class="p-8">
-        <div class="mb-8 font-semibold text-2xl">
-            {{ 'PROJECT.ADD' | translate }}
-        </div>
-
-        <form [formGroup]="newProjectForm" (submit)="addProject()">
-            <div class="flex flex-col gap-3 mb-6 w-96">
-                <edt-input [label]="'NAME' | translate" formControlName="name"></edt-input>
-                <edt-input [label]="'DESCRIPTION' | translate" inputType="area" formControlName="description"></edt-input>
-            </div>
-            
-            <div class="flex gap-4 justify-end">
-                <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="edtAddPrj.toggle()"></edt-button>
-                <edt-button [label]="'ADD' | translate" [disabled]="!newProjectForm.valid"></edt-button>
-            </div>
-        </form>
+  <div class="p-8 defaultText">
+    <div class="mb-8 font-semibold text-2xl">
+      {{ "PROJECT.ADD" | translate }}
     </div>
+
+    <form [formGroup]="newProjectForm" (submit)="addProject()">
+      <div class="flex flex-col gap-3 mb-6 w-96">
+        <edt-input
+          [label]="'NAME' | translate"
+          formControlName="name"
+        ></edt-input>
+        <edt-input
+          [label]="'DESCRIPTION' | translate"
+          inputType="area"
+          formControlName="description"
+        ></edt-input>
+      </div>
+
+      <div class="flex gap-4 justify-end">
+        <edt-button
+          [label]="'CLOSE' | translate"
+          level="secondary"
+          (onClick)="edtAddPrj.toggle()"
+        ></edt-button>
+        <edt-button
+          [label]="'ADD' | translate"
+          [disabled]="!newProjectForm.valid"
+        ></edt-button>
+      </div>
+    </form>
+  </div>
 </edt-popup>

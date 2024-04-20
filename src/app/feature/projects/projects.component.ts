@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
 import { StorageService } from '../../module/service/storage.service';
 import { Project } from '../../module/classes/project';
@@ -18,12 +18,7 @@ import { noWhitespaceValidator } from '../../module/function/validation';
 import { LANGUAGE_LIST, PROJECT_LIST } from '../../module/constant/storage';
 import { Language } from '../../module/classes/language';
 import { Router } from '@angular/router';
-import {
-  TranslateModule,
-  TranslatePipe,
-  TranslateService,
-} from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects',
@@ -68,6 +63,13 @@ export class ProjectsComponent implements OnInit {
     this.projectList.set(
       this.storageService.retrieveObj<Project[]>(PROJECT_LIST) ?? []
     );
+  }
+
+  goToTranslation(id: number): void {
+    this.router.navigate([
+      `translations/${this.appSettingsService.layoutPage()}`,
+      id,
+    ]);
   }
 
   addProject(): void {

@@ -6,12 +6,14 @@ import {
   OnDestroy,
   TemplateRef,
   ViewContainerRef,
+  computed,
   inject,
   input,
   output,
   viewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AppSettingsService } from '../../../module/service/app-settings.service';
 
 @Component({
   selector: 'edt-dropdown',
@@ -23,6 +25,7 @@ import { Subscription } from 'rxjs';
 export class EdtDropdownComponent implements OnDestroy {
   private overlay: Overlay = inject(Overlay);
   private vcr: ViewContainerRef = inject(ViewContainerRef);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   templateRef = viewChild.required<TemplateRef<any>>('templateRef');
 
@@ -33,6 +36,20 @@ export class EdtDropdownComponent implements OnDestroy {
 
   private overlayRef?: OverlayRef;
   private subscriptions: Subscription[] = [];
+
+  protected cssClass = computed(() => {
+    let baseCss = `flex-col justify-start items-start inline-flex overflow-hidden
+    min-w[144px] mt-1
+    rounded-md shadow dark:shadow-none
+    text-neutral-800 dark:text-neutral-200
+    bg-neutral-100 dark:bg-base-700`;
+
+    if (this.appSettingsService.darkTheme()) {
+      baseCss += ' dark';
+    }
+
+    return baseCss;
+  });
 
   public show(target: HTMLElement) {
     if (this.overlayRef?.hasAttached()) {
