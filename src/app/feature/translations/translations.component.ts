@@ -83,8 +83,6 @@ export class TranslationsComponent {
     value: [undefined],
   });
 
-  prjId = this.activatedRoute.snapshot.params['id'];
-
   // Gestione del dropDown
   private $dropDownControl = this.comunicationService.$dropDownParam
     .pipe(takeUntilDestroyed())
@@ -221,8 +219,9 @@ export class TranslationsComponent {
 
   protected addLangClose(isUpdated: boolean): void {
     if (isUpdated) {
-      this.comunicationService.prjFromStore =
-        this.comunicationService.selectProject(this.prjId);
+      this.comunicationService.loadProjectFromStore(
+        this.comunicationService.idPrj!
+      );
     }
   }
 

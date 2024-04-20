@@ -18,6 +18,7 @@ export class ComunicationService {
   selectedLang = signal<Language | undefined>(undefined);
 
   idParentTranslation: number | undefined = undefined;
+  idPrj?: number;
 
   private dropDownParam = signal<Comunication | undefined>(undefined);
   $dropDownParam = toObservable(this.dropDownParam);

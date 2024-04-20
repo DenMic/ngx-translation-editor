@@ -1,39 +1,19 @@
-import {
-  Component,
-  TemplateRef,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, TemplateRef, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EdtCardComponent } from '../../../../share/component/edt-card/edt-card.component';
-import { Language } from '../../../../module/classes/language';
 import { EdtPopupComponent } from '../../../../share/component/edt-popup/edt-popup.component';
 import { EdtButtonComponent } from '../../../../share/component/edt-button/edt-button.component';
 import { EdtInputComponent } from '../../../../share/component/edt-input/edt-input.component';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { noWhitespaceValidator } from '../../../../module/function/validation';
-import {
-  ItemTranslation,
-  Translation,
-} from '../../../../module/classes/translation';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Translation } from '../../../../module/classes/translation';
 import { ProjectService } from '../../../../module/service/project.service';
 import { EdtDropdownComponent } from '../../../../share/component/edt-dropdown/edt-dropdown.component';
 import { AddLanguageComponent } from '../../../../share/add-language/add-language.component';
 import { TranslationRowComponent } from './translation-row/translation-row.component';
 import {
-  createTranslationsFromObj,
   filterTranslations,
   findTranslationById,
-  getMaxIdTranslations,
   sortTranslationsByGlobal,
-  updateTranslationsFromObj,
 } from '../../../../module/function/project-Helper';
 import { copyObject } from '../../../../module/function/helper';
 import { TranslateModule } from '@ngx-translate/core';
@@ -67,13 +47,9 @@ import { ddType } from '../../class/comunication-type';
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
-  private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
-
   private activatedRoute = inject(ActivatedRoute);
   protected comunicationService = inject(ComunicationService);
   private projectService = inject(ProjectService);
-
-  prjId = this.activatedRoute.snapshot.params['id'];
 
   // Popup settings
   popTemplate = signal<TemplateRef<any> | null>(null);
@@ -81,7 +57,10 @@ export class PrjTranslationComponent {
   protected searchValue = '';
 
   constructor() {
-    this.comunicationService.loadProjectFromStore(this.prjId);
+    this.comunicationService.idPrj = this.activatedRoute.snapshot.params['id'];
+    this.comunicationService.loadProjectFromStore(
+      this.comunicationService.idPrj!
+    );
   }
 
   showDropGeneral(targetElement: HTMLElement, type: ddType): void {
