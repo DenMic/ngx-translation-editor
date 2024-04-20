@@ -10,19 +10,19 @@
     border-b bg-neutral-200 border-b-neutral-300
     dark:bg-base-900 dark:border-b-base-600">
     <!-- <div class="dark:bg-white/20 rounded-md px-3 py-1"> -->
-    <div class="flex gap-5 items-center font-semibold">
+    <div class="flex gap-5 items-center font-semibold defaultText">
       <img src="assets/images/logo.svg" width="32">
       <span>{{ appSettingsService.titlePage() }}</span>
     </div>
 
     <div class="flex gap-4 items-center" >
-      <div class="buttonPrimary" (click)="router.navigate(['project'])">
+      <div class="buttonSecondary" (click)="router.navigate(['project'])">
         <i class="fa-solid fa-cubes text-base hover:cursor-pointer" title="Project"></i>
       </div>
-      <div class="buttonPrimary" (click)="router.navigate(['languages'])">
+      <div class="buttonSecondary" (click)="router.navigate(['languages'])">
         <i class="fa-regular fa-flag text-base hover:cursor-pointer" title="Languages"></i>
       </div>
-      <div class="buttonPrimary" (click)="router.navigate(['settings'])">
+      <div class="buttonSecondary" (click)="router.navigate(['settings'])">
         <i class="fa-solid fa-gear text-base hover:cursor-pointer"></i>
       </div>
     </div>

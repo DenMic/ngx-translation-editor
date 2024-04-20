@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 gridSettings justify-center">
+<div class="grid grid-cols-2 gridSettings justify-center defaultText">
     <!-- <edt-card> -->
 
         <!-- <div class="headerCardPage flex-row-reverse sticky top-0 h-12 z-20 dark:bg-base-900"> -->
@@ -22,13 +22,13 @@
 
                     <div class="flex gap-4 items-center">
                         <span>{{ 'SETTINGS.LAYOUT_TRANSLATION' | translate }}:</span>
-                        <div class="buttonPrimary" 
+                        <div class="buttonSecondary" 
                             [ngClass]="{ 'selected': appSettingsService.layoutPage() == 'list'}"
                             (click)="appSettingsService.setLayoutPage('list')">
                             <i class="fa-solid fa-table-list text-base text-neutral-50'"></i>
                         </div>
-                        <div class="buttonPrimary" 
-                            [ngClass]="{ '!bg-green-600': appSettingsService.layoutPage() == 'column'}"
+                        <div class="buttonSecondary" 
+                            [ngClass]="{ 'selected': appSettingsService.layoutPage() == 'column'}"
                             (click)="appSettingsService.setLayoutPage('column')">
                             <i class="fa-solid fa-table-columns text-base "></i>
                         </div>

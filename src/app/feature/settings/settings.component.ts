@@ -47,7 +47,6 @@ export class SettingsComponent {
 
   ngOnInit(): void {
     let layout: layoutType = this.storageService.retrieve(LAYOUT_PAGE);
-    let theme = this.storageService.retrieve(THEME);
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
 
     if (!layout) {
@@ -60,15 +59,9 @@ export class SettingsComponent {
       this.storageService.store(PROJECT_LANG, lang);
     }
 
-    if (!theme) {
-      theme = 'light';
-      this.storageService.store(THEME, theme);
-    }
-
     this.applicationLanguage.set(lang);
     this.translateService.use(lang.fileName);
     this.appSettingsService.setLayoutPage(layout);
-    this.appSettingsService.setTheme(theme);
   }
 
   selectLanguage(lang: Language): void {

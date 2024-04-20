@@ -5,7 +5,7 @@ import { NgClass } from '@angular/common';
 import { StorageService } from './module/service/storage.service';
 import { Language } from './module/classes/language';
 import { flagsLang } from './module/constant/flags';
-import { PROJECT_LANG } from './module/constant/storage';
+import { PROJECT_LANG, THEME } from './module/constant/storage';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EdtDropdownComponent } from './share/component/edt-dropdown/edt-dropdown.component';
 
@@ -26,12 +26,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
+    let theme = this.storageService.retrieve(THEME);
 
     if (!lang) {
       lang = flagsLang[0];
       this.storageService.store(PROJECT_LANG, lang);
     }
 
+    if (!theme) {
+      theme = 'light';
+      this.storageService.store(THEME, theme);
+    }
+
     this.translateService.use(lang.fileName);
+    this.appSettingsService.setTheme(theme);
   }
 }
