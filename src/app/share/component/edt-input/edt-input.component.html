@@ -13,6 +13,7 @@
         outline-none" 
         [ngClass]="{ 'border-red-700 dark:border-red-700/50': control?.invalid }"
         type="text" 
+        [attr.aria-label]="'translation input'"
         [placeholder]="label() ?? ''"
         (input)="onChange(value)"
         (blur)="blur(value())" />
@@ -29,6 +30,7 @@
             dark:text-white outline-none" 
         [ngClass]="{ 'border-red-700 dark:border-red-700/50': control?.invalid }"
         [placeholder]="label() ?? ''"
+        [attr.aria-label]="'translation input'"
         (input)="onChange(value)"
         (blur)="blur(value())">
     </textarea>
