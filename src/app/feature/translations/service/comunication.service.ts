@@ -17,8 +17,13 @@ export class ComunicationService {
   project = signal<Project | undefined>(undefined);
   selectedLang = signal<Language | undefined>(undefined);
 
+  idParentTranslation: number | undefined = undefined;
+
   private dropDownParam = signal<Comunication | undefined>(undefined);
   $dropDownParam = toObservable(this.dropDownParam);
+
+  private popParam = signal<Comunication | undefined>(undefined);
+  $popParam = toObservable(this.popParam);
 
   loadProjectFromStore(id: number): void {
     this.prjFromStore = copyObject(this.selectProject(id));
@@ -37,6 +42,10 @@ export class ComunicationService {
 
   setDropDownParam(comunication: Comunication | undefined): void {
     this.dropDownParam.set(comunication);
+  }
+
+  setPopParam(comunication: Comunication | undefined): void {
+    this.popParam.set(comunication);
   }
 
   selectProject(id: number): Project | undefined {

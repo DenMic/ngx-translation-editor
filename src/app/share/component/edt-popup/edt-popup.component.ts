@@ -24,4 +24,12 @@ export class EdtPopupComponent {
   toggle(): void {
     this.show.update((val) => !val);
   }
+
+  showPop(): void {
+    this.show.set(true);
+  }
+
+  closePop(): void {
+    this.show.set(false);
+  }
 }

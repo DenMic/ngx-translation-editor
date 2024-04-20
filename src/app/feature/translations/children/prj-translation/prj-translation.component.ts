@@ -67,29 +67,18 @@ import { ddType } from '../../class/comunication-type';
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
-  private popGeneral = viewChild<EdtPopupComponent>('popGeneral');
   private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
 
   private activatedRoute = inject(ActivatedRoute);
   protected comunicationService = inject(ComunicationService);
   private projectService = inject(ProjectService);
 
-  private fb = inject(FormBuilder);
-
   prjId = this.activatedRoute.snapshot.params['id'];
 
   // Popup settings
   popTemplate = signal<TemplateRef<any> | null>(null);
 
-  protected files = signal<any[]>([]);
-
   protected searchValue = '';
-  protected newLangForm: FormGroup = this.fb.group({
-    global: [undefined, [Validators.required, noWhitespaceValidator()]],
-    value: [undefined],
-  });
-
-  private idParentTranslation: number | undefined = undefined;
 
   constructor() {
     this.comunicationService.loadProjectFromStore(this.prjId);
@@ -100,85 +89,6 @@ export class PrjTranslationComponent {
       comunicationType: type,
       target: targetElement,
     });
-  }
-
-  showImportPop(): void {
-    this.popTemplate.set(this.tmpImport() ?? null);
-    this.popGeneral()?.toggle();
-    this.comunicationService.setDropDownParam(undefined);
-  }
-
-  addItemTraslate(): void {
-    if (this.comunicationService.prjFromStore && this.newLangForm.valid) {
-      const newTranslationForm = this.newLangForm.value;
-
-      // Add All languages but set only the selected
-      const itemsTranslation: ItemTranslation[] = [];
-      for (
-        let index = 0;
-        index < this.comunicationService.prjFromStore.languages.length;
-        index++
-      ) {
-        const item = {
-          lang: this.comunicationService.prjFromStore.languages[index].flagName,
-        } as ItemTranslation;
-
-        if (
-          this.comunicationService.prjFromStore.languages[index].flagName ==
-          this.comunicationService.selectedLang()?.flagName
-        ) {
-          item.value = newTranslationForm.value && newTranslationForm.value();
-        } else {
-          item.value = undefined;
-        }
-
-        itemsTranslation.push(item);
-      }
-
-      let newId = 1;
-      if (
-        this.comunicationService.prjFromStore.translations &&
-        this.comunicationService.prjFromStore.translations.length > 0
-      ) {
-        newId =
-          getMaxIdTranslations(
-            this.comunicationService.prjFromStore.translations
-          ) + 1;
-      }
-
-      const newTranslation: Translation = {
-        id: newId,
-        global: newTranslationForm.global && newTranslationForm.global(),
-        items: itemsTranslation,
-      } as Translation;
-
-      if (this.idParentTranslation) {
-        let parentTranslation = findTranslationById(
-          this.comunicationService.prjFromStore!.translations,
-          this.idParentTranslation
-        );
-        if (parentTranslation) {
-          const oldArray = parentTranslation.translation ?? [];
-          parentTranslation.translation = [...oldArray, newTranslation];
-          parentTranslation.items = undefined;
-        }
-      } else {
-        const oldArray =
-          this.comunicationService.prjFromStore!.translations ?? [];
-        this.comunicationService.prjFromStore!.translations = [
-          ...oldArray,
-          newTranslation,
-        ];
-      }
-
-      this.comunicationService.project.set(
-        copyObject(this.comunicationService.prjFromStore)
-      );
-      this.projectService.updateTranslation(this.comunicationService.project());
-
-      this.resetFormLang();
-      this.closeAddTranslation();
-    }
   }
 
   removeTranslation(translationId: number): void {
@@ -242,25 +152,18 @@ export class PrjTranslationComponent {
     }
   }
 
+  protected addTranslation(): void {
+    this.comunicationService.idParentTranslation = undefined;
+    this.comunicationService.setPopParam({
+      comunicationType: 'language',
+    });
+  }
+
   protected addSubTranslation(idParTranslation: number): void {
-    this.idParentTranslation = idParTranslation;
-    this.popGeneral()?.toggle();
-  }
-
-  protected closeAddTranslation(): void {
-    this.idParentTranslation = undefined;
-    this.popGeneral()?.toggle();
-  }
-
-  protected selectLanguage(lang: Language): void {
-    this.comunicationService.selectedLang.set(lang);
-  }
-
-  protected addLangClose(isUpdated: boolean): void {
-    if (isUpdated) {
-      this.comunicationService.prjFromStore =
-        this.comunicationService.selectProject(this.prjId);
-    }
+    this.comunicationService.idParentTranslation = idParTranslation;
+    this.comunicationService.setPopParam({
+      comunicationType: 'language',
+    });
   }
 
   protected searchValueChange(): void {
@@ -281,65 +184,5 @@ export class PrjTranslationComponent {
         copyObject(this.comunicationService.prjFromStore)
       );
     }
-  }
-
-  protected onFileDropped(files: any): void {
-    for (let index = 0; index < files.length; index++) {
-      const element = files[index];
-      if (!element.name.toLowerCase().endsWith('.json')) {
-        return;
-      }
-    }
-
-    this.files.update((e) => [...e, ...files]);
-  }
-
-  protected fileUploaded(event: any): void {
-    const files: File[] = event.target.files;
-
-    for (let index = 0; index < files.length; index++) {
-      const element = files[index];
-      if (!element.name.toLowerCase().endsWith('.json')) {
-        return;
-      }
-    }
-
-    this.files.update((e) => [...e, ...files]);
-  }
-
-  protected async processFile(): Promise<void> {
-    const fileList = this.files();
-
-    if (fileList && fileList.length > 0) {
-      const textFile = await fileList[0].text();
-      const objFile = JSON.parse(textFile);
-      let newTranslation: Translation[] = [];
-
-      if (this.comunicationService.prjFromStore!.translations) {
-        newTranslation = this.comunicationService.prjFromStore!.translations;
-        updateTranslationsFromObj(
-          newTranslation,
-          objFile,
-          this.comunicationService.selectedLang()!,
-          this.comunicationService.prjFromStore!.languages
-        );
-      } else {
-        newTranslation = createTranslationsFromObj(
-          objFile,
-          this.comunicationService.selectedLang()!,
-          this.comunicationService.prjFromStore!.languages
-        );
-      }
-
-      this.comunicationService.prjFromStore!.translations = newTranslation;
-      this.comunicationService.project.set(
-        copyObject(this.comunicationService.prjFromStore)
-      );
-      this.projectService.updateTranslation(this.comunicationService.project());
-    }
-  }
-
-  private resetFormLang() {
-    this.newLangForm.setValue({ global: '', value: '' });
   }
 }
