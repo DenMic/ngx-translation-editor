@@ -4,12 +4,11 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { EdtCardComponent } from '../edt-card/edt-card.component';
 
 @Component({
   selector: 'edt-popup',
   standalone: true,
-  imports: [EdtCardComponent],
+  imports: [],
   templateUrl: './edt-popup.component.html',
   styleUrl: './edt-popup.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

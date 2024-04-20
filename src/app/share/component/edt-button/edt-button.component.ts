@@ -30,7 +30,7 @@ export class EdtButtonComponent {
 
       case 'secondary':
         css =
-          'bg-transparent hover:bg-green-700 text-green-800 font-semibold hover:text-white py-2 px-4 border border-green-700 hover:border-transparent rounded disabled:bg-neutral-400';
+          'bg-transparent hover:bg-green-700 text-green-800 dark:text-green-500 font-semibold hover:text-white py-2 px-4 border border-green-700 dark:border-green-500 hover:border-transparent rounded disabled:bg-neutral-400';
         break;
     }
 
