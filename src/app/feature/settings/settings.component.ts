@@ -5,7 +5,11 @@ import { EdtCardComponent } from '../../share/component/edt-card/edt-card.compon
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Language } from '../../module/classes/language';
 import { StorageService } from '../../module/service/storage.service';
-import { LAYOUT_PAGE, PROJECT_LANG } from '../../module/constant/storage';
+import {
+  LAYOUT_PAGE,
+  PROJECT_LANG,
+  THEME,
+} from '../../module/constant/storage';
 import { flagsLang } from '../../module/constant/flags';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
 import { NgClass } from '@angular/common';
@@ -14,21 +18,15 @@ import { layoutType } from '../../module/types/custom-types';
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [
-    NgClass,
-    EdtCardComponent,
-    EdtDropdownComponent,
-
-    TranslateModule
-  ],
+  imports: [NgClass, EdtCardComponent, EdtDropdownComponent, TranslateModule],
   templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css'
+  styleUrl: './settings.component.css',
 })
 export class SettingsComponent {
   dropFlags = viewChild(EdtDropdownComponent);
-  
+
   protected appSettingsService = inject(AppSettingsService);
-  
+
   applicationLanguage = signal<Language | undefined>(undefined);
   private readonly storageService = inject(StorageService);
   private readonly translateService = inject(TranslateService);
@@ -41,14 +39,18 @@ export class SettingsComponent {
     .subscribe();
 
   private readonly layoutEffect = effect(() => {
-    this.storageService.store(LAYOUT_PAGE, this.appSettingsService.layoutPage());
+    this.storageService.store(
+      LAYOUT_PAGE,
+      this.appSettingsService.layoutPage()
+    );
   });
 
   ngOnInit(): void {
     let layout: layoutType = this.storageService.retrieve(LAYOUT_PAGE);
+    let theme = this.storageService.retrieve(THEME);
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
 
-    if(!layout){
+    if (!layout) {
       layout = 'list';
       this.storageService.store(LAYOUT_PAGE, layout);
     }
@@ -58,9 +60,15 @@ export class SettingsComponent {
       this.storageService.store(PROJECT_LANG, lang);
     }
 
+    if (!theme) {
+      theme = 'light';
+      this.storageService.store(THEME, theme);
+    }
+
     this.applicationLanguage.set(lang);
     this.translateService.use(lang.fileName);
-    this.appSettingsService.setLayoutPage(layout); 
+    this.appSettingsService.setLayoutPage(layout);
+    this.appSettingsService.setTheme(theme);
   }
 
   selectLanguage(lang: Language): void {
@@ -69,5 +77,14 @@ export class SettingsComponent {
     this.translateService.use(lang.fileName);
 
     this.dropFlags()?.close();
+  }
+
+  switchDarkTheme(): void {
+    let theme: 'light' | 'dark' = this.appSettingsService.darkTheme()
+      ? 'light'
+      : 'dark';
+
+    this.storageService.store(THEME, theme);
+    this.appSettingsService.setTheme(theme);
   }
 }

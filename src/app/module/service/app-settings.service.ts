@@ -39,4 +39,12 @@ export class AppSettingsService {
   toggleDarkTheme(): void {
     this.sDarkTheme.update((val) => !val);
   }
+
+  setTheme(theme: 'light' | 'dark'): void {
+    if (theme == 'light') {
+      this.sDarkTheme.set(false);
+    } else {
+      this.sDarkTheme.set(true);
+    }
+  }
 }
