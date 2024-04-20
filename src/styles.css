@@ -64,11 +64,3 @@
 .borderBottom {
   @apply border-b border-b-black/10 dark:border-b-white/10;
 }
-
-.cardRow {
-  @apply py-2 px-4 text-center hover:bg-green-600 hover:bg-opacity-30 border-b border-neutral-300;
-}
-
-.gridRowAlternate {
-  @apply even:bg-neutral-100 odd:bg-neutral-200;
-}
