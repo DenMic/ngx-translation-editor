@@ -1,4 +1,5 @@
 import { Language } from '../classes/language';
+import { Project } from '../classes/project';
 import { Translation } from '../classes/translation';
 
 export function findTranslationById(
@@ -231,6 +232,49 @@ export function createTranslationsFromObj(
   }
 
   return translations;
+}
+
+export function exportTranslations(
+  translations: Translation[] | undefined,
+  lang: Language | undefined
+): any {
+  const obj: any = {};
+  if (translations && lang) {
+    for (let index = 0; index < translations.length; index++) {
+      const element = translations[index];
+
+      if (element.translation && element.translation.length > 0) {
+        obj[element.global] = exportTranslations(element.translation, lang);
+      } else {
+        obj[element.global] = element.items?.find(
+          (x) => x.lang == lang.flagName
+        )?.value;
+      }
+    }
+  } else {
+    return undefined;
+  }
+
+  return obj;
+}
+
+export function downloadTranslationJson(
+  myJson: any,
+  lang: Language | undefined
+): void {
+  if (myJson && lang) {
+    const sJson = JSON.stringify(myJson);
+    const element = document.createElement('a');
+    element.setAttribute(
+      'href',
+      'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson)
+    );
+    element.setAttribute('download', `${lang.fileName}.json`);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
+  }
 }
 
 function CreateItemsForTranslation(
