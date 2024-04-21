@@ -27,6 +27,8 @@ import { noWhitespaceValidator } from '../../module/function/validation';
 import { ItemTranslation, Translation } from '../../module/classes/translation';
 import {
   createTranslationsFromObj,
+  downloadTranslationJson,
+  exportTranslations,
   findTranslationById,
   getMaxIdTranslations,
   updateTranslationsFromObj,
@@ -215,6 +217,17 @@ export class TranslationsComponent {
       comunicationType: 'import',
     });
     this.comunicationService.setDropDownParam(undefined);
+  }
+
+  exportTranslationProject(): void {
+    const lang = this.comunicationService.selectedLang();
+    const exportObj = exportTranslations(
+      this.comunicationService.project()?.translations,
+      lang
+    );
+
+    downloadTranslationJson(exportObj, lang);
+    this.closeDropGeneral();
   }
 
   protected addLangClose(isUpdated: boolean): void {
