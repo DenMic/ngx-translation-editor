@@ -29,7 +29,7 @@
                 <i class="fa-solid fa-ellipsis-vertical text-base hover:cursor-pointer"></i>
             </div>
             @if(comunicationService.selectedLang()){
-                <div class="buttonSecondary" (click)="addTranslation();">
+                <div class="buttonPrimary" (click)="addTranslation();">
                     <i class="fa-solid fa-plus text-base hover:cursor-pointer"></i>
                     <span>{{ 'TRANSLATION.ADD' | translate }}</span>
                 </div>
