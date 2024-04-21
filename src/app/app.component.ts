@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AppSettingsService } from './module/service/app-settings.service';
 import { NgClass } from '@angular/common';
@@ -39,6 +39,15 @@ export class AppComponent implements OnInit {
     }
 
     this.translateService.use(lang.fileName);
+    this.appSettingsService.setTheme(theme);
+  }
+
+  switchDarkTheme(): void {
+    let theme: 'light' | 'dark' = this.appSettingsService.darkTheme()
+      ? 'light'
+      : 'dark';
+
+    this.storageService.store(THEME, theme);
     this.appSettingsService.setTheme(theme);
   }
 }

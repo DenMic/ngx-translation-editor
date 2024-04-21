@@ -22,13 +22,15 @@
       <div class="buttonSecondary" (click)="router.navigate(['languages'])">
         <i class="fa-regular fa-flag text-base hover:cursor-pointer" title="Languages"></i>
       </div>
-      <div class="buttonSecondary" (click)="appSettingsService.toggleDarkTheme()">
+
+      <div class="buttonSecondary" (click)="switchDarkTheme()">
         @if(appSettingsService.darkTheme()){
           <i class="fa-solid fa-moon text-base hover:cursor-pointer"></i>
         } @else {
           <i class="fa-solid fa-sun text-base hover:cursor-pointer"></i>
         }
       </div>
+
       <div class="buttonSecondary" (click)="router.navigate(['settings'])">
         <i class="fa-solid fa-gear text-base hover:cursor-pointer"></i>
       </div>
