@@ -116,7 +116,9 @@ export function filterTranslations(
       continue;
     }
 
-    if (translation.global.indexOf(searchValue) > -1)
+    if (
+      translation.global.toLowerCase().indexOf(searchValue.toLowerCase()) > -1
+    )
       filtered.push(translation);
   }
 

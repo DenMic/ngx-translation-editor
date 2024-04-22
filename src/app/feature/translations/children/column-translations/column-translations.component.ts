@@ -100,7 +100,7 @@ export class ColumnTranslationsComponent {
         );
         prj.translations = filterTranslations(this.searchValue, copyTrans);
 
-        this.comunicationService.project.set(prj);
+        this.comunicationService.project.set({ ...prj });
       }
     } else {
       this.comunicationService.project.set(

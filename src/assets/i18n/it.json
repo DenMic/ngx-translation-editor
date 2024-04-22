@@ -58,6 +58,7 @@
   "INFO": {
     "NO_PROJECT": "Nessun progetto presente",
     "NO_LANGUAGE": "Nessuna lingua presente",
-    "NO_TRANSLATION": "Nessuna traduzione presente"
+    "NO_TRANSLATION": "Nessuna traduzione presente",
+    "NO_TRANSLATION_SELECTED": "Nessuna traduzione selezionata"
   }
 }

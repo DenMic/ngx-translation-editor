@@ -72,6 +72,10 @@
                             <edt-input [value]="item.value"></edt-input>
                         </div>
                     </div>
+                } @empty {
+                    <div class="p-12 text-center text-lg">
+                        <span class="font-semibold text-neutral-600 dark: dark:text-neutral-500">{{ 'INFO.NO_TRANSLATION_SELECTED' | translate }}</span>
+                    </div>
                 }
             </div>
         </div>
