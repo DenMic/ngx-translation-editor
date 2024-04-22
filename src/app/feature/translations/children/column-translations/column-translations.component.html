@@ -31,7 +31,7 @@
     <div class="flex h-full w-2/3 pb-3 mb-3 z-20 overflow-hidden">
         <div class="w-1/3 treeHeight border-r border-black/10 dark:border-white/10 overflow-y-auto">
 
-            <cdk-tree [dataSource]="dataSource()" [treeControl]="treeControl">
+            <cdk-tree [dataSource]="dataSource()" [treeControl]="treeControl" [class]="{'dark' : appSettingsService.darkTheme()}">
                 <cdk-nested-tree-node 
                     *cdkTreeNodeDef="let node" 
                     class="example-tree-node hover:cursor-pointer pe-2">
@@ -63,7 +63,7 @@
 
                 @for (item of itemsTranslation(); track $index) {
                     <div class="grid grid-cols-2 gap-2 tempCol items-center defaultText py-2 px-4
-                        bg-base-600/10 dark:bg-white/10 
+                        bg-base-600/10  dark:bg-white/10 
                         rounded-md hover:border-transparent">
                         <div class="text-left">
                             {{ 'FLAG.' + getDescriptionLang(item.lang) | translate }}

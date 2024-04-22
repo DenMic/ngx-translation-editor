@@ -19,6 +19,7 @@ import { NestedTreeControl, CdkTreeModule } from '@angular/cdk/tree';
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { EdtInputComponent } from '../../../../share/component/edt-input/edt-input.component';
 import { flagsLang } from '../../../../module/constant/flags';
+import { AppSettingsService } from '../../../../module/service/app-settings.service';
 
 @Component({
   selector: 'app-column-translations',
@@ -35,8 +36,9 @@ import { flagsLang } from '../../../../module/constant/flags';
 })
 export class ColumnTranslationsComponent {
   private readonly activatedRoute = inject(ActivatedRoute);
-  protected readonly comunicationService = inject(ComunicationService);
   private readonly projectService = inject(ProjectService);
+  protected readonly comunicationService = inject(ComunicationService);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   protected searchValue = '';
   protected itemsTranslation = signal<ItemTranslation[]>([]);

@@ -18,7 +18,7 @@
 }
 
 .example-tree-node .selected {
-    @apply rounded-md bg-white/10
+    @apply rounded-md bg-black/10 dark:bg-white/10
 }
 
 .example-tree-node .example-tree-node {
