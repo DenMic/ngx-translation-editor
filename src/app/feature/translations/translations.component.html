@@ -76,8 +76,20 @@
 <!-- Template Import File -->
 <ng-template #tmpImport>
     <div class="p-8 w-[500px] defaultText">
-        <div class="mb-8 font-semibold text-2xl">
+        <div class="mb-4 font-semibold text-2xl">
             {{ 'IMPORT' | translate }}
+        </div>
+
+        <div #dFlag class="buttonSecondary flex justify-between mb-2 w-40" (click)="ddLanguage.show(dFlag)">
+            @if(selectedImportLang()){
+                <div class="flex items-center gap-4">
+                    <span class="text-base" [class]="'fi fi-' + selectedImportLang()?.flagName"></span>
+                    <span>{{ 'FLAG.' + selectedImportLang()?.description| translate }}</span> 
+                </div>
+            } @else {
+                <i class="fa-solid fa-circle-question text-xl"></i>
+            }
+            <i class="fa-solid fa-caret-down text-lg"></i>
         </div>
 
         @if(files().length == 0) {
@@ -103,14 +115,22 @@
                     <i class="fa-solid fa-xmark text-xl hover:cursor-pointer" (click)="files.set([]);"></i>
                 </div>
             }
-            
         }
 
         <div class="flex gap-4 pt-4 justify-end">
-            <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="popGeneral.toggle()"></edt-button>
-            <edt-button [label]="'IMPORT' | translate" [disabled]="files().length == 0" (onClick)="processFile(); popGeneral.toggle();"></edt-button>
+            <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="popGeneral.toggle(); clearPopImport();;"></edt-button>
+            <edt-button [label]="'IMPORT' | translate" [disabled]="disabledImport()" (onClick)="processFile(); popGeneral.toggle();"></edt-button>
         </div>
     </div>
+
+    <edt-dropdown #ddLanguage>
+        @for (item of this.comunicationService.project()?.languages; track $index) {
+            <div class="w-full flex items-center gap-4 py-2 px-4 hover:cursor-pointer hover:bg-green-600/50 hover:text-neutral-50" (click)="selectImportLang(item); ddLanguage.close();">
+                <span class="text-base" [class]="'fi fi-' + item.flagName"></span>
+                <span>{{ 'FLAG.' + item.description | translate }}</span> 
+            </div>
+        }
+    </edt-dropdown>
 </ng-template>
 
 <!-- Pop add Language Popup -->

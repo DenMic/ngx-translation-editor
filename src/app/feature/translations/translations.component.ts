@@ -1,6 +1,7 @@
 import {
   Component,
   TemplateRef,
+  computed,
   inject,
   signal,
   viewChild,
@@ -37,6 +38,7 @@ import { copyObject } from '../../module/function/helper';
 import { Language } from '../../module/classes/language';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
 import { AppSettingsService } from '../../module/service/app-settings.service';
+import { flagsLang } from '../../module/constant/flags';
 
 @Component({
   selector: 'app-translations',
@@ -81,7 +83,19 @@ export class TranslationsComponent {
   ddTemplate = signal<TemplateRef<any> | null>(null);
   popTemplate = signal<TemplateRef<any> | null>(null);
 
+  protected selectedImportLang = signal<Language | undefined>(undefined);
   protected files = signal<any[]>([]);
+  protected disabledImport = computed(() => {
+    if (this.files().length == 0) {
+      return true;
+    }
+
+    if (!this.selectedImportLang()) {
+      return true;
+    }
+
+    return false;
+  });
 
   protected newLangForm: FormGroup = this.fb.group({
     global: [undefined, [Validators.required, noWhitespaceValidator()]],
@@ -214,6 +228,10 @@ export class TranslationsComponent {
     this.closeDropGeneral();
   }
 
+  selectImportLang(item: Language): void {
+    this.selectedImportLang.set(item);
+  }
+
   showImportPop(): void {
     this.popTemplate.set(this.tmpImport() ?? null);
     this.comunicationService.setPopParam({
@@ -294,13 +312,13 @@ export class TranslationsComponent {
         updateTranslationsFromObj(
           newTranslation,
           objFile,
-          this.comunicationService.selectedLang()!,
+          this.selectedImportLang()!,
           this.comunicationService.prjFromStore!.languages
         );
       } else {
         newTranslation = createTranslationsFromObj(
           objFile,
-          this.comunicationService.selectedLang()!,
+          this.selectedImportLang()!,
           this.comunicationService.prjFromStore!.languages
         );
       }
@@ -309,13 +327,20 @@ export class TranslationsComponent {
       this.comunicationService.project.set(
         copyObject(this.comunicationService.prjFromStore)
       );
+
       this.projectService.updateTranslation(this.comunicationService.project());
+      this.clearPopImport();
     }
   }
 
   protected closeAddTranslation(): void {
     this.comunicationService.idParentTranslation = undefined;
     this.popGeneral()?.toggle();
+  }
+
+  protected clearPopImport(): void {
+    this.files.set([]);
+    this.selectedImportLang.set(undefined);
   }
 
   private resetFormLang() {

@@ -42,6 +42,7 @@ export class ColumnTranslationsComponent {
 
   protected searchValue = '';
   protected itemsTranslation = signal<ItemTranslation[]>([]);
+  protected globalTranslation = signal<string>('');
   protected selectedTranslation = signal<number>(-1);
 
   protected treeControl = new NestedTreeControl<Translation>(
@@ -114,6 +115,7 @@ export class ColumnTranslationsComponent {
   protected loadTranslation(node: Translation): void {
     this.selectedTranslation.set(node.id);
     this.itemsTranslation.set(node.items ?? []);
+    this.globalTranslation.set(node.global);
   }
 
   protected getDescriptionLang(lang: string | undefined): string {
