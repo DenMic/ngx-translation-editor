@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ddType } from '../../class/comunication-type';
 import {
   filterTranslations,
+  findTranslationById,
   sortTranslationsByGlobal,
 } from '../../../../module/function/project-Helper';
 import { copyObject } from '../../../../module/function/helper';
@@ -20,6 +21,7 @@ import { ArrayDataSource } from '@angular/cdk/collections';
 import { EdtInputComponent } from '../../../../share/component/edt-input/edt-input.component';
 import { flagsLang } from '../../../../module/constant/flags';
 import { AppSettingsService } from '../../../../module/service/app-settings.service';
+import { Language } from '../../../../module/classes/language';
 
 @Component({
   selector: 'app-column-translations',
@@ -41,9 +43,7 @@ export class ColumnTranslationsComponent {
   protected readonly appSettingsService = inject(AppSettingsService);
 
   protected searchValue = '';
-  protected itemsTranslation = signal<ItemTranslation[]>([]);
-  protected globalTranslation = signal<string>('');
-  protected selectedTranslation = signal<number>(-1);
+  protected selectedTranslation = signal<Translation | undefined>(undefined);
 
   protected treeControl = new NestedTreeControl<Translation>(
     (node) => node.translation
@@ -113,9 +113,35 @@ export class ColumnTranslationsComponent {
   }
 
   protected loadTranslation(node: Translation): void {
-    this.selectedTranslation.set(node.id);
-    this.itemsTranslation.set(node.items ?? []);
-    this.globalTranslation.set(node.global);
+    this.selectedTranslation.set(node);
+  }
+
+  valChange(
+    newVal: string | undefined,
+    translationId: number,
+    lang: string
+  ): void {
+    let translations = this.comunicationService.prjFromStore?.translations;
+
+    if (translations) {
+      const translation = findTranslationById(translations, translationId);
+      const itemLang = translation?.items?.find((x) => x.lang == lang);
+      if (itemLang) {
+        itemLang.value = newVal;
+
+        if (this.comunicationService.prjFromStore) {
+          this.comunicationService.prjFromStore.translations =
+            translations ?? [];
+        }
+
+        this.comunicationService.project.set(
+          copyObject(this.comunicationService.prjFromStore)
+        );
+        this.projectService.updateTranslation(
+          this.comunicationService.project()
+        );
+      }
+    }
   }
 
   protected getDescriptionLang(lang: string | undefined): string {

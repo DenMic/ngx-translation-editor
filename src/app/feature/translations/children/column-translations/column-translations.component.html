@@ -35,7 +35,7 @@
                 <cdk-nested-tree-node 
                     *cdkTreeNodeDef="let node" 
                     class="example-tree-node hover:cursor-pointer pe-2">
-                    <div [class]="selectedTranslation() == node.id ? 'selected px-2 py-1' : 'px-2 py-1'" (click)="loadTranslation(node)">
+                    <div [class]="selectedTranslation()?.id == node.id ? 'selected px-2 py-1' : 'px-2 py-1'" (click)="loadTranslation(node)">
                         <i class="fa-solid fa-spell-check text-xs"></i>
                         {{node.global}}
                     </div>
@@ -61,10 +61,10 @@
         </div>
         <div class="flex flex-col w-full gap-2 px-2 pb-2">
             <div class="w-full pl-2 text-lg">
-                <span class="font-semibold">{{ globalTranslation() }}</span>
+                <span class="font-semibold">{{ selectedTranslation()?.global ?? '' }}</span>
             </div>
 
-            @for (item of itemsTranslation(); track $index) {
+            @for (item of selectedTranslation()?.items; track $index) {
                 <div class="grid grid-cols-2 gap-2 tempCol items-center defaultText py-2 px-4
                     bg-base-600/10  dark:bg-white/10 
                     rounded-md hover:border-transparent">
@@ -72,7 +72,7 @@
                         {{ 'FLAG.' + getDescriptionLang(item.lang) | translate }}
                     </div>
                     <div class="text-base font-medium">
-                        <edt-input [value]="item.value"></edt-input>
+                        <edt-input [value]="item.value" (onBlur)="valChange($event, selectedTranslation()!.id, item.lang!)"></edt-input>
                     </div>
                 </div>
             } @empty {
