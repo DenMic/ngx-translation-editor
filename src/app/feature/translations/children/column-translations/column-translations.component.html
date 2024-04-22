@@ -29,7 +29,7 @@
     </div>
 
     <div class="flex h-full w-2/3 pb-3 mb-3 z-20 overflow-hidden" [class]="{'dark' : appSettingsService.darkTheme()}">
-        <div class="w-1/3 treeHeight border-r border-black/10 dark:border-white/10 overflow-y-auto">
+        <div class="w-1/3 treeHeight border-r border-black/10 dark:border-white/10 overflow-y-auto pe-2">
 
             <cdk-tree [dataSource]="dataSource()" [treeControl]="treeControl" >
                 <cdk-nested-tree-node 
@@ -41,15 +41,18 @@
                     </div>
                 </cdk-nested-tree-node>
 
-                <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node px-2">
-                    <div class="hover:cursor-pointer py-1" cdkTreeNodeToggle>
-                        @if(treeControl.isExpanded(node)){
-                            <i class="fa-solid fa-folder-open"></i>
-                        } @else {
-                            <i class="fa-solid fa-folder hover:cursor-pointer"></i>
-                        }
+                <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node ps-2">
+                    <div class="flex justify-between py-1 hover:cursor-pointer" cdkTreeNodeToggle>
+                        <div>
+                            @if(treeControl.isExpanded(node)){
+                                <i class="fa-solid fa-folder-open"></i>
+                            } @else {
+                                <i class="fa-solid fa-folder hover:cursor-pointer"></i>
+                            }
 
-                        {{node.global}}
+                            {{node.global}}
+                        </div>
+                        <i class="fa-solid fa-plus hover:cursor-pointer hover:text-green-700" [title]="'TRANSLATION.ADD' | translate"></i>
                     </div>
                     <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
                         <ng-container cdkTreeNodeOutlet></ng-container>
@@ -60,9 +63,14 @@
 
         </div>
         <div class="flex flex-col w-full gap-2 px-2 pb-2">
-            <div class="w-full pl-2 text-lg">
-                <span class="font-semibold">{{ selectedTranslation()?.global ?? '' }}</span>
-            </div>
+            @if(selectedTranslation()){
+                <div class="flex gap-2 text-lg">
+                    <div class="buttonSecondary !text-sm" (click)="addSubTranslation(selectedTranslation()!.id)">
+                        <i class="fa-solid fa-plus hover:cursor-pointer" [title]="'TRANSLATION.ADD' | translate"></i>
+                    </div>
+                    <span class="font-semibold">{{ selectedTranslation()?.global ?? '' }}</span>
+                </div>
+            }
 
             @for (item of selectedTranslation()?.items; track $index) {
                 <div class="grid grid-cols-2 gap-2 tempCol items-center defaultText py-2 px-4

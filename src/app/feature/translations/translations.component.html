@@ -27,7 +27,7 @@
 </ng-template>
 
 <!-- Template Extrabutton DropDown -->
-<ng-template #tmpExtraButton>
+<ng-template #tmpExtraButton>  
     <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="showImportPop()">
         <i class="fa-solid fa-file-import text-xl"></i>
         <span>{{ 'IMPORT' | translate }}</span>
@@ -35,6 +35,10 @@
     <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="exportTranslationProject()">
         <i class="fa-solid fa-download text-xl"></i>
         <span>{{ 'EXPORT' | translate }}</span>
+    </div>
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="addLangComp.toggle(); closeDropGeneral();">
+        <i class="fa-solid fa-flag text-xl hover:cursor-pointer hover:text-neutral-800" [title]="'LANGUAGE.ADD' | translate"></i>
+        <span>{{ 'LANGUAGE.ADD' | translate }}</span>
     </div>
     <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="switchLayout()">
         @if(appSettingsService.layoutPage() == 'list'){

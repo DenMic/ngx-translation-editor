@@ -265,6 +265,8 @@ export class TranslationsComponent {
         this.comunicationService.idPrj,
       ]);
     }
+
+    this.comunicationService.setDropDownParam(undefined);
   }
 
   protected addLangClose(isUpdated: boolean): void {
@@ -272,6 +274,7 @@ export class TranslationsComponent {
       this.comunicationService.loadProjectFromStore(
         this.comunicationService.idPrj!
       );
+      this.comunicationService.selectProject(this.comunicationService.idPrj!);
     }
   }
 

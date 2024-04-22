@@ -296,3 +296,21 @@ function CreateItemsForTranslation(
     });
   }
 }
+
+export function addLanguageToTranslation(
+  translations: Translation[],
+  newLang: Language
+): void {
+  for (let index = 0; index < translations.length; index++) {
+    const element = translations[index];
+
+    if (element.translation && element.translation.length > 0) {
+      addLanguageToTranslation(element.translation, newLang);
+    } else {
+      element.items?.push({
+        lang: newLang?.flagName,
+        value: undefined,
+      });
+    }
+  }
+}

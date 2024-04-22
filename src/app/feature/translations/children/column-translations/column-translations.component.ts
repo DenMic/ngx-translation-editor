@@ -116,7 +116,14 @@ export class ColumnTranslationsComponent {
     this.selectedTranslation.set(node);
   }
 
-  valChange(
+  protected addSubTranslation(idParTranslation: number): void {
+    this.comunicationService.idParentTranslation = idParTranslation;
+    this.comunicationService.setPopParam({
+      comunicationType: 'language',
+    });
+  }
+
+  protected valChange(
     newVal: string | undefined,
     translationId: number,
     lang: string
