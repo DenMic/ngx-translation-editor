@@ -6,7 +6,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
 import { ComunicationService } from './service/comunication.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -36,6 +36,7 @@ import {
 import { copyObject } from '../../module/function/helper';
 import { Language } from '../../module/classes/language';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
+import { AppSettingsService } from '../../module/service/app-settings.service';
 
 @Component({
   selector: 'app-translations',
@@ -70,9 +71,11 @@ export class TranslationsComponent {
   private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
 
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly projectService = inject(ProjectService);
   protected readonly comunicationService = inject(ComunicationService);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   // Template DropDown and Popup
   ddTemplate = signal<TemplateRef<any> | null>(null);
@@ -228,6 +231,22 @@ export class TranslationsComponent {
 
     downloadTranslationJson(exportObj, lang);
     this.closeDropGeneral();
+  }
+
+  protected switchLayout(): void {
+    if (this.appSettingsService.layoutPage() == 'list') {
+      this.appSettingsService.setLayoutPage('column');
+      this.router.navigate([
+        `translations/column`,
+        this.comunicationService.idPrj,
+      ]);
+    } else {
+      this.appSettingsService.setLayoutPage('list');
+      this.router.navigate([
+        `translations/list`,
+        this.comunicationService.idPrj,
+      ]);
+    }
   }
 
   protected addLangClose(isUpdated: boolean): void {

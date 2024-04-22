@@ -36,6 +36,15 @@
         <i class="fa-solid fa-download text-xl"></i>
         <span>{{ 'EXPORT' | translate }}</span>
     </div>
+    <div class="flex gap-2 items-center w-full p-4 hover:bg-green-600 hover:bg-opacity-50 hover:cursor-pointer" (click)="switchLayout()">
+        @if(appSettingsService.layoutPage() == 'list'){
+            <i class="fa-solid fa-table-columns text-xl"></i>
+            <span>{{ 'COLUMN' | translate }}</span>
+        } @else {
+            <i class="fa-solid fa-table-list text-xl"></i>
+            <span>{{ 'LIST' | translate }}</span>
+        }
+    </div>
 </ng-template>
 
 <!-- General Popup -->
