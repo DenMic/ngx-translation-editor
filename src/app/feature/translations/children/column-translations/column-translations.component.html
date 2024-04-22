@@ -42,8 +42,8 @@
                 </cdk-nested-tree-node>
 
                 <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node ps-2">
-                    <div class="flex justify-between py-1 hover:cursor-pointer" cdkTreeNodeToggle>
-                        <div>
+                    <div class="flex justify-between py-1">
+                        <div class="hover:cursor-pointer" cdkTreeNodeToggle>
                             @if(treeControl.isExpanded(node)){
                                 <i class="fa-solid fa-folder-open"></i>
                             } @else {
@@ -52,7 +52,10 @@
 
                             {{node.global}}
                         </div>
-                        <i class="fa-solid fa-plus hover:cursor-pointer hover:text-green-700" [title]="'TRANSLATION.ADD' | translate"></i>
+                        <i class="fa-solid fa-plus hover:cursor-pointer hover:text-green-700" 
+                            [title]="'TRANSLATION.ADD' | translate" 
+                            (click)="addSubTranslation(node.id)">
+                        </i>
                     </div>
                     <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
                         <ng-container cdkTreeNodeOutlet></ng-container>
