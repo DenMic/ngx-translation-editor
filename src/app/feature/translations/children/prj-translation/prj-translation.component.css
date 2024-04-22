@@ -1,3 +1,7 @@
 .tempCol {
     grid-template-columns: 200px auto 86px;
 }
+
+.listHeight {
+    height: calc(100vh - 140px);
+}

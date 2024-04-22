@@ -13,10 +13,9 @@
 }
 
 *::-webkit-scrollbar {
-  background-color: rgb(229 229 229);
   width: 10px;
   height: 10px;
-  @apply rounded-br-md rounded-tr-md;
+  @apply bg-base-700 rounded-md;
 }
 
 *::-webkit-scrollbar-thumb {

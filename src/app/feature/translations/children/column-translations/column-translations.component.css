@@ -24,3 +24,7 @@
 .example-tree-node .example-tree-node {
     padding-left: 20px;
 }
+
+.treeHeight {
+    height: calc(100vh - 155px);
+}
