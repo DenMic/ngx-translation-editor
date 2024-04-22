@@ -1,1 +1,79 @@
-<p>column-translations works!</p>
+<div class="flex flex-col justify-center items-center defaultText overflow-hidden">
+
+    <div class="flex justify-between w-2/3 pb-3 mb-3 borderBottom z-20">
+        <div class="flex gap-4 items-center">          
+            <!-- Search text -->
+            <div class="flex gap-2 items-center py-2 px-3 
+                border border-neutral-400 rounded-md
+                bg-neutral-50 dark:bg-base-800/50">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" [(ngModel)]="searchValue" class="appearance-none bg-transparent outline-none" [attr.aria-label]="'SEARCH' | translate" (blur)="searchValueChange()" />
+            </div>
+            <!-- Sort -->
+            <div class="buttonSecondary !py-2" (click)="clickSortTranslation()">
+                <i class="fa-solid fa-arrow-down-a-z "></i>
+                <span>{{ 'FUNCTION.SORT_GLOBAL' | translate }}</span>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div #dMenu class="buttonSecondary !px-4" (click)="showDropGeneral(dMenu, 'extra');">
+                <i class="fa-solid fa-ellipsis-vertical text-base hover:cursor-pointer"></i>
+            </div>
+            @if(comunicationService.selectedLang()){
+                <div class="buttonPrimary" (click)="addTranslation();">
+                    <i class="fa-solid fa-plus text-base hover:cursor-pointer"></i>
+                    <span>{{ 'TRANSLATION.ADD' | translate }}</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="grid layoutGrid w-2/3 pb-3 mb-3 z-20 overflow-hidden">
+        <div class="border-r border-black/10 dark:border-white/10 overflow-y-auto">
+
+            <cdk-tree [dataSource]="dataSource()" [treeControl]="treeControl">
+                <cdk-nested-tree-node 
+                    *cdkTreeNodeDef="let node" 
+                    class="example-tree-node hover:cursor-pointer pe-2">
+                    <div [class]="selectedTranslation() == node.id ? 'selected px-2 py-1' : 'px-2 py-1'" (click)="loadTranslation(node)">
+                        <i class="fa-solid fa-spell-check text-xs"></i>
+                        {{node.global}}
+                    </div>
+                </cdk-nested-tree-node>
+
+                <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node px-2">
+                    <div class="hover:cursor-pointer py-1" cdkTreeNodeToggle>
+                        @if(treeControl.isExpanded(node)){
+                            <i class="fa-solid fa-folder-open"></i>
+                        } @else {
+                            <i class="fa-solid fa-folder hover:cursor-pointer"></i>
+                        }
+
+                        {{node.global}}
+                    </div>
+                    <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                        <ng-container cdkTreeNodeOutlet></ng-container>
+                    </div>
+                    
+                  </cdk-nested-tree-node>
+            </cdk-tree>
+
+        </div>
+        <div>
+            <div class="flex flex-col p-2">
+                @for (item of itemsTranslation(); track $index) {
+                    <div class="grid grid-cols-2 gap-2 tempCol items-center defaultText py-2 px-4 mt-2
+                        bg-base-600/10 dark:bg-white/10 
+                        rounded-md hover:border-transparent">
+                        <div class="text-left">
+                            {{ 'FLAG.' + getDescriptionLang(item.lang) | translate }}
+                        </div>
+                        <div class="text-base font-medium">
+                            <edt-input [value]="item.value"></edt-input>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

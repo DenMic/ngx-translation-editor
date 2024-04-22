@@ -47,9 +47,9 @@ import { ddType } from '../../class/comunication-type';
   styleUrl: './prj-translation.component.css',
 })
 export class PrjTranslationComponent {
-  private activatedRoute = inject(ActivatedRoute);
-  protected comunicationService = inject(ComunicationService);
-  private projectService = inject(ProjectService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly projectService = inject(ProjectService);
+  protected readonly comunicationService = inject(ComunicationService);
 
   // Popup settings
   popTemplate = signal<TemplateRef<any> | null>(null);
