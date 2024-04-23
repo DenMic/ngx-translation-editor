@@ -1,0 +1,9 @@
+.checkStyle:checked::before {
+  font: var(--fa-font-solid);
+  font-weight: 900;
+  content: "\f00c";
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

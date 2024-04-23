@@ -3,6 +3,7 @@ import {
   TemplateRef,
   computed,
   inject,
+  model,
   signal,
   viewChild,
 } from '@angular/core';
@@ -38,7 +39,6 @@ import { copyObject } from '../../module/function/helper';
 import { Language } from '../../module/classes/language';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
 import { AppSettingsService } from '../../module/service/app-settings.service';
-import { flagsLang } from '../../module/constant/flags';
 
 @Component({
   selector: 'app-translations',
@@ -63,18 +63,24 @@ import { flagsLang } from '../../module/constant/flags';
   styleUrl: './translations.component.css',
 })
 export class TranslationsComponent {
-  private ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
-  private popGeneral = viewChild<EdtPopupComponent>('popGeneral');
+  private readonly ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
+  private readonly popGeneral = viewChild<EdtPopupComponent>('popGeneral');
 
-  private tmpFlag = viewChild<TemplateRef<any>>('tmpFlag');
-  private tmpExtra = viewChild<TemplateRef<any>>('tmpExtraButton');
+  private readonly tmpFlag = viewChild<TemplateRef<any>>('tmpFlag');
+  private readonly tmpExtra = viewChild<TemplateRef<any>>('tmpExtraButton');
 
-  private tmpAddTranslation = viewChild<TemplateRef<any>>('tmpAddTranslation');
-  private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
+  private readonly tmpAddTranslation =
+    viewChild<TemplateRef<any>>('tmpAddTranslation');
+  private readonly tmpImport = viewChild<TemplateRef<any>>('tmpImport');
+  private readonly tmpExport = viewChild<TemplateRef<any>>('tmpExport');
+
+  private readonly ddLanguage = viewChild<EdtDropdownComponent>('ddLanguage');
+  private readonly dFlag = viewChild<HTMLElement>('dFlag');
 
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+
   private readonly projectService = inject(ProjectService);
   protected readonly comunicationService = inject(ComunicationService);
   protected readonly appSettingsService = inject(AppSettingsService);
@@ -83,14 +89,16 @@ export class TranslationsComponent {
   ddTemplate = signal<TemplateRef<any> | null>(null);
   popTemplate = signal<TemplateRef<any> | null>(null);
 
-  protected selectedImportLang = signal<Language | undefined>(undefined);
+  protected exportAllLang = signal<boolean>(false);
+
+  protected selectedPopLang = signal<Language | undefined>(undefined);
   protected files = signal<any[]>([]);
   protected disabledImport = computed(() => {
     if (this.files().length == 0) {
       return true;
     }
 
-    if (!this.selectedImportLang()) {
+    if (!this.selectedPopLang()) {
       return true;
     }
 
@@ -135,6 +143,10 @@ export class TranslationsComponent {
 
           case 'import':
             this.popTemplate.set(this.tmpImport()!);
+            break;
+
+          case 'export':
+            this.popTemplate.set(this.tmpExport()!);
             break;
         }
 
@@ -229,11 +241,29 @@ export class TranslationsComponent {
   }
 
   selectImportLang(item: Language): void {
-    this.selectedImportLang.set(item);
+    this.selectedPopLang.set(item);
+  }
+
+  exportCheckChange(e: any): void {
+    this.exportAllLang.set(!this.exportAllLang());
+  }
+
+  showDDLangExport(): void {
+    if (!this.exportAllLang() && this.dFlag()) {
+      this.ddLanguage()?.show(this.dFlag()!);
+    }
+  }
+
+  showExportPop(): void {
+    this.comunicationService.setPopParam({
+      comunicationType: 'export',
+    });
+    this.comunicationService.setDropDownParam(undefined);
+
+    // this.exportTranslationProject()
   }
 
   showImportPop(): void {
-    this.popTemplate.set(this.tmpImport() ?? null);
     this.comunicationService.setPopParam({
       comunicationType: 'import',
     });
@@ -315,13 +345,13 @@ export class TranslationsComponent {
         updateTranslationsFromObj(
           newTranslation,
           objFile,
-          this.selectedImportLang()!,
+          this.selectedPopLang()!,
           this.comunicationService.prjFromStore!.languages
         );
       } else {
         newTranslation = createTranslationsFromObj(
           objFile,
-          this.selectedImportLang()!,
+          this.selectedPopLang()!,
           this.comunicationService.prjFromStore!.languages
         );
       }
@@ -343,7 +373,7 @@ export class TranslationsComponent {
 
   protected clearPopImport(): void {
     this.files.set([]);
-    this.selectedImportLang.set(undefined);
+    this.selectedPopLang.set(undefined);
   }
 
   private resetFormLang() {
