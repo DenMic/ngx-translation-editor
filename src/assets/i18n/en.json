@@ -59,6 +59,8 @@
     "NO_PROJECT": "No projects present",
     "NO_LANGUAGE": "No languages present",
     "NO_TRANSLATION": "No translation present",
-    "NO_TRANSLATION_SELECTED": "No translation selected"
+    "NO_TRANSLATION_SELECTED": "No translation selected",
+    "PAGE_NOT_FOUND": "Page not found",
+    "RETURN_PROJECT": "Return to project page"
   }
 }

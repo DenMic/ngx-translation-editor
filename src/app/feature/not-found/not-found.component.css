@@ -1,0 +1,8 @@
+.fullPage {
+  height: calc(100vh - 70px);
+}
+
+.textStyle {
+  font-size: 14rem;
+  line-height: 1;
+}
