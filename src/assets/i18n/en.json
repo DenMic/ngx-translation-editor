@@ -52,7 +52,8 @@
   },
 
   "FUNCTION": {
-    "SORT_GLOBAL": "Sort Global"
+    "SORT_GLOBAL": "Sort Global",
+    "EXPORT_ALL_LANG": "Export all languages (zip file)"
   },
 
   "INFO": {

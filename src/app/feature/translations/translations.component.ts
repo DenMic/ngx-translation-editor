@@ -30,10 +30,12 @@ import { ItemTranslation, Translation } from '../../module/classes/translation';
 import {
   createTranslationsFromObj,
   downloadTranslationJson,
+  exportAllTranslations,
   exportTranslations,
   findTranslationById,
   getMaxIdTranslations,
   updateTranslationsFromObj,
+  zipAndDownloadTranslationJson,
 } from '../../module/function/project-Helper';
 import { copyObject } from '../../module/function/helper';
 import { Language } from '../../module/classes/language';
@@ -103,6 +105,14 @@ export class TranslationsComponent {
     }
 
     return false;
+  });
+
+  protected disableExportButton = computed(() => {
+    if (this.selectedPopLang()) return false;
+
+    if (this.exportAllLang()) return false;
+
+    return true;
   });
 
   protected newLangForm: FormGroup = this.fb.group({
@@ -245,6 +255,7 @@ export class TranslationsComponent {
   }
 
   exportCheckChange(e: any): void {
+    this.selectedPopLang.set(undefined);
     this.exportAllLang.set(!this.exportAllLang());
   }
 
@@ -271,13 +282,25 @@ export class TranslationsComponent {
   }
 
   exportTranslationProject(): void {
-    const lang = this.comunicationService.selectedLang();
-    const exportObj = exportTranslations(
-      this.comunicationService.project()?.translations,
-      lang
-    );
+    const exportAll = this.exportAllLang();
+    const langExport = this.selectedPopLang();
 
-    downloadTranslationJson(exportObj, lang);
+    if (exportAll) {
+      const exportObjs = exportAllTranslations(
+        this.comunicationService.project()?.translations,
+        this.comunicationService.project()?.languages
+      );
+
+      zipAndDownloadTranslationJson(exportObjs);
+    } else {
+      const exportObj = exportTranslations(
+        this.comunicationService.project()?.translations,
+        langExport
+      );
+
+      downloadTranslationJson(exportObj, langExport);
+    }
+
     this.closeDropGeneral();
   }
 

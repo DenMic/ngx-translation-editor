@@ -88,7 +88,7 @@
                 class="checkStyle h-5 w-5 cursor-pointer rounded-md border appearance-none transition-all text-base-50 checked:bg-green-600"
                 (input)="exportCheckChange($event)" />
             <label for="chkExportAll" class="block defaultText pb-1 pl-1 text-sm font-bold">
-                Esporta tutte le Lingua (zip)
+                {{ 'FUNCTION.EXPORT_ALL_LANG' | translate}}
             </label>
         </div>
         <div #dFlag class="buttonSecondary flex justify-between mb-2 w-40" [class]="exportAllLang() ? 'disabled': ''" (click)="showDDLangExport()">
@@ -102,10 +102,10 @@
             }
             <i class="fa-solid fa-caret-down text-lg"></i>
         </div>
-
+        
         <div class="flex gap-4 pt-4 justify-end">
             <edt-button [label]="'CLOSE' | translate" level="secondary" (onClick)="popGeneral.toggle()"></edt-button>
-            <edt-button [label]="'EXPORT' | translate" (onClick)="exportTranslationProject(); popGeneral.toggle();"></edt-button>
+            <edt-button [label]="'EXPORT' | translate" [disabled]="disableExportButton()" (onClick)="exportTranslationProject(); popGeneral.toggle();"></edt-button>
         </div>
     </div>
 

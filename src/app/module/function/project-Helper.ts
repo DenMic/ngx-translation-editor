@@ -1,6 +1,8 @@
+import { ExportObj } from '../classes/exportObj';
 import { Language } from '../classes/language';
-import { Project } from '../classes/project';
 import { Translation } from '../classes/translation';
+import JSZip from 'JSZip';
+import { saveAs } from 'file-saver';
 
 export function findTranslationById(
   translations: Translation[],
@@ -236,6 +238,27 @@ export function createTranslationsFromObj(
   return translations;
 }
 
+export function exportAllTranslations(
+  translations: Translation[] | undefined,
+  languages: Language[] | undefined
+): ExportObj[] {
+  const objs: ExportObj[] = [];
+
+  if (languages) {
+    for (let index = 0; index < languages.length; index++) {
+      const lang = languages[index];
+      const obj = exportTranslations(translations, lang);
+
+      objs.push({
+        obj: obj,
+        lang: lang,
+      });
+    }
+  }
+
+  return objs;
+}
+
 export function exportTranslations(
   translations: Translation[] | undefined,
   lang: Language | undefined
@@ -260,23 +283,43 @@ export function exportTranslations(
   return obj;
 }
 
+export function zipAndDownloadTranslationJson(exportObj: ExportObj[]): void {
+  const zip = new JSZip();
+
+  for (let index = 0; index < exportObj.length; index++) {
+    const element = exportObj[index];
+    const fileName = element.lang.fileName + '.json';
+    const sJson = JSON.stringify(element.obj);
+
+    zip.file(fileName, sJson);
+  }
+  zip.generateAsync({ type: 'blob' }).then(function (content) {
+    saveAs(content, 'translation.zip');
+  });
+}
+
 export function downloadTranslationJson(
   myJson: any,
   lang: Language | undefined
 ): void {
   if (myJson && lang) {
     const sJson = JSON.stringify(myJson);
-    const element = document.createElement('a');
-    element.setAttribute(
-      'href',
-      'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson)
+    downloadFile(
+      encodeURIComponent(sJson),
+      `${lang.fileName}.json`,
+      'text/json'
     );
-    element.setAttribute('download', `${lang.fileName}.json`);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click(); // simulate click
-    document.body.removeChild(element);
   }
+}
+
+export function downloadFile(content: any, fileName: string, dataType: string) {
+  const element = document.createElement('a');
+  element.setAttribute('href', `data:${dataType};charset=UTF-8,` + content);
+  element.setAttribute('download', fileName);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click(); // simulate click
+  document.body.removeChild(element);
 }
 
 function CreateItemsForTranslation(
