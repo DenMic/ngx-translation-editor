@@ -5,9 +5,10 @@ import { NgClass } from '@angular/common';
 import { StorageService } from './module/service/storage.service';
 import { Language } from './module/classes/language';
 import { flagsLang } from './module/constant/flags';
-import { PROJECT_LANG, THEME } from './module/constant/storage';
+import { LAYOUT_PAGE, PROJECT_LANG, THEME } from './module/constant/storage';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EdtDropdownComponent } from './share/component/edt-dropdown/edt-dropdown.component';
+import { layoutType } from './module/types/custom-types';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   protected readonly router = inject(Router);
 
   ngOnInit(): void {
+    let layout: layoutType = this.storageService.retrieve(LAYOUT_PAGE);
     let lang = this.storageService.retrieveObj<Language>(PROJECT_LANG);
     let theme = this.storageService.retrieve(THEME);
 
@@ -38,8 +40,14 @@ export class AppComponent implements OnInit {
       this.storageService.store(THEME, theme);
     }
 
+    if (!layout) {
+      layout = 'list';
+      this.storageService.store(LAYOUT_PAGE, layout);
+    }
+
     this.translateService.use(lang.fileName);
     this.appSettingsService.setTheme(theme);
+    this.appSettingsService.setLayoutPage(layout);
   }
 
   switchDarkTheme(): void {
