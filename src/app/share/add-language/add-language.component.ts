@@ -18,6 +18,8 @@ import { Language } from '../../module/classes/language';
 import { LANGUAGE_LIST } from '../../module/constant/storage';
 import { ProjectService } from '../../module/service/project.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { Translation } from '../../module/classes/translation';
+import { addLanguageToTranslation } from '../../module/function/project-Helper';
 
 @Component({
   selector: 'add-language',
@@ -92,12 +94,7 @@ export class AddLanguageComponent {
         prj?.languages.push(this.newLang);
 
         if (prj.translations) {
-          prj.translations.forEach((x) => {
-            x.items?.push({
-              lang: this.newLang?.flagName,
-              value: undefined,
-            });
-          });
+          addLanguageToTranslation(prj.translations, this.newLang);
         }
 
         this.projectService.updateTranslation(prj);

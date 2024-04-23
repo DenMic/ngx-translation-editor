@@ -1,12 +1,14 @@
 import {
   Component,
   TemplateRef,
+  computed,
   inject,
+  model,
   signal,
   viewChild,
 } from '@angular/core';
 import { EdtCardComponent } from '../../share/component/edt-card/edt-card.component';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { EdtDropdownComponent } from '../../share/component/edt-dropdown/edt-dropdown.component';
 import { ComunicationService } from './service/comunication.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -28,14 +30,17 @@ import { ItemTranslation, Translation } from '../../module/classes/translation';
 import {
   createTranslationsFromObj,
   downloadTranslationJson,
+  exportAllTranslations,
   exportTranslations,
   findTranslationById,
   getMaxIdTranslations,
   updateTranslationsFromObj,
+  zipAndDownloadTranslationJson,
 } from '../../module/function/project-Helper';
 import { copyObject } from '../../module/function/helper';
 import { Language } from '../../module/classes/language';
 import { AddLanguageComponent } from '../../share/add-language/add-language.component';
+import { AppSettingsService } from '../../module/service/app-settings.service';
 
 @Component({
   selector: 'app-translations',
@@ -60,25 +65,55 @@ import { AddLanguageComponent } from '../../share/add-language/add-language.comp
   styleUrl: './translations.component.css',
 })
 export class TranslationsComponent {
-  private ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
-  private popGeneral = viewChild<EdtPopupComponent>('popGeneral');
+  private readonly ddGeneral = viewChild<EdtDropdownComponent>('ddGeneral');
+  private readonly popGeneral = viewChild<EdtPopupComponent>('popGeneral');
 
-  private tmpFlag = viewChild<TemplateRef<any>>('tmpFlag');
-  private tmpExtra = viewChild<TemplateRef<any>>('tmpExtraButton');
+  private readonly tmpFlag = viewChild<TemplateRef<any>>('tmpFlag');
+  private readonly tmpExtra = viewChild<TemplateRef<any>>('tmpExtraButton');
 
-  private tmpAddTranslation = viewChild<TemplateRef<any>>('tmpAddTranslation');
-  private tmpImport = viewChild<TemplateRef<any>>('tmpImport');
+  private readonly tmpAddTranslation =
+    viewChild<TemplateRef<any>>('tmpAddTranslation');
+  private readonly tmpImport = viewChild<TemplateRef<any>>('tmpImport');
+  private readonly tmpExport = viewChild<TemplateRef<any>>('tmpExport');
+
+  private readonly ddLanguage = viewChild<EdtDropdownComponent>('ddLanguage');
+  private readonly dFlag = viewChild<HTMLElement>('dFlag');
 
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+
   private readonly projectService = inject(ProjectService);
   protected readonly comunicationService = inject(ComunicationService);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   // Template DropDown and Popup
   ddTemplate = signal<TemplateRef<any> | null>(null);
   popTemplate = signal<TemplateRef<any> | null>(null);
 
+  protected exportAllLang = signal<boolean>(false);
+
+  protected selectedPopLang = signal<Language | undefined>(undefined);
   protected files = signal<any[]>([]);
+  protected disabledImport = computed(() => {
+    if (this.files().length == 0) {
+      return true;
+    }
+
+    if (!this.selectedPopLang()) {
+      return true;
+    }
+
+    return false;
+  });
+
+  protected disableExportButton = computed(() => {
+    if (this.selectedPopLang()) return false;
+
+    if (this.exportAllLang()) return false;
+
+    return true;
+  });
 
   protected newLangForm: FormGroup = this.fb.group({
     global: [undefined, [Validators.required, noWhitespaceValidator()]],
@@ -118,6 +153,10 @@ export class TranslationsComponent {
 
           case 'import':
             this.popTemplate.set(this.tmpImport()!);
+            break;
+
+          case 'export':
+            this.popTemplate.set(this.tmpExport()!);
             break;
         }
 
@@ -211,8 +250,31 @@ export class TranslationsComponent {
     this.closeDropGeneral();
   }
 
+  selectImportLang(item: Language): void {
+    this.selectedPopLang.set(item);
+  }
+
+  exportCheckChange(e: any): void {
+    this.selectedPopLang.set(undefined);
+    this.exportAllLang.set(!this.exportAllLang());
+  }
+
+  showDDLangExport(): void {
+    if (!this.exportAllLang() && this.dFlag()) {
+      this.ddLanguage()?.show(this.dFlag()!);
+    }
+  }
+
+  showExportPop(): void {
+    this.comunicationService.setPopParam({
+      comunicationType: 'export',
+    });
+    this.comunicationService.setDropDownParam(undefined);
+
+    // this.exportTranslationProject()
+  }
+
   showImportPop(): void {
-    this.popTemplate.set(this.tmpImport() ?? null);
     this.comunicationService.setPopParam({
       comunicationType: 'import',
     });
@@ -220,14 +282,44 @@ export class TranslationsComponent {
   }
 
   exportTranslationProject(): void {
-    const lang = this.comunicationService.selectedLang();
-    const exportObj = exportTranslations(
-      this.comunicationService.project()?.translations,
-      lang
-    );
+    const exportAll = this.exportAllLang();
+    const langExport = this.selectedPopLang();
 
-    downloadTranslationJson(exportObj, lang);
+    if (exportAll) {
+      const exportObjs = exportAllTranslations(
+        this.comunicationService.project()?.translations,
+        this.comunicationService.project()?.languages
+      );
+
+      zipAndDownloadTranslationJson(exportObjs);
+    } else {
+      const exportObj = exportTranslations(
+        this.comunicationService.project()?.translations,
+        langExport
+      );
+
+      downloadTranslationJson(exportObj, langExport);
+    }
+
     this.closeDropGeneral();
+  }
+
+  protected switchLayout(): void {
+    if (this.appSettingsService.layoutPage() == 'list') {
+      this.appSettingsService.setLayoutPage('column');
+      this.router.navigate([
+        `translations/column`,
+        this.comunicationService.idPrj,
+      ]);
+    } else {
+      this.appSettingsService.setLayoutPage('list');
+      this.router.navigate([
+        `translations/list`,
+        this.comunicationService.idPrj,
+      ]);
+    }
+
+    this.comunicationService.setDropDownParam(undefined);
   }
 
   protected addLangClose(isUpdated: boolean): void {
@@ -235,6 +327,7 @@ export class TranslationsComponent {
       this.comunicationService.loadProjectFromStore(
         this.comunicationService.idPrj!
       );
+      this.comunicationService.selectProject(this.comunicationService.idPrj!);
     }
   }
 
@@ -275,13 +368,13 @@ export class TranslationsComponent {
         updateTranslationsFromObj(
           newTranslation,
           objFile,
-          this.comunicationService.selectedLang()!,
+          this.selectedPopLang()!,
           this.comunicationService.prjFromStore!.languages
         );
       } else {
         newTranslation = createTranslationsFromObj(
           objFile,
-          this.comunicationService.selectedLang()!,
+          this.selectedPopLang()!,
           this.comunicationService.prjFromStore!.languages
         );
       }
@@ -290,13 +383,20 @@ export class TranslationsComponent {
       this.comunicationService.project.set(
         copyObject(this.comunicationService.prjFromStore)
       );
+
       this.projectService.updateTranslation(this.comunicationService.project());
+      this.clearPopImport();
     }
   }
 
   protected closeAddTranslation(): void {
     this.comunicationService.idParentTranslation = undefined;
     this.popGeneral()?.toggle();
+  }
+
+  protected clearPopImport(): void {
+    this.files.set([]);
+    this.selectedPopLang.set(undefined);
   }
 
   private resetFormLang() {

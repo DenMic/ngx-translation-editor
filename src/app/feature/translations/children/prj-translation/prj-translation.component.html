@@ -1,6 +1,6 @@
 <div class="flex flex-col justify-center items-center defaultText">
 
-    <div class="flex justify-between w-2/3 pb-3 mb-3 borderBottom z-20">
+    <div class="flex justify-between w-2/3 pb-3 borderBottom z-20">
         <div class="flex gap-4 items-center">
             <!-- language -->
             <div #dFlag class="buttonSecondary" (click)="showDropGeneral(dFlag, 'language')">
@@ -37,26 +37,26 @@
         </div>
     </div>
 
-    @for (translation of comunicationService.project()?.translations; track $index) {
-        @defer(on viewport) {
-            <div class="w-2/3">
-                <translation-row 
-                    [translation]="translation" 
-                    [selectedLang]="comunicationService.selectedLang()"
-                    (onValueChange)="translationValChange($event.newVal, $event.translationId)"
-                    (onAdd)="addSubTranslation($event)"
-                    (onRemove)="removeTranslation($event)">
-                </translation-row>
-            </div>
-        } @placeholder {
-            <div class="flex items-center px-3 w-2/3 h-[34px] animate-pulse">
-                <div class="h-2.5 rounded-full w-full mb-4"></div>
+    <div class="listHeight w-2/3 px-4 overflow-y-auto">
+        @for (translation of comunicationService.project()?.translations; track $index) {
+            @defer(on viewport) {
+                    <translation-row 
+                        [translation]="translation" 
+                        [selectedLang]="comunicationService.selectedLang()"
+                        (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                        (onAdd)="addSubTranslation($event)"
+                        (onRemove)="removeTranslation($event)">
+                    </translation-row>
+            } @placeholder {
+                <div class="flex items-center px-3 w-2/3 h-[34px] animate-pulse">
+                    <div class="h-2.5 rounded-full w-full mb-4"></div>
+                </div>
+            }
+        } @empty {
+            <div class="p-12 text-center text-lg">
+                <span class="font-semibold text-neutral-600 dark: dark:text-neutral-500">{{ 'INFO.NO_TRANSLATION' | translate }}</span>
             </div>
         }
-    } @empty {
-        <div class="p-12 text-center text-lg">
-            <span class="font-semibold text-neutral-600 dark: dark:text-neutral-500">{{ 'INFO.NO_TRANSLATION' | translate }}</span>
-        </div>
-    }
+    </div>
 
 </div>

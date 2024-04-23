@@ -52,12 +52,16 @@
   },
 
   "FUNCTION": {
-    "SORT_GLOBAL": "Sort Global"
+    "SORT_GLOBAL": "Sort Global",
+    "EXPORT_ALL_LANG": "Export all languages (zip file)"
   },
 
   "INFO": {
     "NO_PROJECT": "No projects present",
     "NO_LANGUAGE": "No languages present",
-    "NO_TRANSLATION": "No translation present"
+    "NO_TRANSLATION": "No translation present",
+    "NO_TRANSLATION_SELECTED": "No translation selected",
+    "PAGE_NOT_FOUND": "Page not found",
+    "RETURN_PROJECT": "Return to project page"
   }
 }

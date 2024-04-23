@@ -1,1 +1,8 @@
-<p>not-found works!</p>
+<div class="flex flex-col gap-2 fullPage items-center justify-center defaultText">
+    <span class="font-semibold textStyle">404</span>
+    <span class="text-lg">{{ 'INFO.PAGE_NOT_FOUND' | translate }}</span>
+    <div class="buttonPrimary" (click)="router.navigate(['project'])">
+        <i class="fa-solid fa-rotate-left"></i>
+        <span>{{ 'INFO.RETURN_PROJECT' | translate }}</span>
+    </div>
+</div>

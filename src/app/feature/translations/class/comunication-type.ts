@@ -1,2 +1,2 @@
 export type ddType = 'language' | 'extra';
-export type popType = 'language' | 'import';
+export type popType = 'language' | 'import' | 'export';

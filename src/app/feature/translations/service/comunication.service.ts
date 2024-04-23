@@ -6,6 +6,7 @@ import { copyObject } from '../../../module/function/helper';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ProjectService } from '../../../module/service/project.service';
 import { Language } from '../../../module/classes/language';
+import { Subscriber, Subscription } from 'rxjs';
 
 @Injectable()
 export class ComunicationService {
@@ -20,6 +21,7 @@ export class ComunicationService {
   idParentTranslation: number | undefined = undefined;
   idPrj?: number;
 
+  private titleSubscriber: Subscription | undefined;
   private dropDownParam = signal<Comunication | undefined>(undefined);
   $dropDownParam = toObservable(this.dropDownParam);
 
@@ -29,8 +31,8 @@ export class ComunicationService {
   loadProjectFromStore(id: number): void {
     this.prjFromStore = copyObject(this.selectProject(id));
 
-    if (this.prjFromStore) {
-      this.appSettingsService
+    if (this.prjFromStore && !this.titleSubscriber) {
+      this.titleSubscriber = this.appSettingsService
         .setTitleFromTranslation('TRANSLATION.TITLE_PAGE', {
           prjName: this.prjFromStore.name,
         })
@@ -53,8 +55,8 @@ export class ComunicationService {
     const selectedPrj = this.projectService.getProjectById(id);
 
     if (selectedPrj) {
-      this.project.set(selectedPrj);
-      this.selectedLang.set(selectedPrj.languages[0]);
+      this.project.set({ ...selectedPrj });
+      this.selectedLang.set({ ...selectedPrj.languages[0] });
     }
 
     return selectedPrj;

@@ -52,12 +52,16 @@
   },
 
   "FUNCTION": {
-    "SORT_GLOBAL": "Ordina Global"
+    "SORT_GLOBAL": "Ordina Global",
+    "EXPORT_ALL_LANG": "Esporta tutte le Lingua (zip file)"
   },
 
   "INFO": {
     "NO_PROJECT": "Nessun progetto presente",
     "NO_LANGUAGE": "Nessuna lingua presente",
-    "NO_TRANSLATION": "Nessuna traduzione presente"
+    "NO_TRANSLATION": "Nessuna traduzione presente",
+    "NO_TRANSLATION_SELECTED": "Nessuna traduzione selezionata",
+    "PAGE_NOT_FOUND": "Pagina non trovata",
+    "RETURN_PROJECT": "Ritorna alla pagina dei progetti"
   }
 }
