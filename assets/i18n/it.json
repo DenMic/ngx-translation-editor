@@ -1,0 +1,74 @@
+{
+  "NAME": "Nome",
+  "DESCRIPTION": "Descrizione",
+  "VALUE": "Valore",
+  "CLOSE": "Chiudi",
+  "CANCEL": "Annulla",
+  "CONTINUE": "Continue",
+  "ADD": "Aggiungi",
+  "EXTENTION_NAME": "Nome estensione",
+  "SEARCH": "Cerca",
+  "IMPORT": "Importa",
+  "EXPORT": "Esporta",
+  "TREE_LIST": "Lista ad albero",
+  "LIST": "Lista",
+  "COLUMN": "Colonna",
+
+  "PROJECT": {
+    "TITLE_PAGE": "Progetti",
+    "NEW": "Nuovo progetto",
+    "ADD": "Aggiungi progetto",
+    "REMOVE": "Elimina progetto",
+    "QUESTIONS": {
+      "DELETE_PROJECT": "Sicuro di voler eliminare il progetto <span class='rounded bg-black/10 dark:bg-white/10 p-1'>{{ prjName }}</span> definitivamente?"
+    }
+  },
+
+  "LANGUAGE": {
+    "TITLE_PAGE": "Lingue di Default",
+    "LANGUAGE": "Lingua",
+    "ADD": "Aggiungi lingua",
+    "EDIT": "Modifica lingua",
+    "REMOVE": "Elimina lingua",
+    "SELECT_IMPORT_LANGUAGE": "Selezionare Lingua da importare",
+    "SELECT_EXPORT_LANGUAGE": "Selezionare Lingua da esportare"
+  },
+
+  "TRANSLATION": {
+    "TITLE_PAGE": "TRADUZIONI - {{prjName}}",
+    "ADD": "Aggiungi traduzione",
+    "REMOVE": "Rimuovi traduzione"
+  },
+
+  "SETTINGS": {
+    "TITLE_PAGE": "Impostazioni",
+    "APPARANCE": "Aspetto",
+    "BASE_SETTINGS": "Impostazioni base",
+    "LAYOUT_TRANSLATION": "Layout pagina traduzioni",
+    "SELECTED_LANGUAGE": "Lingua selezionata",
+    "DARK_MODE": "Dark mode"
+  },
+
+  "FLAG": {
+    "ITALY": "Italia",
+    "ENGLAND": "Inghilterra",
+    "GERMANI": "Germania",
+    "SPAIN": "Spagna",
+    "FRANCE": "Francia",
+    "SLOVENIA": "Slovenia"
+  },
+
+  "FUNCTION": {
+    "SORT_GLOBAL": "Ordina Global",
+    "EXPORT_ALL_LANG": "Esporta tutte le Lingua (zip file)"
+  },
+
+  "INFO": {
+    "NO_PROJECT": "Nessun progetto presente",
+    "NO_LANGUAGE": "Nessuna lingua presente",
+    "NO_TRANSLATION": "Nessuna traduzione presente",
+    "NO_TRANSLATION_SELECTED": "Nessuna traduzione selezionata",
+    "PAGE_NOT_FOUND": "Pagina non trovata",
+    "RETURN_PROJECT": "Ritorna alla pagina dei progetti"
+  }
+}

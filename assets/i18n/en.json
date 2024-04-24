@@ -1,0 +1,74 @@
+{
+  "NAME": "Name",
+  "DESCRIPTION": "Description",
+  "VALUE": "Value",
+  "CLOSE": "Close",
+  "CANCEL": "Cancel",
+  "CONTINUE": "Continue",
+  "ADD": "Add",
+  "EXTENTION_NAME": "Extention name",
+  "SEARCH": "Search",
+  "IMPORT": "Import",
+  "EXPORT": "Export",
+  "TREE_LIST": "Tree list",
+  "LIST": "List",
+  "COLUMN": "Column",
+
+  "PROJECT": {
+    "TITLE_PAGE": "Project",
+    "NEW": "New Project",
+    "ADD": "Add Project",
+    "REMOVE": "Remove Project",
+    "QUESTIONS": {
+      "DELETE_PROJECT": "Are you sure you want to delete the <span class='rounded bg-black/10 dark:bg-white/10 p-1'>{{ prjName }}</span> project permanently?"
+    }
+  },
+
+  "LANGUAGE": {
+    "TITLE_PAGE": "Default Languages",
+    "LANGUAGE": "Language",
+    "ADD": "Add Language",
+    "EDIT": "Edit Language",
+    "REMOVE": "Remove Language",
+    "SELECT_IMPORT_LANGUAGE": "Select Language to import",
+    "SELECT_EXPORT_LANGUAGE": "Select Language to export"
+  },
+
+  "TRANSLATION": {
+    "TITLE_PAGE": "TRANSLATION - {{prjName}}",
+    "ADD": "Add Translation",
+    "REMOVE": "Remove Translation"
+  },
+
+  "SETTINGS": {
+    "TITLE_PAGE": "Settings",
+    "APPARANCE": "Apparance",
+    "BASE_SETTINGS": "Base settings",
+    "LAYOUT_TRANSLATION": "Layout translation page",
+    "SELECTED_LANGUAGE": "Selected language",
+    "DARK_MODE": "Dark mode"
+  },
+
+  "FLAG": {
+    "ITALY": "Italy",
+    "ENGLAND": "England",
+    "GERMANI": "Germani",
+    "SPAIN": "Spain",
+    "FRANCE": "France",
+    "SLOVENIA": "Slovenia"
+  },
+
+  "FUNCTION": {
+    "SORT_GLOBAL": "Sort Global",
+    "EXPORT_ALL_LANG": "Export all languages (zip file)"
+  },
+
+  "INFO": {
+    "NO_PROJECT": "No projects present",
+    "NO_LANGUAGE": "No languages present",
+    "NO_TRANSLATION": "No translation present",
+    "NO_TRANSLATION_SELECTED": "No translation selected",
+    "PAGE_NOT_FOUND": "Page not found",
+    "RETURN_PROJECT": "Return to project page"
+  }
+}
