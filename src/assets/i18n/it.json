@@ -3,6 +3,8 @@
   "DESCRIPTION": "Descrizione",
   "VALUE": "Valore",
   "CLOSE": "Chiudi",
+  "CANCEL": "Annulla",
+  "CONTINUE": "Continue",
   "ADD": "Aggiungi",
   "EXTENTION_NAME": "Nome estensione",
   "SEARCH": "Cerca",
@@ -16,7 +18,10 @@
     "TITLE_PAGE": "Progetti",
     "NEW": "Nuovo progetto",
     "ADD": "Aggiungi progetto",
-    "REMOVE": "Elimina progetto"
+    "REMOVE": "Elimina progetto",
+    "QUESTIONS": {
+      "DELETE_PROJECT": "Sicuro di voler eliminare il progetto <span class='rounded bg-black/10 dark:bg-white/10 p-1'>{{ prjName }}</span> definitivamente?"
+    }
   },
 
   "LANGUAGE": {
@@ -24,7 +29,9 @@
     "LANGUAGE": "Lingua",
     "ADD": "Aggiungi lingua",
     "EDIT": "Modifica lingua",
-    "REMOVE": "Elimina lingua"
+    "REMOVE": "Elimina lingua",
+    "SELECT_IMPORT_LANGUAGE": "Selezionare Lingua da importare",
+    "SELECT_EXPORT_LANGUAGE": "Selezionare Lingua da esportare"
   },
 
   "TRANSLATION": {

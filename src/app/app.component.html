@@ -1,10 +1,4 @@
-<!-- <div class="w-full h-52 top-0 left-0 absolute rounded-b-lg bgTop -z-10">
-</div> -->
-<!-- <div class="top-0 left-0 absolute w-full h-full bg-neutral-700 -z-10">
-  <div class="w-full h-full bg-green-900 edt-clip"></div>
-</div> -->
-
-<div class="h-full overflow-hidden bg-neutral-50 dark:bg-base-800" [ngClass]="{'dark' : appSettingsService.darkTheme()}">
+<div class="overflow-hidden bg-neutral-50 dark:bg-base-800" [ngClass]="{'dark' : appSettingsService.darkTheme()}">
 
   <nav class="py-4 px-9 flex justify-between sticky top-0 left-0 z-40 
     border-b bg-neutral-200 border-b-neutral-300
@@ -37,17 +31,16 @@
     </div>
   </nav>
 
-  <div class="mt-4 ml-8 font-bold text-3xl text-neutral-50">
-    
-  </div>
+  <div class="contentHeight overflow-y-hidden z-10 pt-4">
 
-  <div class="overflow-y-hidden z-10">
-
-    <!-- <div class="w-full h-44 bg-neutral-100 rounded-md"> -->
-
-      <router-outlet />
-
-    <!-- </div> -->
+    <router-outlet />
 
   </div>
+
+  <footer class="flex flex-row-reverse py-2 px-4 border-t border-black/10 dark:border-white/10 defaultText bg-neutral-200 dark:bg-base-900">
+    <a class="flex gap-2 items-center " href="https://github.com/DenMic/ngx-translation-editor">
+      <span class="hover:underline">2024 - Denis Micheletti</span>
+      <i class="fa-brands fa-github text-xl"></i>
+    </a>
+  </footer>
 </div>

@@ -8,6 +8,7 @@ import {
   input,
   model,
   output,
+  viewChild,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -34,6 +35,9 @@ import { NgClass } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EdtInputComponent implements OnInit, ControlValueAccessor {
+  input = viewChild<HTMLInputElement>('input');
+  area = viewChild<HTMLTextAreaElement>('area');
+
   inputType = input<inputType>('input');
   label = input<string>();
   value = model<string>();
@@ -57,6 +61,20 @@ export class EdtInputComponent implements OnInit, ControlValueAccessor {
     } catch (e) {
       // if not in FormControl
     }
+  }
+
+  focusOnInput(): void {
+    setTimeout(() => {
+      const input: any = this.input();
+      const area: any = this.area();
+
+      if (input) {
+        input.nativeElement.focus();
+      }
+      if (area) {
+        area.nativeElement.focus();
+      }
+    }, 100);
   }
 
   // Gestione Form
