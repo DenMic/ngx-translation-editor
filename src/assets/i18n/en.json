@@ -3,6 +3,8 @@
   "DESCRIPTION": "Description",
   "VALUE": "Value",
   "CLOSE": "Close",
+  "CANCEL": "Cancel",
+  "CONTINUE": "Continue",
   "ADD": "Add",
   "EXTENTION_NAME": "Extention name",
   "SEARCH": "Search",
@@ -16,7 +18,10 @@
     "TITLE_PAGE": "Project",
     "NEW": "New Project",
     "ADD": "Add Project",
-    "REMOVE": "Remove Project"
+    "REMOVE": "Remove Project",
+    "QUESTIONS": {
+      "DELETE_PROJECT": "Are you sure you want to delete the <span class='rounded bg-black/10 dark:bg-white/10 p-1'>{{ prjName }}</span> project permanently?"
+    }
   },
 
   "LANGUAGE": {

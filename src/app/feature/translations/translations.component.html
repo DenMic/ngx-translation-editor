@@ -61,7 +61,7 @@
 
         <form [formGroup]="newLangForm" (submit)="addItemTraslate()">
             <div class="flex flex-col gap-3 mb-6 w-96">
-                <edt-input [label]="'NAME' | translate" formControlName="global"></edt-input>
+                <edt-input #edtName [label]="'NAME' | translate" formControlName="global"></edt-input>
                 <edt-input [label]="'VALUE' | translate" formControlName="value"></edt-input>
             </div>
             

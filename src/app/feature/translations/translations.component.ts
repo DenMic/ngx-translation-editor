@@ -2,8 +2,8 @@ import {
   Component,
   TemplateRef,
   computed,
+  effect,
   inject,
-  model,
   signal,
   viewChild,
 } from '@angular/core';
@@ -70,6 +70,10 @@ export class TranslationsComponent {
 
   private readonly tmpFlag = viewChild<TemplateRef<any>>('tmpFlag');
   private readonly tmpExtra = viewChild<TemplateRef<any>>('tmpExtraButton');
+
+  private readonly edtName = viewChild<EdtInputComponent | undefined | null>(
+    'edtName'
+  );
 
   private readonly tmpAddTranslation =
     viewChild<TemplateRef<any>>('tmpAddTranslation');
@@ -162,10 +166,16 @@ export class TranslationsComponent {
 
         this.popGeneral()?.showPop();
       } else {
-        this.ddTemplate.set(null);
+        this.popTemplate.set(null);
         this.popGeneral()?.closePop();
       }
     });
+
+  private effectNameTranslation = effect(() => {
+    if (this.edtName()) {
+      this.edtName()?.focusOnInput();
+    }
+  });
 
   closeDropGeneral(): void {
     this.comunicationService.setDropDownParam(undefined);
@@ -391,7 +401,7 @@ export class TranslationsComponent {
 
   protected closeAddTranslation(): void {
     this.comunicationService.idParentTranslation = undefined;
-    this.popGeneral()?.toggle();
+    this.comunicationService.setPopParam(undefined);
   }
 
   protected clearPopImport(): void {

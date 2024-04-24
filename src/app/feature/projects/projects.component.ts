@@ -40,12 +40,15 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class ProjectsComponent implements OnInit {
   edtAddPrj = viewChild<EdtPopupComponent>('edtAddPrj');
+  edtRemovePrj = viewChild<EdtPopupComponent>('edtRemovePrj');
 
   private appSettingsService = inject(AppSettingsService);
 
   private storageService = inject(StorageService);
   private fb = inject(FormBuilder);
   protected router = inject(Router);
+
+  protected selectedPrj: Project | undefined = undefined;
 
   protected projectList = signal<Project[]>([]);
   protected newProjectForm: FormGroup = this.fb.group({
@@ -99,11 +102,18 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
-  removePrj(prj: Project): void {
+  showDeletePop(prj: Project): void {
+    this.selectedPrj = prj;
+    this.edtRemovePrj()?.showPop();
+  }
+
+  removePrj(): void {
     this.projectList.update((val) => {
-      return val.filter((x) => x.name != prj.name);
+      return val.filter((x) => x.id != this.selectedPrj!.id);
     });
 
     this.storageService.store(PROJECT_LIST, this.projectList());
+    this.selectedPrj = undefined;
+    this.edtRemovePrj()?.closePop();
   }
 }
