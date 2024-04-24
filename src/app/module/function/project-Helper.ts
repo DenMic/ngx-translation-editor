@@ -284,7 +284,7 @@ export function exportTranslations(
 }
 
 export function zipAndDownloadTranslationJson(exportObj: ExportObj[]): void {
-  const zip = new JSZip();
+  const zip: JSZip = new JSZip();
 
   for (let index = 0; index < exportObj.length; index++) {
     const element = exportObj[index];
