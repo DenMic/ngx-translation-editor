@@ -4,7 +4,7 @@ The editor to manage `JSON` files for the translation of your applications (i18n
 
 > At this moment the project is still in alpha testing.
 
-![img](./src/assets/images/editorDark.png)
+![img](./src/assets/images/editorColumnDark.png)
 
 Simple example of managed file
 
