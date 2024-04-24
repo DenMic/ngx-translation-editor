@@ -32,3 +32,9 @@ export const flagsLang: Language[] = [
     fileName: 'si',
   },
 ];
+
+export const defaultLang: Language = {
+  description: 'ENGLAND',
+  flagName: 'gb-eng',
+  fileName: 'en',
+};

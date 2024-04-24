@@ -19,6 +19,7 @@ import { LANGUAGE_LIST, PROJECT_LIST } from '../../module/constant/storage';
 import { Language } from '../../module/classes/language';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { defaultLang } from '../../module/constant/flags';
 
 @Component({
   selector: 'app-projects',
@@ -89,8 +90,9 @@ export class ProjectsComponent implements OnInit {
         description: newProjectForm.description && newProjectForm.description(),
       } as Project;
 
-      newProject.languages =
-        this.storageService.retrieveObj<Language[]>(LANGUAGE_LIST) ?? [];
+      newProject.languages = this.storageService.retrieveObj<Language[]>(
+        LANGUAGE_LIST
+      ) ?? [defaultLang];
 
       this.projectList.update((val) => {
         val.push(newProject);
