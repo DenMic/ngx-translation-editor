@@ -26,7 +26,7 @@ steps:
 
   - name: Deploy to gh pages
       run: |
-        npx angular-cli-ghpages --dir=dist/ngx-translation-editor
+        npx angular-cli-ghpages --dir=dist/ngx-translation-editor/browser
       env:
         CI: true
         GH_TOKEN: ${{ secrets.PUBLISH_GH_PAGE }}
