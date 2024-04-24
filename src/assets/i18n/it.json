@@ -29,7 +29,9 @@
     "LANGUAGE": "Lingua",
     "ADD": "Aggiungi lingua",
     "EDIT": "Modifica lingua",
-    "REMOVE": "Elimina lingua"
+    "REMOVE": "Elimina lingua",
+    "SELECT_IMPORT_LANGUAGE": "Selezionare Lingua da importare",
+    "SELECT_EXPORT_LANGUAGE": "Selezionare Lingua da esportare"
   },
 
   "TRANSLATION": {

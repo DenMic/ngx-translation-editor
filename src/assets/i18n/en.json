@@ -29,7 +29,9 @@
     "LANGUAGE": "Language",
     "ADD": "Add Language",
     "EDIT": "Edit Language",
-    "REMOVE": "Remove Language"
+    "REMOVE": "Remove Language",
+    "SELECT_IMPORT_LANGUAGE": "Select Language to import",
+    "SELECT_EXPORT_LANGUAGE": "Select Language to export"
   },
 
   "TRANSLATION": {
