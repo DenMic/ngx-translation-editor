@@ -3,7 +3,7 @@ name: Build and Deploy Ngx-translation-editor
 on:
   push:
     branches:
-      - main
+      - master
     
 jobs:
   build:
