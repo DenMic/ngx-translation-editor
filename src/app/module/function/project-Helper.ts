@@ -1,7 +1,7 @@
 import { ExportObj } from '../classes/exportObj';
 import { Language } from '../classes/language';
 import { Translation } from '../classes/translation';
-import JSZip from 'JSZip';
+import * as JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
 export function findTranslationById(
@@ -284,7 +284,7 @@ export function exportTranslations(
 }
 
 export function zipAndDownloadTranslationJson(exportObj: ExportObj[]): void {
-  const zip: JSZip = JSZip;
+  const zip: JSZip = new (<any>JSZip).default();
 
   for (let index = 0; index < exportObj.length; index++) {
     const element = exportObj[index];

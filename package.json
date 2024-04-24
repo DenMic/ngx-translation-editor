@@ -23,6 +23,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@types/file-saver": "^2.0.7",
+    "@types/node": "^20.12.7",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "rxjs": "~7.8.1",
