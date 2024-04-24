@@ -293,7 +293,7 @@ export function zipAndDownloadTranslationJson(exportObj: ExportObj[]): void {
 
     zip.file(fileName, sJson);
   }
-  zip.generateAsync({ type: 'blob' }).then(function (content) {
+  zip.generateAsync({ type: 'blob' }).then(function (content: any) {
     saveAs(content, 'translation.zip');
   });
 }
