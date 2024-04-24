@@ -29,6 +29,10 @@
   @apply bg-neutral-600;
 }
 
+.contentHeight {
+  height: calc(100vh - 110px);
+}
+
 .defaultText {
   @apply text-neutral-700 dark:text-neutral-300;
 }
