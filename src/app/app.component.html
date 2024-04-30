@@ -9,25 +9,31 @@
       <span>{{ appSettingsService.titlePage() }}</span>
     </div>
 
-    <div class="flex gap-4 items-center" >
-      <div class="buttonSecondary" (click)="router.navigate(['project'])">
-        <i class="fa-solid fa-cubes text-base hover:cursor-pointer" title="Project"></i>
-      </div>
-      <div class="buttonSecondary" (click)="router.navigate(['languages'])">
-        <i class="fa-regular fa-flag text-base hover:cursor-pointer" title="Languages"></i>
-      </div>
+    <div class="flex gap-4 items-center">
+      @if(appSettingsService.isMobile()){
+        <div class="buttonSecondary" (click)="showMenu = true">
+          <i class="fa-solid fa-bars text-base hover:cursor-pointer" title="Menu"></i>
+        </div>
+      } @else {
+        <div class="buttonSecondary" (click)="router.navigate(['project'])">
+          <i class="fa-solid fa-cubes text-base hover:cursor-pointer" title="Project"></i>
+        </div>
+        <div class="buttonSecondary" (click)="router.navigate(['languages'])">
+          <i class="fa-regular fa-flag text-base hover:cursor-pointer" title="Languages"></i>
+        </div>
 
-      <div class="buttonSecondary" (click)="switchDarkTheme()">
-        @if(appSettingsService.darkTheme()){
-          <i class="fa-solid fa-moon text-base hover:cursor-pointer"></i>
-        } @else {
-          <i class="fa-solid fa-sun text-base hover:cursor-pointer"></i>
-        }
-      </div>
+        <div class="buttonSecondary" (click)="switchDarkTheme()">
+          @if(appSettingsService.darkTheme()){
+            <i class="fa-solid fa-moon text-base hover:cursor-pointer"></i>
+          } @else {
+            <i class="fa-solid fa-sun text-base hover:cursor-pointer"></i>
+          }
+        </div>
 
-      <div class="buttonSecondary" (click)="router.navigate(['settings'])">
-        <i class="fa-solid fa-gear text-base hover:cursor-pointer"></i>
-      </div>
+        <div class="buttonSecondary" (click)="router.navigate(['settings'])">
+          <i class="fa-solid fa-gear text-base hover:cursor-pointer"></i>
+        </div>
+      }
     </div>
   </nav>
 
@@ -43,4 +49,41 @@
       <i class="fa-brands fa-github text-xl"></i>
     </a>
   </footer>
+
+  @if(showMenu){
+    <div 
+      (click)="showMenu = false"
+      class="w-full h-full z-40 fixed top-0 bottom-0 right-0 left-0 bg-neutral-950 opacity-50">
+    </div>
+  
+    <div class="absolute top-0 right-0 w-2/3 h-full bg-neutral-200 dark:bg-base-900 rounded-s-md shadow dark:shadow-neutral-600 overflow-hidden z-50">
+      <div class="flex items-center justify-center h-24
+        border-b bg-neutral-300 border-b-neutral-340
+        dark:bg-base-950 dark:border-b-base-600">
+        <img class="dark:grayscale dark:invert" alt="Logo" src="assets/images/logo.svg" width="32">
+      </div>
+
+
+      <div class="flex gap-4 defaultText mx-3 mt-3 px-2 py-2 rounded-md hover:cursor-pointer active:bg-black/10 dark:active:bg-white/10"
+        title="Project"
+        (click)="router.navigate(['project']); showMenu = false;">
+        <i class="fa-solid fa-cubes text-base"></i>
+        <span>Project</span>
+      </div>
+      <div class="flex gap-4 defaultText mx-3 mt-3 px-2 py-2 rounded-md hover:cursor-pointer active:bg-black/10 dark:active:bg-white/10" 
+        title="Languages"
+        (click)="router.navigate(['languages']); showMenu = false;">
+        <i class="fa-solid fa-flag text-base"></i>
+        <span>Default Languages</span>
+      </div>
+      <div class="flex gap-4 defaultText mx-3 mt-3 px-2 py-2 rounded-md hover:cursor-pointer active:bg-black/10 dark:active:bg-white/10" 
+        title="Settings"
+        (click)="router.navigate(['settings']); showMenu = false;">
+        <i class="fa-solid fa-gear text-base"></i>
+        <span>Settings</span>
+      </div>
+    </div>
+  }
+
 </div>
+

@@ -9,6 +9,7 @@ import { LAYOUT_PAGE, PROJECT_LANG, THEME } from './module/constant/storage';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EdtDropdownComponent } from './share/component/edt-dropdown/edt-dropdown.component';
 import { layoutType } from './module/types/custom-types';
+import { headerFromMobile } from './module/function/helper';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { layoutType } from './module/types/custom-types';
 })
 export class AppComponent implements OnInit {
   title = 'ngx-translation-editor';
+  showMenu = false;
 
   private readonly storageService = inject(StorageService);
   private readonly translateService = inject(TranslateService);
