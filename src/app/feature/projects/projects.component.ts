@@ -43,10 +43,9 @@ export class ProjectsComponent implements OnInit {
   edtAddPrj = viewChild<EdtPopupComponent>('edtAddPrj');
   edtRemovePrj = viewChild<EdtPopupComponent>('edtRemovePrj');
 
-  private appSettingsService = inject(AppSettingsService);
-
   private storageService = inject(StorageService);
   private fb = inject(FormBuilder);
+  protected appSettingsService = inject(AppSettingsService);
   protected router = inject(Router);
 
   protected selectedPrj: Project | undefined = undefined;
@@ -67,6 +66,18 @@ export class ProjectsComponent implements OnInit {
     this.projectList.set(
       this.storageService.retrieveObj<Project[]>(PROJECT_LIST) ?? []
     );
+  }
+
+  dblClickProject(id: number) {
+    if (!this.appSettingsService.isMobile()) {
+      this.goToTranslation(id);
+    }
+  }
+
+  clickProject(id: number) {
+    if (this.appSettingsService.isMobile()) {
+      this.goToTranslation(id);
+    }
   }
 
   goToTranslation(id: number): void {

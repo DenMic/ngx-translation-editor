@@ -65,6 +65,11 @@
 
 
       <div class="flex gap-4 defaultText mx-3 mt-3 px-2 py-2 rounded-md hover:cursor-pointer active:bg-black/10 dark:active:bg-white/10"
+        title="close Menu"
+        (click)="showMenu = false;">
+        <i class="fa-solid fa-angles-right text-base"></i>
+      </div>
+      <div class="flex gap-4 defaultText mx-3 mt-3 px-2 py-2 rounded-md hover:cursor-pointer active:bg-black/10 dark:active:bg-white/10"
         title="Project"
         (click)="router.navigate(['project']); showMenu = false;">
         <i class="fa-solid fa-cubes text-base"></i>

@@ -16,6 +16,7 @@ import {
 export class EdtPopupComponent {
   show = signal<boolean>(false);
   outClickClose = input<boolean>(false);
+  isMobile = input<boolean>(false);
 
   protected close() {
     if (this.outClickClose()) this.show.set(false);
