@@ -21,6 +21,8 @@ import { DragDropDirective } from './directive/drag-drop.directive';
 import { NgTemplateOutlet } from '@angular/common';
 import { ComunicationService } from '../../service/comunication.service';
 import { ddType } from '../../class/comunication-type';
+import { AppSettingsService } from '../../../../module/service/app-settings.service';
+import { MobileTranslationRowComponent } from './mobile-translation-row/mobile-translation-row.component';
 
 @Component({
   selector: 'app-prj-translation',
@@ -31,6 +33,7 @@ import { ddType } from '../../class/comunication-type';
     NgTemplateOutlet,
 
     TranslationRowComponent,
+    MobileTranslationRowComponent,
     AddLanguageComponent,
 
     EdtCardComponent,
@@ -50,6 +53,7 @@ export class PrjTranslationComponent {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly projectService = inject(ProjectService);
   protected readonly comunicationService = inject(ComunicationService);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   // Popup settings
   popTemplate = signal<TemplateRef<any> | null>(null);

@@ -54,13 +54,14 @@
 
 <!-- Template Add Translation Popup -->
 <ng-template #tmpAddTranslation>
-    <div class="p-8 defaultText">
+    <div class="p-8 defaultText min-w-80">
         <div class="mb-8 font-semibold text-2xl">
             {{ 'TRANSLATION.ADD' | translate }}
         </div>
 
         <form [formGroup]="newLangForm" (submit)="addItemTraslate()">
-            <div class="flex flex-col gap-3 mb-6 w-96">
+            <div class="flex flex-col gap-3 mb-6"
+                [class]="appSettingsService.isMobile() ? 'w-full' : 'w-96'">
                 <edt-input #edtName [label]="'NAME' | translate" formControlName="global"></edt-input>
                 <edt-input [label]="'VALUE' | translate" formControlName="value"></edt-input>
             </div>
