@@ -81,10 +81,13 @@ export class ProjectsComponent implements OnInit {
   }
 
   goToTranslation(id: number): void {
-    this.router.navigate([
-      `translations/${this.appSettingsService.layoutPage()}`,
-      id,
-    ]);
+    let layoutPage = this.appSettingsService.layoutPage();
+
+    if (this.appSettingsService.isMobile()) {
+      layoutPage = 'list';
+    }
+
+    this.router.navigate([`translations/${layoutPage}`, id]);
   }
 
   addProject(): void {
