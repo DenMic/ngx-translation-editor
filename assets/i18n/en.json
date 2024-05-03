@@ -37,7 +37,8 @@
   "TRANSLATION": {
     "TITLE_PAGE": "TRANSLATION - {{prjName}}",
     "ADD": "Add Translation",
-    "REMOVE": "Remove Translation"
+    "REMOVE": "Remove Translation",
+    "EDIT": "Edit Translation"
   },
 
   "SETTINGS": {
