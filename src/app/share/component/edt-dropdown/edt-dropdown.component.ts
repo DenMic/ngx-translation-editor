@@ -42,7 +42,7 @@ export class EdtDropdownComponent implements OnDestroy {
     min-w[144px] mt-1
     rounded-md shadow dark:shadow-none
     text-neutral-800 dark:text-neutral-200
-    bg-neutral-100 dark:bg-base-700`;
+    bg-neutral-100 dark:bg-base-900`;
 
     if (this.appSettingsService.darkTheme()) {
       baseCss += ' dark';

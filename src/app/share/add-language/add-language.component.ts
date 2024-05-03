@@ -9,8 +9,6 @@ import {
 } from '@angular/core';
 import { EdtPopupComponent } from '../component/edt-popup/edt-popup.component';
 import { EdtButtonComponent } from '../component/edt-button/edt-button.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { flagsLang } from '../../module/constant/flags';
 import { StorageService } from '../../module/service/storage.service';
@@ -18,8 +16,9 @@ import { Language } from '../../module/classes/language';
 import { LANGUAGE_LIST } from '../../module/constant/storage';
 import { ProjectService } from '../../module/service/project.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { Translation } from '../../module/classes/translation';
 import { addLanguageToTranslation } from '../../module/function/project-Helper';
+import { AppSettingsService } from '../../module/service/app-settings.service';
+import { EdtDropdownComponent } from '../component/edt-dropdown/edt-dropdown.component';
 
 @Component({
   selector: 'add-language',
@@ -30,8 +29,7 @@ import { addLanguageToTranslation } from '../../module/function/project-Helper';
 
     EdtPopupComponent,
     EdtButtonComponent,
-    MatFormFieldModule,
-    MatSelectModule,
+    EdtDropdownComponent,
 
     TranslateModule,
   ],
@@ -42,15 +40,15 @@ import { addLanguageToTranslation } from '../../module/function/project-Helper';
 export class AddLanguageComponent {
   edtAddLang = viewChild<EdtPopupComponent>('edtAddLang');
 
-  storageService = inject(StorageService);
-  projectService = inject(ProjectService);
+  private readonly storageService = inject(StorageService);
+  private readonly projectService = inject(ProjectService);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   prjId = input<number | undefined>(undefined);
-
   onShow = output();
   onClose = output<boolean>();
 
-  protected newLang?: Language;
+  protected selectedPopLang = signal<Language | undefined>(undefined);
   protected languageList = signal<Language[]>([]);
   protected selectableLang = computed(() => {
     const id = this.prjId();
@@ -82,33 +80,34 @@ export class AddLanguageComponent {
   }
 
   addLang(): void {
-    if (!this.newLang) {
+    if (!this.selectedPopLang()) {
       alert('Selezionare una lingua!');
       return;
     }
 
     const id = this.prjId();
+    const newLang = this.selectedPopLang();
     if (id) {
       const prj = this.projectService.getProjectById(id);
-      if (prj) {
-        prj?.languages.push(this.newLang);
+      if (prj && newLang) {
+        prj?.languages.push(newLang);
 
         if (prj.translations) {
-          addLanguageToTranslation(prj.translations, this.newLang);
+          addLanguageToTranslation(prj.translations, newLang);
         }
 
         this.projectService.updateTranslation(prj);
       }
     } else {
       this.languageList.update((val) => {
-        if (this.newLang) val.push(this.newLang);
+        if (newLang) val.push(newLang);
         return [...val];
       });
 
       this.storageService.store(LANGUAGE_LIST, this.languageList());
     }
 
-    this.newLang = undefined;
+    this.selectedPopLang.set(undefined);
     this.edtAddLang()?.toggle();
 
     this.onClose.emit(true);

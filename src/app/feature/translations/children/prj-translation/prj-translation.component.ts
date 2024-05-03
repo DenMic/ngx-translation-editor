@@ -21,6 +21,9 @@ import { DragDropDirective } from './directive/drag-drop.directive';
 import { NgTemplateOutlet } from '@angular/common';
 import { ComunicationService } from '../../service/comunication.service';
 import { ddType } from '../../class/comunication-type';
+import { AppSettingsService } from '../../../../module/service/app-settings.service';
+import { MobileTranslationRowComponent } from './mobile-translation-row/mobile-translation-row.component';
+import { TranslationEvent } from './class/translation-event';
 
 @Component({
   selector: 'app-prj-translation',
@@ -31,6 +34,7 @@ import { ddType } from '../../class/comunication-type';
     NgTemplateOutlet,
 
     TranslationRowComponent,
+    MobileTranslationRowComponent,
     AddLanguageComponent,
 
     EdtCardComponent,
@@ -50,6 +54,7 @@ export class PrjTranslationComponent {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly projectService = inject(ProjectService);
   protected readonly comunicationService = inject(ComunicationService);
+  protected readonly appSettingsService = inject(AppSettingsService);
 
   // Popup settings
   popTemplate = signal<TemplateRef<any> | null>(null);
@@ -86,19 +91,20 @@ export class PrjTranslationComponent {
     }
   }
 
-  translationValChange(
-    newVal: string | undefined,
-    translationId: number
-  ): void {
+  translationValChange(translationEvent: TranslationEvent): void {
     let translations = this.comunicationService.prjFromStore?.translations;
 
     if (translations) {
-      const translation = findTranslationById(translations, translationId);
-      const itemLang = translation?.items?.find(
-        (x) => x.lang == this.comunicationService.selectedLang()?.flagName
+      const translation = findTranslationById(
+        translations,
+        translationEvent.translationId
       );
+      let selectedLang = this.comunicationService.selectedLang()?.flagName;
+      if (translationEvent.lang) selectedLang = translationEvent.lang;
+
+      const itemLang = translation?.items?.find((x) => x.lang == selectedLang);
       if (itemLang) {
-        itemLang.value = newVal;
+        itemLang.value = translationEvent.newVal;
 
         if (this.comunicationService.prjFromStore) {
           this.comunicationService.prjFromStore.translations =

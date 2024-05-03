@@ -1,23 +1,24 @@
-<edt-popup #edtAddLang>
-    <div class="p-8 w-[500px] defaultText">
-        <div class="mb-8 font-semibold text-xl uppercase">
+<edt-popup #edtAddLang [isMobile]="appSettingsService.isMobile()">
+    <div class="p-8 defaultText"
+        [class]="appSettingsService.isMobile() ? 'w-full': 'w-[500px]'">
+        <div class="mb-4 font-semibold text-xl uppercase">
             {{ 'LANGUAGE.ADD' | translate }}
         </div>
 
-        <div class="flex flex-col gap-3 mb-6 w-96">
-            <mat-form-field>
-                <mat-label>{{ 'LANGUAGE.LANGUAGE' | translate }}</mat-label>
-                <mat-select [(value)]="newLang">
-                    @for (flag of selectableLang(); track $index) {
-                        <mat-option [value]="flag">
-                            <div class="flex gap-4 items-center">
-                                <span [class]="'fi fi-' + flag.flagName"></span> 
-                                <span>{{ "FLAG." + flag.description | translate}}</span>
-                            </div>
-                        </mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
+        <div class="flex flex-col gap-3 mb-6 w-full">
+            <!-- Select box -->
+            <label class="text-nowrap" for="dFlagExport">{{ "LANGUAGE.LANGUAGE" | translate }}</label>
+            <div #dFlag id="dFlagExport" class="buttonSecondary flex justify-between" (click)="ddLanguage.show(dFlag)">
+                @if(selectedPopLang()){
+                    <div class="flex items-center gap-4">
+                        <span class="text-base" [class]="'fi fi-' + selectedPopLang()?.flagName"></span>
+                        <span>{{ 'FLAG.' + selectedPopLang()?.description| translate }}</span> 
+                    </div>
+                } @else {
+                    <i class="fa-solid fa-circle-question text-xl"></i>
+                }
+                <i class="fa-solid fa-caret-down text-lg"></i>
+            </div>
         </div>
         
         <div class="flex gap-4 justify-end">
@@ -25,4 +26,14 @@
             <edt-button [label]="'ADD' | translate" (onClick)="addLang()"></edt-button>
         </div>
     </div>
+
+    <edt-dropdown #ddLanguage>
+        @for (item of selectableLang(); track $index) {
+            <div class="w-full flex items-center gap-4 py-2 px-4 hover:cursor-pointer hover:bg-green-600/50 hover:text-neutral-50" 
+                (click)="this.selectedPopLang.set(item); ddLanguage.close();">
+                <span class="text-base" [class]="'fi fi-' + item.flagName"></span>
+                <span>{{ 'FLAG.' + item.description | translate }}</span> 
+            </div>
+        }
+    </edt-dropdown>
 </edt-popup>

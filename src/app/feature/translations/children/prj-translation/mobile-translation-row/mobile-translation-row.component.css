@@ -1,0 +1,4 @@
+.tempCol {
+  grid-template-columns: 40px auto 86px;
+  grid-template-rows: 34px;
+}
