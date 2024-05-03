@@ -1,16 +1,16 @@
 <div class="flex flex-col justify-center items-center defaultText">
 
-    <div class="flex justify-between pb-3 borderBottom z-20"
+    <div class="flex flex-row-reverse pb-3 borderBottom z-20"
         [class]="appSettingsService.isMobile() ? 'w-full mx-4' : 'w-2/3'">
         @if(appSettingsService.isMobile()){
-            <div #dFlag class="buttonSecondary" (click)="showDropGeneral(dFlag, 'language')">
+            <!-- <div #dFlag class="buttonSecondary" (click)="showDropGeneral(dFlag, 'language')">
                 @if(comunicationService.selectedLang()){
                     <span class="text-base" [class]="'fi fi-' + comunicationService.selectedLang()?.flagName"></span> 
                 } @else {
                     <i class="fa-solid fa-circle-question text-xl"></i>
                 }
                 <i class="fa-solid fa-caret-down text-lg"></i>
-            </div>
+            </div> -->
 
             @if(comunicationService.selectedLang()){
                 <div class="buttonPrimary" (click)="addTranslation();">
@@ -64,7 +64,7 @@
                     <mobile-translation-row 
                         [translation]="translation" 
                         [selectedLang]="comunicationService.selectedLang()"
-                        (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                        (onValueChange)="translationValChange($event)"
                         (onAdd)="addSubTranslation($event)">
                         <!-- (onEdit)="alert($event)"> -->
                     </mobile-translation-row>
@@ -72,7 +72,7 @@
                     <translation-row 
                         [translation]="translation" 
                         [selectedLang]="comunicationService.selectedLang()"
-                        (onValueChange)="translationValChange($event.newVal, $event.translationId)"
+                        (onValueChange)="translationValChange($event)"
                         (onAdd)="addSubTranslation($event)"
                         (onRemove)="removeTranslation($event)">
                     </translation-row>
