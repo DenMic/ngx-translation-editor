@@ -1,7 +1,7 @@
 <div class="flex flex-col justify-center items-center defaultText">
 
-    <div class="flex flex-row-reverse pb-3 borderBottom z-20"
-        [class]="appSettingsService.isMobile() ? 'w-full mx-4' : 'w-2/3'">
+    <div class="flex items-center pb-3 borderBottom z-20"
+        [class]="appSettingsService.isMobile() ? 'w-full mx-4 flex-row-reverse' : 'w-2/3 justify-between'">
         @if(appSettingsService.isMobile()){
             <!-- <div #dFlag class="buttonSecondary" (click)="showDropGeneral(dFlag, 'language')">
                 @if(comunicationService.selectedLang()){
