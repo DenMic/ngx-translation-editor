@@ -1,0 +1,50 @@
+<div class="flex flex-col gap-3 mb-6"
+    [class]="appSettingsService.isMobile() ? 'w-full': 'w-96'">
+    <edt-input
+        #edtOwner
+        [label]="'GIT.OWNER' | translate"
+    ></edt-input>
+    <div class="inline-flex gap-2 items-end">
+        <edt-input
+            #edtRepo
+            class="w-full"
+            [label]="'GIT.REPO_NAME' | translate"
+        ></edt-input>
+        <div class="buttonSecondary h-9">
+            <i class="fa-solid fa-arrows-rotate text-base hover:cursor-pointer" title="Refresh"></i>
+        </div>
+    </div>
+
+    <!-- <cdk-tree [dataSource]="dataSource()" [treeControl]="treeControl" >
+    <cdk-nested-tree-node 
+        *cdkTreeNodeDef="let node" 
+        class="example-tree-node hover:cursor-pointer pe-2">
+        <div [class]="selectedTranslation()?.id == node.id ? 'selected px-2 py-1' : 'px-2 py-1'" (click)="loadTranslation(node)">
+            <i class="fa-solid fa-spell-check text-xs"></i>
+            {{node.global}}
+        </div>
+    </cdk-nested-tree-node>
+
+    <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node ps-2">
+        <div class="flex justify-between py-1">
+            <div class="hover:cursor-pointer" cdkTreeNodeToggle>
+                @if(treeControl.isExpanded(node)){
+                    <i class="fa-solid fa-folder-open"></i>
+                } @else {
+                    <i class="fa-solid fa-folder hover:cursor-pointer"></i>
+                }
+
+                {{node.global}}
+            </div>
+            <i class="fa-solid fa-plus hover:cursor-pointer hover:text-green-700" 
+                [title]="'TRANSLATION.ADD' | translate" 
+                (click)="addSubTranslation(node.id)">
+            </i>
+        </div>
+        <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+            <ng-container cdkTreeNodeOutlet></ng-container>
+        </div>
+        
+        </cdk-nested-tree-node>
+</cdk-tree> -->
+</div>

@@ -64,6 +64,11 @@
     "EXPORT_ALL_LANG": "Export all languages (zip file)"
   },
 
+  "GIT": {
+    "OWNER": "Owner",
+    "REPO_NAME": "Repository name"
+  },
+
   "INFO": {
     "NO_PROJECT": "No projects present",
     "NO_LANGUAGE": "No languages present",

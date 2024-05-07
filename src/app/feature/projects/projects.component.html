@@ -3,7 +3,7 @@
 
     <div class="flex flex-row-reverse pb-3 mb-3 borderBottom z-20"
       [class]="appSettingsService.isMobile() ? 'w-full' : 'w-2/3'">
-      <div class="buttonPrimary" (click)="edtAddPrj.toggle(); edtName.focusOnInput();">
+      <div class="buttonPrimary" (click)="edtAddPrj.toggle();">
         <i class="fa-solid fa-plus text-base"></i>
         <span>{{ "PROJECT.NEW" | translate }}</span>
       </div>
@@ -68,24 +68,34 @@
 
 <edt-popup #edtAddPrj [isMobile]="appSettingsService.isMobile()">
   <div class="p-8 defaultText">
-    <div class="mb-8 font-semibold text-2xl">
+    <div class="mb-4 font-semibold text-2xl">
       {{ "PROJECT.ADD" | translate }}
     </div>
 
     <form [formGroup]="newProjectForm" (submit)="addProject()">
-      <div class="flex flex-col gap-3 mb-6"
-        [class]="appSettingsService.isMobile() ? 'w-full': 'w-96'">
-        <edt-input
-          #edtName
-          [label]="'NAME' | translate"
-          formControlName="name"
-        ></edt-input>
-        <edt-input
-          [label]="'DESCRIPTION' | translate"
-          inputType="area"
-          formControlName="description"
-        ></edt-input>
-      </div>
+      
+      <edt-tap [dataSource]="tabDataSource" [(selectedValue)]="tabSelected"></edt-tap>
+
+      @switch (tabSelected) {
+          @case (1) {
+            <div class="flex flex-col gap-3 mb-6"
+              [class]="appSettingsService.isMobile() ? 'w-full': 'w-96'">
+              <edt-input
+                #edtName
+                [label]="'NAME' | translate"
+                formControlName="name"
+              ></edt-input>
+              <edt-input
+                [label]="'DESCRIPTION' | translate"
+                inputType="area"
+                formControlName="description"
+              ></edt-input>
+            </div>
+          }
+          @case (2) {
+            <git-repo-search [(gitModel)]="gitModel"></git-repo-search>
+          }
+      }
 
       <div class="flex gap-4 justify-end">
         <edt-button
@@ -99,6 +109,8 @@
         ></edt-button>
       </div>
     </form>
+
+
   </div>
 </edt-popup>
 

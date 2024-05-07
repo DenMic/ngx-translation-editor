@@ -1,0 +1,10 @@
+<div class="flex gap-2 defaultText borderBottom pb-2 mb-2">
+    @for (item of dataSource(); track item.id) {
+        <div class="p-2 rounded-md hover:cursor-pointer"
+            [class]="item.id == selectedValue() ? 'bg-black/10 dark:bg-white/10': ''"
+            (click)="itemClick(item.id)">
+            {{ item.text }}
+        </div>
+    }
+    
+</div>

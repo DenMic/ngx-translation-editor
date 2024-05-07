@@ -20,6 +20,10 @@ import { Language } from '../../module/classes/language';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { defaultLang } from '../../module/constant/flags';
+import { EdtTapComponent } from '../../share/component/edt-tap/edt-tap.component';
+import { tabItem } from '../../share/component/edt-tap/class/tabItem';
+import { GitRepoSearchComponent } from '../../share/git-repo-search/git-repo-search.component';
+import { GitModel } from '../../module/classes/gitModel';
 
 @Component({
   selector: 'app-projects',
@@ -28,8 +32,10 @@ import { defaultLang } from '../../module/constant/flags';
     FormsModule,
     ReactiveFormsModule,
 
+    GitRepoSearchComponent,
     EdtCardComponent,
     EdtPopupComponent,
+    EdtTapComponent,
     EdtButtonComponent,
     EdtInputComponent,
 
@@ -45,7 +51,7 @@ export class ProjectsComponent implements OnInit {
 
   private storageService = inject(StorageService);
   private fb = inject(FormBuilder);
-  protected appSettingsService = inject(AppSettingsService);
+  protected readonly appSettingsService = inject(AppSettingsService);
   protected router = inject(Router);
 
   protected selectedPrj: Project | undefined = undefined;
@@ -56,6 +62,13 @@ export class ProjectsComponent implements OnInit {
     description: [undefined],
     languages: [[]],
   });
+  protected gitModel: GitModel = { owner: '', repoName: '' };
+
+  protected tabSelected = 1;
+  protected tabDataSource: tabItem[] = [
+    { id: 1, text: 'Info' },
+    { id: 2, text: 'GitHub' },
+  ];
 
   private readonly titleSubsciber = this.appSettingsService
     .setTitleFromTranslation('PROJECT.TITLE_PAGE')
