@@ -22,11 +22,11 @@ export class ComunicationService {
   idPrj?: number;
 
   private titleSubscriber: Subscription | undefined;
-  private dropDownParam = signal<Comunication | undefined>(undefined);
-  $dropDownParam = toObservable(this.dropDownParam);
+  private _dropDownParam = signal<Comunication | undefined>(undefined);
+  dropDownParam = this._dropDownParam.asReadonly();
 
-  private popParam = signal<Comunication | undefined>(undefined);
-  $popParam = toObservable(this.popParam);
+  private _popParam = signal<Comunication | undefined>(undefined);
+  popParam = this._popParam.asReadonly();
 
   loadProjectFromStore(id: number): void {
     this.prjFromStore = copyObject(this.selectProject(id));
@@ -44,11 +44,11 @@ export class ComunicationService {
   }
 
   setDropDownParam(comunication: Comunication | undefined): void {
-    this.dropDownParam.set(comunication);
+    this._dropDownParam.set(comunication);
   }
 
   setPopParam(comunication: Comunication | undefined): void {
-    this.popParam.set(comunication);
+    this._popParam.set(comunication);
   }
 
   selectProject(id: number): Project | undefined {

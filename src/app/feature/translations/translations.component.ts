@@ -125,11 +125,11 @@ export class TranslationsComponent {
   });
 
   // Gestione del dropDown
-  private $dropDownControl = this.comunicationService.$dropDownParam
-    .pipe(takeUntilDestroyed())
-    .subscribe((value) => {
-      if (value) {
-        switch (value.comunicationType) {
+  private _dropDownEffect = effect(
+    () => {
+      const param = this.comunicationService.dropDownParam();
+      if (param) {
+        switch (param.comunicationType) {
           case 'language':
             this.ddTemplate.set(this.tmpFlag()!);
             break;
@@ -139,18 +139,21 @@ export class TranslationsComponent {
             break;
         }
 
-        this.ddGeneral()?.show(value.target!);
+        this.ddGeneral()?.show(param.target!);
       } else {
         this.ddTemplate.set(null);
         this.ddGeneral()?.close();
       }
-    });
+    },
+    { allowSignalWrites: true }
+  );
 
-  private $popControl = this.comunicationService.$popParam
-    .pipe(takeUntilDestroyed())
-    .subscribe((value) => {
-      if (value) {
-        switch (value.comunicationType) {
+  private _popControl = effect(
+    () => {
+      const param = this.comunicationService.popParam();
+
+      if (param) {
+        switch (param.comunicationType) {
           case 'language':
             this.popTemplate.set(this.tmpAddTranslation()!);
             break;
@@ -169,7 +172,9 @@ export class TranslationsComponent {
         this.popTemplate.set(null);
         this.popGeneral()?.closePop();
       }
-    });
+    },
+    { allowSignalWrites: true }
+  );
 
   private effectNameTranslation = effect(() => {
     if (this.edtName()) {
