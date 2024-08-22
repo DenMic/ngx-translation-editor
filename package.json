@@ -22,6 +22,7 @@
     "@angular/router": "^18.2.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "@supabase/supabase-js": "^2.45.1",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^22.5.0",
     "file-saver": "^2.0.5",
